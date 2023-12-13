@@ -4,13 +4,46 @@
 <%@ include file="/WEB-INF/view/header.jsp" %>
 
 <div class="mx-5 mt-4 vh-100 row">
-	<div class="col-7">
 	<!-- 專案下拉選單 -->
+	<div>
 		<h4 class="fs-4 fw-bolld">Project Name</h4>
 		<select class=" form-select mt-2" aria-label="Default select example">
   			<option selected>Choose project</option>
   			<option value="One">AC23020</option>
 		</select>
+	</div>
+	<!-- 議題新增 -->
+	<div class=" ms-3 w-75">
+		<h4 class="fw-bold fs-3 text-center ">ISSUE CREATE</h4>
+		<form class="w-80 needs-validation" method="post" action="./frontend/page1.jsp" novalidate >
+		 	<div class="mb-1">
+				<label for="issuename" class="form-label" >議題名稱</label>
+				<input class="form-control" list="datalistOptions" id="issuename" name="issuename" placeholder="請輸入議題名稱...">
+  	    		<div class="invalid-feedback w-75">請輸入議題名稱!</div>
+  	    		
+  	    	</div>
+  			<div class="mb-1">
+  				<label for="issueclass" class="form-label mt-3" id="issueclass" name="issueclass">檔案類別</label>
+   	 			<select class="form-select" required aria-label="select example">         
+     				<option value="">請選擇議題類別...</option>
+      				<option value="A">A類別</option> 
+      				<option value="B">B類別</option>
+     				<option value="C">C類別</option>
+     				<option value="D">D類別</option>
+    			</select>
+    			<div class="invalid-feedback ">請選擇議題!</div>
+  	    	</div>
+			<div class="mt-3 mb-3">
+  				<label for="issuepath" class="form-label">備註檔案上傳</label>
+  				<input class="form-control" type="file" id="issuepath" name="issuepath">
+			</div>
+			<div class="mb-1">
+  				<label for="issuecontent" class="form-label">議題內容(請敘述原因:)</label>
+    			<textarea class="form-control" id="issuecontent" name="issuecontent" " placeholder="" required></textarea>
+				<div class="invalid-feedback ">請備註!</div>
+			</div>
+		</form>
+	</div>
 	<!-- Issue顯示狀態列 -->
 	<div>
 		<table class="table table-hover">
@@ -34,44 +67,15 @@
       					<td>馬桶.jpg</td>
       					<td>2023-12-07 00:00:00</td>
       					<td>Open</td>
+      					<td>
+      					<button type="button" class=" btn btn-secondary ">修改</button>
+      					</td>
+      					<td>
+      					<button type="button" class="mx-4  btn btn-danger ">刪除</button>
+      					</td>
     			</tr>    			
   			</tbody>
 		</table>
-	</div>
-	</div>
-	<div class="col-4 ms-3">
-		<h4 class="fw-bold fs-3 text-center ">ISSUE CREATE</h4>
-		<form class="w-80 needs-validation" method="post" action="./frontend/page1.jsp" novalidate >
-		 	<div class="mb-1">
-				<label for="issuename" class="form-label" >議題名稱</label>
-				<input class="form-control" list="datalistOptions" id="issuename" name="issuename" placeholder="請輸入議題名稱...">
-  	    		<div class="invalid-feedback">請輸入議題名稱!</div>
-  	    	</div>
-  			<div class="mb-1">
-  				<label for="issueclass" class="form-label mt-3" id="issueclass" name="issueclass">檔案類別</label>
-   	 			<select class="form-select" required aria-label="select example">         
-     				<option value="">請選擇議題類別...</option>
-      				<option value="A">A類別</option> 
-      				<option value="B">B類別</option>
-     				<option value="C">C類別</option>
-     				<option value="D">D類別</option>
-    			</select>
-    			<div class="invalid-feedback ">請選擇議題!</div>
-  	    	</div>
-			<div class="mt-3 mb-3 ">
-  				<label for="issuepath" class="form-label">備註檔案上傳</label>
-  				<input class="form-control" type="file" id="issuepath" name="issuepath">
-			</div>
-			<div class="mb-3">
-  				<label for="issuecontent" class="form-label">議題內容(請敘述原因:)</label>
-    			<textarea class="form-control" id="issuecontent" name="issuecontent" " placeholder="" required></textarea>
-				<div class="invalid-feedback ">請備註!</div>
-			</div>
-			<div class="d-flex justify-content-center mb-1 mt-4">
-				<button type="reset" class="mx-4 col-3 btn btn-danger ">清除</button>
-				<button type="submit" class="col-3 btn btn-secondary ">提交</button>
-			</div>
-		</form>
 	</div>
 </div>
 
