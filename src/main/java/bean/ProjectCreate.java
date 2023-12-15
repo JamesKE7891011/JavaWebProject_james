@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 @Entity
-public class ProjectCreateData {
+public class ProjectCreate {
 	private String projectid;
 	private String projectname;
 	private String projectcontent;
@@ -14,11 +14,11 @@ public class ProjectCreateData {
 	private Date projectstart;
 	private Date projectend;
 	
-	public ProjectCreateData() {
+	public ProjectCreate() {
 		
 	}
 	
-	public ProjectCreateData(String projectid, String projectname, String projectcontent, String projectowner,
+	public ProjectCreate(String projectid, String projectname, String projectcontent, String projectowner,
 			String projectmember, Date projectstart, Date projectend) {
 		this.projectid = projectid;
 		this.projectname = projectname;
