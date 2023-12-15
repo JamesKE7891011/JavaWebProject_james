@@ -73,10 +73,10 @@
 				<label for="validationDefault01" class="form-label">project_owner</label> 
 				<div class="d-flex justift-content-start">
 					<input type="text" class="form-control" id="project_owner" name="project_owner" disabled>
-					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleOwner">+</button>
+					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectModal">+</button>
 				</div>
 				<!-- Modal -->
-				<div class="modal fade" id="exampleOwner" tabindex="-1" aria-labelledby="exampleOwnerLabel" aria-hidden="true">
+				<div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="exampleOwnerLabel" aria-hidden="true">
   					<div class="modal-dialog modal-lg">
     					<div class="modal-content">
       						<div class="modal-header">
@@ -105,7 +105,7 @@
       						</div>
       						<div class="modal-footer">
         						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        						<button type="button" class="btn btn-primary" onclick="saveProjectOwner()">Save changes</button>
+        						<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="saveProjectOwner()">Save changes</button>
       						</div>
     					</div>
   					</div>
@@ -193,6 +193,7 @@ myModal.addEventListener('shown.bs.modal', function () {
     $('#toRight').on('click',function() {
         $('#left .active').each(function() {
             $('#right').append($(this)[0]);
+            //加入至右邊欄位
             projectOwner.push($(this)[0].innerText);
         });
     });
@@ -200,13 +201,15 @@ myModal.addEventListener('shown.bs.modal', function () {
     $('#toLeft').on('click',function() {
         $('#right .active').each(function() {
             $('#left').append($(this)[0]);
+            //移除還原至左邊欄位
             let ownerstr = $(this)[0].innerText;
             projectOwner = projectOwner.filter(owner => owner !== ownerstr);
         });
     });
     
+    //儲存至框格內
     function saveProjectOwner() {
-    	console.log(projectOwner);
+    	$('#project_owner').val(projectOwner);
     }
 
 

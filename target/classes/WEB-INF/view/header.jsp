@@ -32,7 +32,7 @@
         </li>
       </ul>
     </div>
-    <i class="bi bi-person-circle fs-3 me-4 text-light d-none d-lg-block">${sessionScope.James}</i>
+    <i class="bi bi-person-circle fs-3 me-4 text-light d-none d-lg-block">${sessionScope.username}</i>
   </div>
 </nav>
 </body>
