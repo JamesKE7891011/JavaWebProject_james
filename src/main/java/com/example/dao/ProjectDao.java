@@ -9,6 +9,9 @@ public interface ProjectDao {
 	
 	// 新增專案：
 	int addProject(Project project);
+	
+	// 新增專案成員
+	int[] addProjectMember(String projectId,List<String> members);
 
 	// 取消專案
 	int cancelProject(String projectId);

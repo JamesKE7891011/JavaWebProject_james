@@ -15,7 +15,7 @@ public class Project {
 	
 	private String owner;
 	
-	private List<String> members;
+	private List<Employee> members;
 	
 	private Date startDate;
 	
@@ -26,7 +26,7 @@ public class Project {
 		
 	}
 	
-	public Project(String projectId, String projectName, String content, String owner, List<String> members,
+	public Project(String projectId, String projectName, String content, String owner, List<Employee> members,
 			Date startDate, Date endDate) {
 		this.projectId = projectId;
 		this.projectName = projectName;
@@ -53,7 +53,7 @@ public class Project {
 		return owner;
 	}
 
-	public List<String> getMembers() {
+	public List<Employee> getMembers() {
 		return members;
 	}
 
@@ -81,7 +81,7 @@ public class Project {
 		this.owner = owner;
 	}
 
-	public void setMembers(List<String> members) {
+	public void setMembers(List<Employee> members) {
 		this.members = members;
 	}
 
