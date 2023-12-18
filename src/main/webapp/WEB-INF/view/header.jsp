@@ -25,7 +25,7 @@
           <a class="nav-link active text-light" aria-current="page" href="${ pageContext.request.contextPath }/mvc/main">Main</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-light" href="/JavaWebProject_james/frontend/Issue.jsp">Issue</a>
+          <a class="nav-link text-light" href="${ pageContext.request.contextPath }/mvc/issue">Issue</a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-light" href="/JavaWebProject_james/backend/ProjectCreate.jsp">Back-end</a>
