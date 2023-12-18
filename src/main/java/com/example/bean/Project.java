@@ -3,6 +3,8 @@ package com.example.bean;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 public class Project {
 	
 	private String projectId;
@@ -18,6 +20,11 @@ public class Project {
 	private Date startDate;
 	
 	private Date endDate;
+	
+	
+	public Project() {
+		
+	}
 	
 	public Project(String projectId, String projectName, String content, String owner, List<String> members,
 			Date startDate, Date endDate) {
@@ -88,8 +95,7 @@ public class Project {
 
 	@Override
 	public String toString() {
-		return "Project [projectId=" + projectId + ", projectName=" + projectName + ", content=" + content + ", owner="
-				+ owner + ", members=" + members + ", startDate=" + startDate + ", endDate=" + endDate + "]";
+		return new Gson().toJson(this);
 	}
 	
 }

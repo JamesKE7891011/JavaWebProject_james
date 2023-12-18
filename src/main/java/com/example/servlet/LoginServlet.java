@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.example.servlet;
 
 import java.io.IOException;
 
@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("isLogin", true);
 			session.setAttribute("username", username);
 			session.setAttribute("role", "user");
-			resp.sendRedirect("./frontend/Main.jsp");
+			resp.sendRedirect(req.getContextPath()+"/mvc/main");
 			return;
 		}
 		
@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("isLogin", true);
 			session.setAttribute("username", username);
 			session.setAttribute("role", "admin");
-			resp.sendRedirect("./frontend/Main.jsp");
+			resp.sendRedirect(req.getContextPath()+"/mvc/main");
 			return;
 		}
 

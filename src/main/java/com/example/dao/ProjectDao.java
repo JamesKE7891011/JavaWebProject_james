@@ -1,5 +1,6 @@
 package com.example.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.example.bean.Project;
@@ -16,5 +17,6 @@ public interface ProjectDao {
 	List<Project> findAllProjects();
 
 	// 修改預約人
-	int updateProject(Project project);
+	int updateProject(String projectId, String newprojectName, String newcontent, String newowner, List<String> newmembers,
+			Date newstartDate, Date newendDate);
 }
