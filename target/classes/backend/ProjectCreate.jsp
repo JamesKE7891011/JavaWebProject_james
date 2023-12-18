@@ -57,18 +57,26 @@
 		<!-- 新增專案表格 -->
 		<form class="ms-4 my-0 row g-3  col-6">
 			<label class="fs-4 fw-bolld">Project Create</label>
+			
+			<!-- Project ID -->
 			<div class="col-md-6">
 				<label for="validationDefault01" class="form-label">project_id</label> <input
 					type="text" class="form-control" id="project_id" name="project_id" required>
 			</div>
+			
+			<!-- Project Name -->
 			<div class="col-md-6">
 				<label for="validationDefault01" class="form-label">project_name</label> <input
 					type="text" class="form-control" id="project_name" name="project_name" required>
 			</div>
+			
+			<!-- Project Content -->
 			<div class="mb-3">
   				<label for="exampleFormControlTextarea1" class="form-label">project_content</label>
   				<textarea class="form-control" id="project_content" name="project_content" rows="3" required></textarea>
 			</div>
+			
+			<!-- Project Owner -->
 			<div class="col-md-5 justify-content-start"> 
 				<label for="validationDefault01" class="form-label">project_owner</label> 
 				<div class="d-flex justift-content-start">
@@ -111,6 +119,8 @@
   					</div>
 				</div>
 			</div>
+			
+			<!-- Project Member -->
 			<div class="col-md-5">
 				<label for="validationDefault01" class="form-label">project_member</label> 
 				<div class="d-flex justift-content-start">
@@ -127,7 +137,7 @@
       						</div>
       						<div class="modal-body">
         						<div class=" d-flex justify-content-center mt-2">
-        							<div style="height: 500px; width: 500px;" class="shadow" id="left">
+        							<div style="height: 500px; width: 500px;" class="shadow" id="left2">
             							<h3 class="text-center">Employee</h3>
             							<ul class="list-group">
                 							<button type="button" class="listItem list-group-item list-group-item-action mb-1">A</button>
@@ -136,10 +146,10 @@
             							</ul>
         							</div>
         							<div style="width: 50px; height: 500px;" class="d-flex flex-column align-items-center justify-content-center mx-1">
-            							<button id="toRight" class="btn btn-outline-primary"> >> </button>
-            							<button id="toLeft" class="btn btn-outline-primary"> << </button>
+            							<button id="toRight2" class="btn btn-outline-primary toRight"> >> </button>
+            							<button id="toLeft2" class="btn btn-outline-primary toLeft"> << </button>
         							</div>
-        							<div style="height: 500px; width: 500px;" class="shadow" id="right">
+        							<div style="height: 500px; width: 500px;" class="shadow" id="right2">
             							<h3 class="text-center">Projrct Member</h3>
             							<ul class="list-group"></ul>
         							</div>
@@ -147,16 +157,20 @@
       						</div>
       						<div class="modal-footer">
         						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        						<button type="button" class="btn btn-primary">Save changes</button>
+        						<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="saveProjectMember()">Save changes</button>
       						</div>
     					</div>
   					</div>
 				</div>
 			</div>
+			
+			<!-- Project Start -->
 			<div class="col-md-6">
 				<label for="validationDefault01" class="form-label">project_start</label> <input
 					type="date" class="form-control" id="project_start" name="project_start" required>
 			</div>
+			
+			<!-- Project End -->
 			<div class="col-md-6">
 				<label for="validationDefault01" class="form-label">project_end</label> <input
 					type="date" class="form-control" id="project_end" name="project_end" required>
@@ -212,7 +226,31 @@ myModal.addEventListener('shown.bs.modal', function () {
     	$('#project_owner').val(projectOwner);
     }
 
+    
+    
+    let projectMember = [];
 
+    $('#toRight2').on('click',function() {
+        $('#left2 .active').each(function() {
+            $('#right2').append($(this)[0]);
+            //加入至右邊欄位
+            projectMember.push($(this)[0].innerText);
+        });
+    });
+
+    $('#toLeft2').on('click',function() {
+        $('#right2 .active').each(function() {
+            $('#left2').append($(this)[0]);
+            //移除還原至左邊欄位
+            let ownerstr = $(this)[0].innerText;
+            projectMember = projectMember.filter(owner => owner !== ownerstr);
+        });
+    });
+    
+    function saveProjectMember() {
+    	$('#project_member').val(projectMember);
+    }
+    
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
