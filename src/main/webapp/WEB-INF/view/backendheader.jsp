@@ -22,13 +22,13 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active text-light" aria-current="page" href="./ProjectCreate.jsp">ProjectCreate</a>
+          <a class="nav-link active text-light" aria-current="page" href="${ pageContext.request.contextPath }/mvc/project">ProjectCreate</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-light" href="../backend/GanttCharts.jsp">GanttCharts</a>
+          <a class="nav-link text-light" href="${ pageContext.request.contextPath }/mvc/ganttcharts">GanttCharts</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-light" href="../frontend/Main.jsp">Front-end</a>
+          <a class="nav-link text-light" href="${ pageContext.request.contextPath }/mvc/main">Front-end</a>
         </li>
       </ul>
     </div>

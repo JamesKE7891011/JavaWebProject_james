@@ -93,6 +93,12 @@ public class Project {
 		this.endDate = endDate;
 	}
 
+//	@Override
+//	public String toString() {
+//		return "Project [projectId=" + projectId + ", projectName=" + projectName + ", content=" + content + ", owner="
+//				+ owner + ", members=" + members + ", startDate=" + startDate + ", endDate=" + endDate + "]";
+//	}
+	
 	@Override
 	public String toString() {
 		return new Gson().toJson(this);
