@@ -15,7 +15,7 @@ public class Test {
 		
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("/WEB-INF/springmvc-servlet.xml");
 		
-		ProjectDao projectDao = ctx.getBean("projectDaoMySQL", ProjectDaoImplMySQL.class);
+		ProjectDao projectDao = ctx.getBean("projectdaomysql", ProjectDaoImplMySQL.class);
 		
 		List<Project> projects = projectDao.findAllProjects();
 

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.bean.Project;
 
-@Repository("projectDaoMySQL")
+@Repository("projectdaomysql")
 public class ProjectDaoImplMySQL implements ProjectDao {
 
 	@Autowired
