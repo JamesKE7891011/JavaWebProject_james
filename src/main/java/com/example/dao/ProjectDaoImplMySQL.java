@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -66,31 +67,10 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 
 	@Override
 	public List<Project> findAllProjects() {
-	    String sql = "select * from project";
-	    return jdbcTemplate.query(sql, (rs, rowNum) -> {
-	        Project project = new Project();
-	        project.setProjectId(rs.getString("project_id"));
-	        project.setProjectName(rs.getString("project_name"));
-	        project.setContent(rs.getString("project_content"));
-	        project.setOwner(rs.getString("project_owner"));
-	        
-	        project.setStartDate(rs.getDate("project_start"));
-	        project.setEndDate(rs.getDate("project_end"));
-	        return project;
-	    });
+	    String sql = "select project_id,project_name,project_content,project_owner,project_start,project_end from project";
+	    return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Project.class));
 	}
 	
-	@Override
-	public List<String> findProjectMembers(String projectId) {
-		return null;
-//	    String sql = "select employee_id from project_member where project_id = ?";
-//	    List<Map<String, Object>> rows = jdbcTemplate.query(sql, new ColumnMapRowMapper(), projectId);
-//
-//	    // 使用 Lambda 表达式将每一行的 "employee_id" 列值提取出来
-//	    return rows.stream()
-//	            .map(row -> (String) row.get("employee_id"))
-//	            .collect(Collectors.toList());
-	}
 
 
 	@Override

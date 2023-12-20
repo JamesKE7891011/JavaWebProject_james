@@ -16,14 +16,10 @@ public interface ProjectDao {
 	// 取消專案
 	int cancelProject(String projectId);
 	
-	// 取消專案成員
-	//int[] cancelProjectMember(String projectId,List<String> members);
 	
 	// 查看專案
 	List<Project> findAllProjects();
 	
-	//查看專案成員
-	List<String> findProjectMembers(String projectId);
 	
 	// 修改預約人
 	int updateProject(String projectId, String newprojectName, String newcontent, String newowner, List<String> newmembers,
