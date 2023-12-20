@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.bean.Employee;
 import com.example.bean.Project;
 import com.example.dao.ProjectDao;
+import com.example.dao.ProjectMemberDao;
 
 
 @Controller
@@ -32,18 +34,22 @@ public class ProjectController {
 		return "/backend/ProjectCreate";
 	}
 	
-	@Autowired()
-	@Qualifier("projectDaoMySQL")
+	@Autowired
+	@Qualifier("projectdaomysql")
 	private ProjectDao projectDao;
 	
+	@Autowired
+	@Qualifier("projectmemberdaomysql")
+	private ProjectMemberDao projectMemberDao;
+	
 	//新增專案
-	@RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},produces = "text/plain;charset=utf-8")
+	@RequestMapping(value = "/addproject", method = {RequestMethod.GET,RequestMethod.POST},produces = "text/plain;charset=utf-8")
 	@ResponseBody
 	public String addProject(@RequestParam(name = "projectId")String projectId,
 							 @RequestParam(name = "projectName")String projectName,
 							 @RequestParam(name = "content")String content,
 							 @RequestParam(name = "owner")String owner,
-							 @RequestParam(name = "members")List members,
+							 @RequestParam(name = "members")List<Employee> members,
 							 @RequestParam(name = "startDate")Date startDate,
 							 @RequestParam(name = "endDate")Date endDate) throws ParseException{
 		
@@ -67,45 +73,38 @@ public class ProjectController {
 			return "專案新增失敗:" + (e.getMessage().contains("Duplicate entry") ? "此專案已新增" : e.getMessage());
 		}		
 	}
-//	
-//	//取消專案
-//	@DeleteMapping(produces = "text/plain;charset=utf-8")
-//	@ResponseBody
-//	public String cancelProject(@PathVariable("projectId")String projectId) {
-//		int rowcount = projectDao.cancelProject(projectId);
-//		if (rowcount ==0) {
-//			return "專案新增失敗";
-//		}else {
-//			return "專案新增成功";
-//		}
-//	}
-//	
-//	//查看所有專案內容
-//	@GetMapping(produces = "text/plain;charset=utf-8")
-//	@ResponseBody
-//	public String findAllProjects(Model model) {
-//		List<Project> projects = projectDao.findAllProjects();
-//		model.addAttribute("projects", projects);
-//		return "Project/listMySQL";
-//	}
-//	
-//	//修改專案內容
-//	@RequestMapping( method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain;charset=utf-8")
-//	@ResponseBody
-//	public String updateProject(@PathVariable("projectId") String projectId,
-//								@RequestParam(name = "projectName")String newprojectName,
-//								@RequestParam(name = "content")String newcontent,
-//								@RequestParam(name = "owner")String newowner,
-//								@RequestParam(name = "members")String newmembers,
-//								@RequestParam(name = "startDate")Date newstartDate,
-//								@RequestParam(name = "endDate")Date newendDate){
-//		//int rowcount = ProjectDao.updateProject(String projectId, String newprojectName, String newcontent, String newowner, List<String> newmembers,
-//				//Date newstartDate, Date newendDate);
-//		//return rowcount == 0 ? "專案修改失敗" : "專案修改成功";
-//						
-//		return "";
-//	}
-//	
+	
+	// 取消專案
+	@GetMapping("/cancelproject/{projectId}")
+	@ResponseBody
+	public String cancelProject(@PathVariable("projectId") String projectId) {
+	    int rowcount = projectDao.cancelProject(projectId);
+	    return rowcount == 0 ? "專案取消失敗" : "專案取消成功";
+	}
+	
+	//查看所有專案內容
+	@GetMapping(value = "/viewprojects", produces = "text/plain;charset=utf-8")
+	@ResponseBody
+	public String findAllProjects(Model model) {
+		List<Project> projects = projectDao.findAllProjects();
+		model.addAttribute("projects", projects);
+		return "Project/listMySQL";
+	}
+	
+	// 修改專案內容
+	@RequestMapping(value = "/{projectId}/updateproject", method = {RequestMethod.PUT, RequestMethod.POST}, produces = "text/plain;charset=utf-8")
+	@ResponseBody
+	public String updateProject(@PathVariable("projectId") String projectId,
+	                            @RequestParam(name = "projectName") String newprojectName,
+	                            @RequestParam(name = "content") String newcontent,
+	                            @RequestParam(name = "owner") String newowner,
+	                            @RequestParam(name = "members") List<String> newmembers,
+	                            @RequestParam(name = "startDate") Date newstartDate,
+	                            @RequestParam(name = "endDate") Date newendDate) {
+	    int rowcount = projectDao.updateProject(projectId, newprojectName, newcontent, newowner, newmembers, newstartDate, newendDate);
+	    return rowcount == 0 ? "專案修改失敗" : "專案修改成功";
+	}
+	
 }
 	
 	

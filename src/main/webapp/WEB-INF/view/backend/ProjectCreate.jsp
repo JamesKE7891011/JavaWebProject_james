@@ -9,10 +9,16 @@
 		<div class="col-5 m-3">
 			<!-- 專案下拉選單 -->
 			<h4 class="fs-4 fw-bolld">Project Name</h4>
-			<select class=" form-select mt-2" aria-label="Default select example">
-  				<option selected>Choose project</option>
-  				<option value="One">AC23020</option>
-			</select>		
+			<div class="d-flex justify-content-start">
+				<select class=" form-select  w-75" aria-label="Default select example">
+  					<option selected>Choose project</option>
+  					<option value="One">AC23020</option>
+				</select>
+				<button class="ms-2  btn btn-secondary btn-md" href="/SpringMVC/mvc/ProjectCreate/viewprojects" target="resultFrame" >
+				Search
+				</button>
+			</div>
+					
 			<!-- 專案顯示資訊 -->
 			<table class="table mt-2">
   				<tbody>
@@ -47,15 +53,15 @@
     				<tr>
       					<th scope="row"></th>
       						<td class="row justify-content-end">
-      						<button type="" class="mx-4 col-3 btn btn-danger ">Revise</button>
-      						<button type="submit" class="col-3 btn btn-secondary ">Apply</button>
+      						<button class="mx-4 col-3 btn btn-danger ">Delete</button>
+      						<button class="col-3 btn btn-secondary ">Revise</button>
       						</td>
     				</tr>
   				</tbody>
 			</table>
 		</div>
 		<!-- 新增專案表格 -->
-		<form class="ms-4 my-0 row g-3  col-6">
+		<form class="ms-4 my-0 row g-3  col-6" method="post" action="/SpringMVC/mvc/ProjectCreate/addproject" target="resultFrame">
 			<label class="fs-4 fw-bolld">Project Create</label>
 			
 			<!-- Project ID -->
@@ -77,11 +83,11 @@
 			</div>
 			
 			<!-- Project Owner -->
-			<div class="col-md-5 justify-content-start"> 
+			<div class="col-md-6 justify-content-start"> 
 				<label for="validationDefault01" class="form-label">project_owner</label> 
 				<div class="d-flex justift-content-start">
 					<input type="text" class="form-control" id="project_owner" name="project_owner" disabled>
-					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectModal">+</button>
+					<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#projectModal">+</button>
 				</div>
 				<!-- Modal -->
 				<div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="exampleOwnerLabel" aria-hidden="true">
@@ -121,11 +127,11 @@
 			</div>
 			
 			<!-- Project Member -->
-			<div class="col-md-5">
+			<div class="col-md-6">
 				<label for="validationDefault01" class="form-label">project_member</label> 
 				<div class="d-flex justift-content-start">
 					<input type="text" class="form-control" id="project_member" name="project_member" disabled>
-					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleMember">+</button>
+					<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleMember">+</button>
 				</div>
 				<!-- Modal -->
 				<div class="modal fade" id="exampleMember" tabindex="-1" aria-labelledby="exampleMemberLabel" aria-hidden="true">
@@ -171,12 +177,12 @@
 			</div>
 			
 			<!-- Project End -->
-			<div class="col-md-6">
+			<div class="col-md-6 mb-2">
 				<label for="validationDefault01" class="form-label">project_end</label> <input
 					type="date" class="form-control" id="project_end" name="project_end" required>
 			</div>
-			<div class="col-12">
-				<button class="btn btn-primary" type="submit">Submit form</button>
+			<div class="col-12 d-flex justify-content-center ">
+				<button class="btn btn-secondary col-12" type="submit">Submit Form</button>
 			</div>
 		</form>
 		
