@@ -31,7 +31,9 @@ import com.example.dao.ProjectMemberDao;
 public class ProjectController {
 	
 	@GetMapping
-	public String getProjectPage() {
+	public String getProjectPage(Model model) {
+		List<Project> projects = projectDao.findAllProjects();
+		model.addAttribute("projects", projects);
 		return "/backend/ProjectCreate";
 	}
 	
@@ -46,22 +48,22 @@ public class ProjectController {
 	//新增專案
 	@RequestMapping(value = "/addproject", method = {RequestMethod.GET,RequestMethod.POST},produces = "text/plain;charset=utf-8")
 	@ResponseBody
-	public String addProject(@RequestParam(name = "projectId")String projectId,
-							 @RequestParam(name = "projectName")String projectName,
-							 @RequestParam(name = "content")String content,
-							 @RequestParam(name = "owner")String owner,
-							 @RequestParam(name = "members")List<Employee> members,
-							 @RequestParam(name = "startDate")Date startDate,
-							 @RequestParam(name = "endDate")Date endDate) throws ParseException{
+	public String addProject(@RequestParam(name = "project_id")String project_id,
+							 @RequestParam(name = "project_name")String project_name,
+							 @RequestParam(name = "project_content")String project_content,
+							 //@RequestParam(name = "project_owner")String project_owner,
+							 //@RequestParam(name = "project_member")List<Employee> project_member,
+							 @RequestParam(name = "project_start")Date project_start,
+							 @RequestParam(name = "project_end")Date project_end) throws ParseException{
 		
 		Project project = new Project();
-		project.setProjectId(projectId);
-		project.setProjectName(projectName);
-		project.setContent(content);
-		project.setOwner(owner);
-		project.setMembers(members);
-		project.setStartDate(startDate);
-		project.setEndDate(endDate);
+		project.setProjectId(project_id);
+		project.setProjectName(project_name);
+		project.setContent(project_content);
+		//project.setOwner(project_owner);
+		//project.setMembers(project_member);
+		project.setStartDate(project_start);
+		project.setEndDate(project_end);
 		
 		try {
 			int rowcount = projectDao.addProject(project);
@@ -89,7 +91,7 @@ public class ProjectController {
 	public String findAllProjects(Model model) {
 		List<Project> projects = projectDao.findAllProjects();
 		model.addAttribute("projects", projects);
-		return "Project/listMySQL";
+		return "backend/ProjectCreate";
 	}
 	
 	// 修改專案內容

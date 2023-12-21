@@ -1,6 +1,7 @@
 package com.example.dao;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,7 +73,16 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 	@Override
 	public List<Project> findAllProjects() {
 	    String sql = "select project_id,project_name,project_content,project_owner,project_start,project_end from project";
-	    return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Project.class));
+	    return jdbcTemplate.query(sql, (ResultSet rs, int rowNum) -> {
+	    	Project project = new Project();
+	    	project.setProjectId(rs.getString("project_id"));
+	    	project.setProjectName(rs.getString("project_name"));
+	    	project.setContent(rs.getString("project_content"));
+	    	project.setOwner(rs.getString("project_owner"));
+	    	project.setStartDate(rs.getDate("project_start"));
+	    	project.setEndDate(rs.getDate("project_end"));
+	    	return project;
+	    });
 	}
 	
 
@@ -110,7 +120,8 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 			
 			// 查詢 employee 並注入
 			String sqlItems = "select employee_id, employee_name from employee where employee_id = ?";
-			List<Employee> employees = jdbcTemplate.query(sqlItems, new BeanPropertyRowMapper<>(Employee.class), projectMember.getProjectId());
+			List<Employee> employees = jdbcTemplate.query(sqlItems, new BeanPropertyRowMapper<>(Employee.class), projectMember.getEmployeeId());
 			
 			projectMember.setEmployees(employees);
+		}
 }

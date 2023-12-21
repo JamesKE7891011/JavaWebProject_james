@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	
 <%@ include file="/WEB-INF/view/backendheader.jsp"%>
@@ -14,7 +15,7 @@
   					<option selected>Choose project</option>
   					<option value="One">AC23020</option>
 				</select>
-				<button class="ms-2  btn btn-secondary btn-md" href="/SpringMVC/mvc/ProjectCreate/viewprojects" target="resultFrame" >
+				<button class="ms-2  btn btn-secondary btn-md" href="/JavaWebProject_james/mvc/project/viewprojects"  >
 				Search
 				</button>
 			</div>
@@ -22,52 +23,55 @@
 			<!-- 專案顯示資訊 -->
 			<table class="table mt-2">
   				<tbody>
-    				<tr>
-      					<th scope="row">project_id:</th>
-      						<td>ex:AC23021</td>
-    				</tr>
-    				<tr>
-      					<th scope="row">project_name:</th>
-      						<td>Holystone 轉輪更換</td>
-    				</tr>
-    				<tr>
-      					<th scope="row">project_content:</th>
-      						<td>轉輪一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套</td>
-    				</tr>
-    				<tr>
-      					<th scope="row">project_owner:</th>
-      						<td>James</td>
-    				</tr>
-    				<tr>
-      					<th scope="row">project_member:</th>
-      						<td>Leo、Tim、Dan、Adam</td>
-    				</tr>
-    				<tr>
-      					<th scope="row">project_start:</th>
-      						<td>2023/12/09</td>
-    				</tr>
-    				<tr>
-      					<th scope="row">project_end:</th>
-      						<td>2024/12/09</td>
-    				</tr>
-    				<tr>
-      					<th scope="row"></th>
-      						<td class="row justify-content-end">
-      						<button class="mx-4 col-3 btn btn-danger ">Delete</button>
-      						<button class="col-3 btn btn-secondary ">Revise</button>
-      						</td>
-    				</tr>
+	  				<c:forEach var="project" items="${ projects }">
+	    				<tr>
+	      					<th scope="row">project_id:</th>
+	      						<td>${ project.projectId }</td>
+	    				</tr>
+	    				<tr>
+	      					<th scope="row">project_name:</th>
+	      						<td>${ project.projectName }</td>
+	    				</tr>
+	    				<tr>
+	      					<th scope="row">project_content:</th>
+	      						<td>${ project.content }</td>
+	    				</tr>
+	    				<tr>
+	      					<th scope="row">project_owner:</th>
+	      						<td>${ project.owner }</td>
+	    				</tr>
+	    				<tr>
+	      					<th scope="row">project_member:</th>
+	      						<td>${ project.members }</td>
+	    				</tr>
+	    				<tr>
+	      					<th scope="row">project_start:</th>
+	      						<td>${ project.startDate }</td>
+	    				</tr>
+	    				<tr>
+	      					<th scope="row">project_end:</th>
+	      						<td>${ project.endDate }</td>
+	    				</tr>
+	    				<tr>
+	      					<th scope="row"></th>
+	      						<td class="row justify-content-end">
+	      						<button class="mx-4 col-3 btn btn-danger ">Delete</button>
+	      						<button class="col-3 btn btn-secondary ">Revise</button>
+	      						</td>
+	    				</tr>
+	  				</c:forEach>
   				</tbody>
+  			
 			</table>
 		</div>
 		<!-- 新增專案表格 -->
-		<form class="ms-4 my-0 row g-3  col-6" method="post" action="/SpringMVC/mvc/ProjectCreate/addproject" target="resultFrame">
+		<form class="ms-4 my-0 row g-3  col-6" method="post" action="/JavaWebProject_james/mvc/project/addproject" >
 			<label class="fs-4 fw-bolld">Project Create</label>
 			
 			<!-- Project ID -->
 			<div class="col-md-6">
-				<label for="validationDefault01" class="form-label">project_id</label> <input
-					type="text" class="form-control" id="project_id" name="project_id" required>
+				<label for="validationDefault01" class="form-label">project_id</label> 
+				<input type="text" class="form-control" id="project_id" name="project_id" required>
 			</div>
 			
 			<!-- Project Name -->
