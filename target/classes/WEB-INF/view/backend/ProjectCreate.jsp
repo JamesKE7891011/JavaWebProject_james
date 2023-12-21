@@ -15,7 +15,7 @@
   					<option selected>Choose project</option>
   					<option value="One">AC23020</option>
 				</select>
-				<button class="ms-2  btn btn-secondary btn-md" href="/JavaWebProject_james/mvc/project/viewprojects"  >
+				<button class="ms-2  btn btn-secondary btn-md" href="/JavaWebProject_james/mvc/project/viewprojects,/JavaWebProject_james/mvc/project/viewprojectmembers"  >
 				Search
 				</button>
 			</div>

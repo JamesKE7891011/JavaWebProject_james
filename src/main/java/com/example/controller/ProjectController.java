@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.bean.Employee;
 import com.example.bean.Project;
+import com.example.bean.ProjectMember;
 import com.example.dao.ProjectDao;
 import com.example.dao.ProjectMemberDao;
 
@@ -51,8 +52,8 @@ public class ProjectController {
 	public String addProject(@RequestParam(name = "project_id")String project_id,
 							 @RequestParam(name = "project_name")String project_name,
 							 @RequestParam(name = "project_content")String project_content,
-							 //@RequestParam(name = "project_owner")String project_owner,
-							 //@RequestParam(name = "project_member")List<Employee> project_member,
+							 @RequestParam(name = "project_owner")String project_owner,
+							 @RequestParam(name = "project_member")List<Employee> project_member,
 							 @RequestParam(name = "project_start")Date project_start,
 							 @RequestParam(name = "project_end")Date project_end) throws ParseException{
 		
@@ -60,8 +61,8 @@ public class ProjectController {
 		project.setProjectId(project_id);
 		project.setProjectName(project_name);
 		project.setContent(project_content);
-		//project.setOwner(project_owner);
-		//project.setMembers(project_member);
+		project.setOwner(project_owner);
+		project.setMembers(project_member);
 		project.setStartDate(project_start);
 		project.setEndDate(project_end);
 		
@@ -91,6 +92,15 @@ public class ProjectController {
 	public String findAllProjects(Model model) {
 		List<Project> projects = projectDao.findAllProjects();
 		model.addAttribute("projects", projects);
+		return "backend/ProjectCreate";
+	}
+	
+	//查看所有專案成員
+	@GetMapping(value = "/viewprojectmembers",produces = "text/plain;charest=utf-8")
+	@ResponseBody
+	public String findAllProjectMembers(Model model) {
+		List<Employee> projectMembers = projectMemberDao.findAllProjectMembers();
+		model.addAttribute("projectMembers",projectMembers);
 		return "backend/ProjectCreate";
 	}
 	

@@ -1,8 +1,14 @@
 package com.example.dao;
 
+import java.sql.ResultSet;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import com.example.bean.Employee;
+import com.example.bean.ProjectMember;
 
 @Repository("projectmemberdaomysql")
 public class ProjectMemberDaoimplMySQL implements ProjectMemberDao{
@@ -22,7 +28,24 @@ public class ProjectMemberDaoimplMySQL implements ProjectMemberDao{
 		String sql = "delete from project_member where project_id = ? and employee_id = ?";
 	    return jdbcTemplate.update(sql, projectId, employeeId);
 	}
-	
-	
-	
+
+	@Override
+	public List<Employee> findAllProjectMembers() {
+	    String sql = "SELECT project_id, employee_id FROM project_member";
+
+	    return jdbcTemplate.query(sql, (ResultSet rs, int rowNum) -> {
+	        // Create a new Employee object
+	        Employee employee = new Employee();
+
+	        // Set the attributes of the Employee object
+	        employee.setProjectId(rs.getString("project_id"));
+	        employee.setEmployeeId(rs.getInt("employee_id"));
+
+	        // Return the Employee object
+	        return employee;
+	    });
+	}
+
 }
+
+
