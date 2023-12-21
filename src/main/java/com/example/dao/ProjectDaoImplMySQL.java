@@ -6,15 +6,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.example.bean.Employee;
 import com.example.bean.Project;
+import com.example.bean.ProjectMember;
 
 @Repository("projectdaomysql")
 public class ProjectDaoImplMySQL implements ProjectDao {
@@ -72,11 +76,21 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 	}
 	
 
+	@Override
+	public Optional<Project> findProjectById(String projectId) {
+		String sql = "select project_id,project_name,project_content,project_owner,project_start,project_end from project_id";
+		try {
+			Project project =jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Project.class));
+			return Optional.ofNullable(project);
+		} catch (EmptyResultDataAccessException e) {
+			return Optional.empty();
+		}		
+	}
 
 	@Override
 	public int updateProject(String projectId, String newprojectName, String newcontent, String newowner,
 	        List<String> newmembers, Date newstartDate, Date newendDate) {
-	    String sql = "update project set project_name = ?, project_content = ?, project_owner = ?, project_start = ?, project_end = ? where project_id = ?";
+	    String sql = "update project set ,project_name = ?, project_content = ?, project_owner = ?, project_start = ?, project_end = ? where project_id = ?";
 	    return jdbcTemplate.update(
 	            sql,
 	            newprojectName,
@@ -86,4 +100,17 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 	            newendDate,
 	            projectId);
 	}
+	
+	// 為 projectMember 注入 employee
+		// details: 專案(project) 與 員工(employees)資料
+		private void enrichProjectMemberWithEmployee(ProjectMember projectMember) {
+			// 注入 project
+			//findProjectById(projectMember.getProjectId()).ifPresent(project -> projectMember.setProject(project));
+			findProjectById(projectMember.getProjectId()).ifPresent(projectMember::setProject);
+			
+			// 查詢 employee 並注入
+			String sqlItems = "select employee_id, employee_name from employee where employee_id = ?";
+			List<Employee> employees = jdbcTemplate.query(sqlItems, new BeanPropertyRowMapper<>(Employee.class), projectMember.getProjectId());
+			
+			projectMember.setEmployees(employees);
 }

@@ -9,6 +9,7 @@ import javax.ws.rs.DELETE;
 import org.apache.el.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -104,6 +105,8 @@ public class ProjectController {
 	    int rowcount = projectDao.updateProject(projectId, newprojectName, newcontent, newowner, newmembers, newstartDate, newendDate);
 	    return rowcount == 0 ? "專案修改失敗" : "專案修改成功";
 	}
+	
+	
 	
 }
 	

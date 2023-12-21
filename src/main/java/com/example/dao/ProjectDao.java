@@ -2,6 +2,7 @@ package com.example.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import com.example.bean.Project;
 
@@ -19,6 +20,9 @@ public interface ProjectDao {
 	
 	// 查看專案
 	List<Project> findAllProjects();
+	
+	//根據專案ID查找專案
+	Optional<Project> findProjectById(String projectId);
 	
 	
 	// 修改預約人
