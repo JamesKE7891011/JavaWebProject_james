@@ -113,11 +113,19 @@ public class ProjectController {
 	                            @RequestParam(name = "projectName") String newprojectName,
 	                            @RequestParam(name = "content") String newcontent,
 	                            @RequestParam(name = "owner") String newowner,
-	                            @RequestParam(name = "members") List<String> newmembers,
+	                            @RequestParam(name = "members") List<Employee> newmembers,
 	                            @RequestParam(name = "startDate") Date newstartDate,
 	                            @RequestParam(name = "endDate") Date newendDate) {
-	    int rowcount = projectDao.updateProject(projectId, newprojectName, newcontent, newowner, newmembers, newstartDate, newendDate);
-	    return rowcount == 0 ? "專案修改失敗" : "專案修改成功";
+		
+		Project projectUpdate = new Project();
+		projectUpdate.setProjectId(projectId);
+		projectUpdate.setProjectName(newprojectName);
+		projectUpdate.setContent(newcontent);
+		projectUpdate.setMembers(newmembers);
+		projectUpdate.setStartDate(newstartDate);
+		projectUpdate.setEndDate(newendDate);
+		
+	    return projectDao.updateProject(projectUpdate) == 0 ? "專案修改失敗" : "專案修改成功";
 	}
 	
 	

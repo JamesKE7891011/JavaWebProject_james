@@ -23,6 +23,10 @@ public class Test {
 		
 		Optional<Project> prOptional = projectDao.findProjectById("AC23020");
 		prOptional.ifPresent(System.out::println);
+		
+//		Project project = prOptional.get();
+//		project.setProjectName("SleepingBeauty");
+//		projectDao.updateProject(project);
 	}
 
 }

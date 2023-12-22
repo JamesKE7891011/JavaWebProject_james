@@ -17,19 +17,13 @@ public interface ProjectDao {
 	// 取消專案
 	int cancelProject(String projectId);
 	
-	
 	// 查看專案
 	List<Project> findAllProjects();
 	
 	//根據專案ID查找專案
 	Optional<Project> findProjectById(String projectId);
 	
-	
-	
-	
 	// 修改預約人
-	int updateProject(String projectId, String newprojectName, String newcontent, String newowner, List<String> newmembers,
-			Date newstartDate, Date newendDate);
+	int updateProject(Project projectUpdate);
 
-	
 }

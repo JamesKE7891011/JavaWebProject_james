@@ -10,10 +10,14 @@ public interface ProjectMemberDao {
 	// 增加專案成員
 	int addProjectMember(int projectId, int employeeId);
 	
-	//移除專案成員
+	// 移除專案成員
 	int removeProjectMember(int projectId, int employeeId);
 	
-	//查詢所有專案成員
-	List<Employee> findAllProjectMembers();
+	// 查詢所有專案成員
+	List<ProjectMember> findAllProjectMembers();
+	
+	// 根據Project Id 去找 ProjectMember
+	
+	
 	
 }
