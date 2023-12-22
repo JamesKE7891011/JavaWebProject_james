@@ -101,7 +101,7 @@ public class ProjectController {
 	@GetMapping(value = "/viewprojectmembers",produces = "text/plain;charest=utf-8")
 	@ResponseBody
 	public String findAllProjectMembers(Model model) {
-		List<Employee> projectMembers = projectMemberDao.findAllProjectMembers();
+		List<ProjectMember> projectMembers = projectMemberDao.findAllProjectMembers();
 		model.addAttribute("projectMembers",projectMembers);
 		return "backend/ProjectCreate";
 	}

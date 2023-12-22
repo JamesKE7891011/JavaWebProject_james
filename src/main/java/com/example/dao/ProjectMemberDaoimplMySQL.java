@@ -30,19 +30,19 @@ public class ProjectMemberDaoimplMySQL implements ProjectMemberDao{
 	}
 
 	@Override
-	public List<Employee> findAllProjectMembers() {
+	public List<ProjectMember> findAllProjectMembers() {
 	    String sql = "SELECT project_id, employee_id FROM project_member";
 
 	    return jdbcTemplate.query(sql, (ResultSet rs, int rowNum) -> {
 	        // Create a new Employee object
-	        Employee employee = new Employee();
+	    	ProjectMember projectMember = new ProjectMember();
 
 	        // Set the attributes of the Employee object
-	        employee.setProjectId(rs.getString("project_id"));
-	        employee.setEmployeeId(rs.getInt("employee_id"));
+	    	projectMember.setProjectId(rs.getString("project_id"));
+	    	projectMember.setEmployeeId(rs.getInt("employee_id"));
 
 	        // Return the Employee object
-	        return employee;
+	        return projectMember;
 	    });
 	}
 
