@@ -26,102 +26,97 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
-	
+
 	@Override
 	public int addProject(Project project) {
 		String sql1 = "insert into project(project_id,project_name,project_content,project_owner,project_start,project_end) values(?,?,?,?,?,?)";
-		
-		return jdbcTemplate.update(
-				sql1,
-				project.getProjectId(),
-				project.getProjectName(),
-				project.getContent(),
-				project.getOwner(),
-				project.getStartDate(),
-				project.getEndDate());
+
+		return jdbcTemplate.update(sql1, project.getProjectId(), project.getProjectName(), project.getContent(),
+				project.getOwner(), project.getStartDate(), project.getEndDate());
 	}
 
 	@Override
-	public int[] addProjectMember(String projectId,List<String> members) {
-		
+	public int[] addProjectMember(String projectId, List<String> members) {
+
 		String sql = "insert into project_member(project_id, employee_id) values(?,?)";
-		
+
 		BatchPreparedStatementSetter bps = new BatchPreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				ps.setString(1, projectId);
-			    ps.setString(2, members.get(i));
+				ps.setString(2, members.get(i));
 			}
 
 			@Override
 			public int getBatchSize() {
 				return members.size();
 			}
-			
+
 		};
-		
+
 		return jdbcTemplate.batchUpdate(sql, bps);
 	}
-	
+
 	@Override
 	public int cancelProject(String projectId) {
-		String sql = "delete from project where project_id = ?";		
-		int rowcount = jdbcTemplate.update(sql, projectId);
-		return rowcount;
+		String sql = "delete from project where project_id = ?";
+		return jdbcTemplate.update(sql, projectId);
 	}
 
 	@Override
 	public List<Project> findAllProjects() {
-	    String sql = "select project_id,project_name,project_content,project_owner,project_start,project_end from project";
-	    return jdbcTemplate.query(sql, (ResultSet rs, int rowNum) -> {
-	    	Project project = new Project();
-	    	project.setProjectId(rs.getString("project_id"));
-	    	project.setProjectName(rs.getString("project_name"));
-	    	project.setContent(rs.getString("project_content"));
-	    	project.setOwner(rs.getString("project_owner"));
-	    	project.setStartDate(rs.getDate("project_start"));
-	    	project.setEndDate(rs.getDate("project_end"));
-	    	return project;
-	    });
+		String sql = "select project_id,project_name,project_content,project_owner,project_start,project_end from project";
+		return jdbcTemplate.query(sql, (ResultSet rs, int rowNum) -> {
+			Project project = new Project();
+			project.setProjectId(rs.getString("project_id"));
+			project.setProjectName(rs.getString("project_name"));
+			project.setContent(rs.getString("project_content"));
+			project.setOwner(rs.getString("project_owner"));
+			project.setStartDate(rs.getDate("project_start"));
+			project.setEndDate(rs.getDate("project_end"));
+			return project;
+		});
 	}
-	
 
 	@Override
 	public Optional<Project> findProjectById(String projectId) {
-		String sql = "select project_id,project_name,project_content,project_owner,project_start,project_end from project_id";
+		String sql = "select project_id,project_name,project_content,project_owner,project_start,project_end from project";
 		try {
-			Project project =jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Project.class));
-			return Optional.ofNullable(project);
+			return Optional.ofNullable(jdbcTemplate.queryForObject(sql, (ResultSet rs, int rowNum) -> {
+				Project project = new Project();
+				project.setProjectId(rs.getString("project_id"));
+				project.setProjectName(rs.getString("project_name"));
+				project.setContent(rs.getString("project_content"));
+				project.setOwner(rs.getString("project_owner"));
+				project.setStartDate(rs.getDate("project_start"));
+				project.setEndDate(rs.getDate("project_end"));
+				return project;
+			}));
 		} catch (EmptyResultDataAccessException e) {
 			return Optional.empty();
-		}		
+		}
 	}
 
 	@Override
 	public int updateProject(String projectId, String newprojectName, String newcontent, String newowner,
-	        List<String> newmembers, Date newstartDate, Date newendDate) {
-	    String sql = "update project set ,project_name = ?, project_content = ?, project_owner = ?, project_start = ?, project_end = ? where project_id = ?";
-	    return jdbcTemplate.update(
-	            sql,
-	            newprojectName,
-	            newcontent,
-	            newowner,
-	            newstartDate,
-	            newendDate,
-	            projectId);
+			List<String> newmembers, Date newstartDate, Date newendDate) {
+		String sql = "update project set ,project_name = ?, project_content = ?, project_owner = ?, project_start = ?, project_end = ? where project_id = ?";
+		return jdbcTemplate.update(sql, newprojectName, newcontent, newowner, newstartDate, newendDate, projectId);
 	}
-	
+
 	// 為 projectMember 注入 employee
-		// details: 專案(project) 與 員工(employees)資料
-		private void enrichProjectMemberWithEmployee(ProjectMember projectMember) {
-			// 注入 project
-			//findProjectById(projectMember.getProjectId()).ifPresent(project -> projectMember.setProject(project));
-			findProjectById(projectMember.getProjectId()).ifPresent(projectMember::setProject);
-			
-			// 查詢 employee 並注入
-			String sqlItems = "select employee_id, employee_name from employee where employee_id = ?";
-			List<Employee> employees = jdbcTemplate.query(sqlItems, new BeanPropertyRowMapper<>(Employee.class), projectMember.getEmployeeId());
-			
-			projectMember.setEmployees(employees);
-		}
+	// details: 專案(project) 與 員工(employees)資料
+	private void enrichProjectMemberWithEmployee(ProjectMember projectMember) {
+		// 注入 project
+		// findProjectById(projectMember.getProjectId()).ifPresent(project ->
+		// projectMember.setProject(project));
+		findProjectById(projectMember.getProjectId()).ifPresent(projectMember::setProject);
+
+		// 查詢 employee 並注入
+		String sqlItems = "select employee_id, employee_name from employee where employee_id = ?";
+		List<Employee> employees = jdbcTemplate.query(sqlItems, new BeanPropertyRowMapper<>(Employee.class),
+				projectMember.getEmployeeId());
+
+		projectMember.setEmployees(employees);
+	}
 }

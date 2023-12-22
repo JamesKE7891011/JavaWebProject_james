@@ -1,6 +1,7 @@
 package com.example.test;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -17,9 +18,11 @@ public class Test {
 		
 		ProjectDao projectDao = ctx.getBean("projectdaomysql", ProjectDaoImplMySQL.class);
 		
-		List<Project> projects = projectDao.findAllProjects();
-
-		System.out.println(projects);
+//		List<Project> projects = projectDao.findAllProjects();
+//		System.out.println(projects);
+		
+		Optional<Project> prOptional = projectDao.findProjectById("AC23020");
+		prOptional.ifPresent(System.out::println);
 	}
 
 }
