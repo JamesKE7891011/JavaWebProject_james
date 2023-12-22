@@ -55,8 +55,11 @@
 	    				<tr>
 	      					<th scope="row"></th>
 	      						<td class="row justify-content-end">
-	      						<button class="mx-4 col-3 btn btn-danger ">Delete</button>
-	      						<button class="col-3 btn btn-secondary ">Revise</button>
+	      						<a class="mx-4 col-3 btn btn-danger"
+	      							href="javascript:void(0);"
+	      							onclick="/JavaWebProject_james/mvc/project/cancelproject/+ document.getElementById('projectId')" 
+	      							role="button">Delete</a>
+	      						<a class="col-3 btn btn-secondary href="#" role="button"">Revise</a>
 	      						</td>
 	    				</tr>
 	  				</c:forEach>

@@ -49,6 +49,8 @@ public class ProjectController {
 	//新增專案
 	@RequestMapping(value = "/addproject", method = {RequestMethod.GET,RequestMethod.POST},produces = "text/plain;charset=utf-8")
 	@ResponseBody
+	
+	//
 	public String addProject(@RequestParam(name = "project_id")String project_id,
 							 @RequestParam(name = "project_name")String project_name,
 							 @RequestParam(name = "project_content")String project_content,
