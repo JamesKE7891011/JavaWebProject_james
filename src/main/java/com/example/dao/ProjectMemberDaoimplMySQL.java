@@ -2,12 +2,16 @@ package com.example.dao;
 
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.example.bean.Employee;
+import com.example.bean.Project;
 import com.example.bean.ProjectMember;
 
 @Repository("projectmemberdaomysql")
@@ -27,6 +31,23 @@ public class ProjectMemberDaoimplMySQL implements ProjectMemberDao{
 	public int removeProjectMember(int projectId, int employeeId) {
 		String sql = "delete from project_member where project_id = ? and employee_id = ?";
 	    return jdbcTemplate.update(sql, projectId, employeeId);
+	}
+	
+	
+
+	@Override
+	public Optional<ProjectMember> findProjectMemberById(String projectId) {
+		String sql = "select project_id,employee_id from project_member where project_id = ?";
+		try {
+			return Optional.ofNullable(jdbcTemplate.queryForObject(sql, (ResultSet rs, int rowNum) -> {
+				ProjectMember projectMember = new ProjectMember();
+				projectMember.setProjectId(rs.getString("project_id"));
+				projectMember.setEmployeeId(rs.getInt("employee_id"));
+				return projectMember;
+			}));
+		} catch (EmptyResultDataAccessException e) {
+			return Optional.empty();
+		}
 	}
 
 	@Override
