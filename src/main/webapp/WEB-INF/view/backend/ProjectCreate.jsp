@@ -15,7 +15,7 @@
   					<option selected>Choose project</option>
   					<option value="One">AC23020</option>
 				</select>
-				<button class="ms-2  btn btn-secondary btn-md" href="/JavaWebProject_james/mvc/project/viewprojects,/JavaWebProject_james/mvc/project/viewprojectmembers"  >
+				<button class="ms-2  btn btn-secondary btn-md" href="/JavaWebProject_james/mvc/project/viewprojects" >
 				Search
 				</button>
 			</div>
@@ -25,32 +25,32 @@
   				<tbody>
 	  				<c:forEach var="project" items="${ projects }">
 	    				<tr>
-	      					<th scope="row">project_id:</th>
+	      					<th scope="row">projectId:</th>
 	      						<td>${ project.projectId }</td>
 	    				</tr>
 	    				<tr>
-	      					<th scope="row">project_name:</th>
+	      					<th scope="row">projectName:</th>
 	      						<td>${ project.projectName }</td>
 	    				</tr>
 	    				<tr>
-	      					<th scope="row">project_content:</th>
-	      						<td>${ project.content }</td>
+	      					<th scope="row">projectContent:</th>
+	      						<td>${ project.projectContent }</td>
 	    				</tr>
 	    				<tr>
-	      					<th scope="row">project_owner:</th>
-	      						<td>${ project.owner }</td>
+	      					<th scope="row">projectOwner:</th>
+	      						<td>${ project.projectOwner }</td>
 	    				</tr>
 	    				<tr>
-	      					<th scope="row">project_member:</th>
-	      						<td>${ project.members }</td>
+	      					<th scope="row">projectMember:</th>
+	      						<td>${ project.projectMembers }</td>
 	    				</tr>
 	    				<tr>
-	      					<th scope="row">project_start:</th>
-	      						<td>${ project.startDate }</td>
+	      					<th scope="row">projectStartDate:</th>
+	      						<td>${ project.projectStartDate }</td>
 	    				</tr>
 	    				<tr>
-	      					<th scope="row">project_end:</th>
-	      						<td>${ project.endDate }</td>
+	      					<th scope="row">projectEndDate:</th>
+	      						<td>${ project.projectEndDate }</td>
 	    				</tr>
 	    				<tr>
 	      					<th scope="row"></th>
@@ -73,27 +73,27 @@
 			
 			<!-- Project ID -->
 			<div class="col-md-6">
-				<label for="validationDefault01" class="form-label">project_id</label> 
-				<input type="text" class="form-control" id="project_id" name="project_id" required>
+				<label for="validationDefault01" class="form-label">projectId</label> 
+				<input type="text" class="form-control" id="projectId" name="projectId" required>
 			</div>
 			
 			<!-- Project Name -->
 			<div class="col-md-6">
-				<label for="validationDefault01" class="form-label">project_name</label> <input
-					type="text" class="form-control" id="project_name" name="project_name" required>
+				<label for="validationDefault01" class="form-label">projectName</label> <input
+					type="text" class="form-control" id="projectName" name="projectName" required>
 			</div>
 			
 			<!-- Project Content -->
 			<div class="mb-3">
-  				<label for="exampleFormControlTextarea1" class="form-label">project_content</label>
-  				<textarea class="form-control" id="project_content" name="project_content" rows="3" required></textarea>
+  				<label for="exampleFormControlTextarea1" class="form-label">projectContent</label>
+  				<textarea class="form-control" id="projectContent" name="projectContent" rows="3" required></textarea>
 			</div>
 			
 			<!-- Project Owner -->
 			<div class="col-md-6 justify-content-start"> 
-				<label for="validationDefault01" class="form-label">project_owner</label> 
+				<label for="validationDefault01" class="form-label">projectOwner</label> 
 				<div class="d-flex justift-content-start">
-					<input type="text" class="form-control" id="project_owner" name="project_owner" disabled>
+					<input type="text" class="form-control" id="projectOwner" name="projectOwner" disabled>
 					<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#projectModal">+</button>
 				</div>
 				<!-- Modal -->
@@ -109,7 +109,7 @@
         							<div style="height: 500px; width: 500px;" class="shadow" id="left">
             							<h3 class="text-center">Employee</h3>
             							<ul class="list-group">
-                							<button type="button" class="listItem list-group-item list-group-item-action mb-1">A</button>
+                							<button type="button" class="listItem list-group-item list-group-item-action mb-1">{$employee.employeeName}</button>
                 							<button type="button" class="listItem list-group-item list-group-item-action mb-1">B</button>
                 							<button type="button" class="listItem list-group-item list-group-item-action mb-1">C</button>
             							</ul>
@@ -135,9 +135,9 @@
 			
 			<!-- Project Member -->
 			<div class="col-md-6">
-				<label for="validationDefault01" class="form-label">project_member</label> 
+				<label for="validationDefault01" class="form-label">projectMember</label> 
 				<div class="d-flex justift-content-start">
-					<input type="text" class="form-control" id="project_member" name="project_member" disabled>
+					<input type="text" class="form-control" id="projectMember" name="projectMember" disabled>
 					<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleMember">+</button>
 				</div>
 				<!-- Modal -->
@@ -179,14 +179,14 @@
 			
 			<!-- Project Start -->
 			<div class="col-md-6">
-				<label for="validationDefault01" class="form-label">project_start</label> <input
-					type="date" class="form-control" id="project_start" name="project_start" required>
+				<label for="validationDefault01" class="form-label">projectStartDate</label> <input
+					type="date" class="form-control" id="projectStartDate" name="projectStartDate" required>
 			</div>
 			
 			<!-- Project End -->
 			<div class="col-md-6 mb-2">
-				<label for="validationDefault01" class="form-label">project_end</label> <input
-					type="date" class="form-control" id="project_end" name="project_end" required>
+				<label for="validationDefault01" class="form-label">projectEndDate</label> <input
+					type="date" class="form-control" id="projectEndDate" name="projectEndDate" required>
 			</div>
 			<div class="col-12 d-flex justify-content-center ">
 				<button class="btn btn-secondary col-12" type="submit">Submit Form</button>
@@ -236,7 +236,7 @@ myModal.addEventListener('shown.bs.modal', function () {
     
     //儲存至框格內
     function saveProjectOwner() {
-    	$('#project_owner').val(projectOwner);
+    	$('#projectOwner').val(projectOwner);
     }
 
     
@@ -261,7 +261,7 @@ myModal.addEventListener('shown.bs.modal', function () {
     });
     
     function saveProjectMember() {
-    	$('#project_member').val(projectMember);
+    	$('#projectMember').val(projectMember);
     }
     
 </script>

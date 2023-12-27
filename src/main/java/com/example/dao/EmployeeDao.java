@@ -6,5 +6,5 @@ import com.example.bean.Employee;
 
 public interface EmployeeDao {
 
-	Optional<Employee> findEmployeeById(int id);
+	Optional<Employee> findEmployeeById(Integer employeeId);
 }

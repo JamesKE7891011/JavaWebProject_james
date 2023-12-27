@@ -38,7 +38,7 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 	}
 
 	@Override
-	public int[] addProjectMember(String projectId, List<String> members) {
+	public int[] addProjectMember(String projectId, List<String> projectMembers) {
 
 		String sql = "insert into project_member(projectId, employeeId) values(?,?)";
 
@@ -46,12 +46,12 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				ps.setString(1, projectId);
-				ps.setString(2, members.get(i));
+				ps.setString(2, projectMembers.get(i));
 			}
 
 			@Override
 			public int getBatchSize() {
-				return members.size();
+				return projectMembers.size();
 			}
 
 		};
