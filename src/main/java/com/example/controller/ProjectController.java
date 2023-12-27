@@ -51,22 +51,22 @@ public class ProjectController {
 	@ResponseBody
 	
 	//
-	public String addProject(@RequestParam(name = "project_id")String project_id,
-							 @RequestParam(name = "project_name")String project_name,
-							 @RequestParam(name = "project_content")String project_content,
-							 @RequestParam(name = "project_owner")String project_owner,
-							 @RequestParam(name = "project_member")List<Employee> project_member,
-							 @RequestParam(name = "project_start")Date project_start,
-							 @RequestParam(name = "project_end")Date project_end) throws ParseException{
+	public String addProject(@RequestParam(name = "projectId")String projectId,
+							 @RequestParam(name = "projectName")String projectName,
+							 @RequestParam(name = "projectContent")String projectContent,
+							 @RequestParam(name = "projectOwner")String projectOwner,
+							 @RequestParam(name = "projectMember")List<Employee> projectMember,
+							 @RequestParam(name = "projectStartDate")Date projectStartDate,
+							 @RequestParam(name = "projectEndDate")Date projectEndDate) throws ParseException{
 		
 		Project project = new Project();
-		project.setProjectId(project_id);
-		project.setProjectName(project_name);
-		project.setContent(project_content);
-		project.setOwner(project_owner);
-		project.setMembers(project_member);
-		project.setStartDate(project_start);
-		project.setEndDate(project_end);
+		project.setProjectId(projectId);
+		project.setProjectName(projectName);
+		project.setProjectContent(projectContent);
+		project.setProjectOwner(projectOwner);
+		project.setProjectMembers(projectMember);
+		project.setProjectStartDate(projectStartDate);
+		project.setProjectEndDate(projectEndDate);
 		
 		try {
 			int rowcount = projectDao.addProject(project);
@@ -84,8 +84,8 @@ public class ProjectController {
 	@GetMapping("/cancelproject/{projectId}")
 	@ResponseBody
 	public String cancelProject(@PathVariable("projectId") String projectId) {
-	    int rowcount = projectDao.cancelProject(projectId);
-	    return rowcount == 0 ? "專案取消失敗" : "專案取消成功";
+	    int rowcount = projectDao.removeprojectById(projectId);
+	    return rowcount == 1 ? "專案取消失敗" : "專案取消成功";
 	}
 	
 	//查看所有專案內容
@@ -120,10 +120,10 @@ public class ProjectController {
 		Project projectUpdate = new Project();
 		projectUpdate.setProjectId(projectId);
 		projectUpdate.setProjectName(newprojectName);
-		projectUpdate.setContent(newcontent);
-		projectUpdate.setMembers(newmembers);
-		projectUpdate.setStartDate(newstartDate);
-		projectUpdate.setEndDate(newendDate);
+		projectUpdate.setProjectContent(newcontent);
+		projectUpdate.setProjectMembers(newmembers);
+		projectUpdate.setProjectStartDate(newstartDate);
+		projectUpdate.setProjectEndDate(newendDate);
 		
 	    return projectDao.updateProject(projectUpdate) == 0 ? "專案修改失敗" : "專案修改成功";
 	}

@@ -27,16 +27,20 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 
 	@Override
 	public int addProject(Project project) {
-		String sql1 = "insert into project(project_id,project_name,project_content,project_owner,project_start,project_end) values(?,?,?,?,?,?)";
+		String sql = "insert into project(projectId,projectName,projectContent,projectOwner,projectStartDate,projectEndDate) values(?,?,?,?,?,?)";
 
-		return jdbcTemplate.update(sql1, project.getProjectId(), project.getProjectName(), project.getContent(),
-				project.getOwner(), project.getStartDate(), project.getEndDate());
+		 return jdbcTemplate.update(sql, project.getProjectId(), 
+				 				  project.getProjectName(),
+				 				  project.getProjectContent(),
+				 				  project.getProjectOwner(), 
+				 				  project.getProjectStartDate(), 
+				 				  project.getProjectEndDate());
 	}
 
 	@Override
 	public int[] addProjectMember(String projectId, List<String> members) {
 
-		String sql = "insert into project_member(project_id, employee_id) values(?,?)";
+		String sql = "insert into project_member(projectId, employeeId) values(?,?)";
 
 		BatchPreparedStatementSetter bps = new BatchPreparedStatementSetter() {
 			@Override
@@ -55,54 +59,42 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 		return jdbcTemplate.batchUpdate(sql, bps);
 	}
 
+	
+
 	@Override
-	public int cancelProject(String projectId) {
-		String sql = "delete from project where project_id = ?";
+	public int removeprojectById(String projectId) {
+		String sql = "delete from project where projectId = ? ";
 		return jdbcTemplate.update(sql, projectId);
 	}
 
 	@Override
 	public List<Project> findAllProjects() {
-		String sql = "select project_id,project_name,project_content,project_owner,project_start,project_end from project";
-		List<Project> projects =  jdbcTemplate.query(sql, (ResultSet rs, int rowNum) -> {
-			Project project = new Project();
-			project.setProjectId(rs.getString("project_id"));
-			project.setProjectName(rs.getString("project_name"));
-			project.setContent(rs.getString("project_content"));
-			project.setOwner(rs.getString("project_owner"));
-			project.setStartDate(rs.getDate("project_start"));
-			project.setEndDate(rs.getDate("project_end"));
-			return project;
-		});
-		
-		return projects.stream().peek(this::enrichProjectMemberWithEmployee).collect(Collectors.toList());
+		String sql = "select projectId,projectName,projectContent,projectOwner,projectStartDate,projectEndDate from project";
+		return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Project.class));
 	}
+
+		
 
 	@Override
 	public Optional<Project> findProjectById(String projectId) {
-		String sql = "select project_id,project_name,project_content,project_owner,project_start,project_end from project";
+		String sql = "select projectId,projectName,projectContent,projectOwner,projectStartDate,projectEndDate from project where projectId";
 		try {
-			return Optional.ofNullable(jdbcTemplate.queryForObject(sql, (ResultSet rs, int rowNum) -> {
-				Project project = new Project();
-				project.setProjectId(rs.getString("project_id"));
-				project.setProjectName(rs.getString("project_name"));
-				project.setContent(rs.getString("project_content"));
-				project.setOwner(rs.getString("project_owner"));
-				project.setStartDate(rs.getDate("project_start"));
-				project.setEndDate(rs.getDate("project_end"));
-				return project;
-			}));
-		} catch (EmptyResultDataAccessException e) {
+			Project project = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Project.class),projectId);
+			return Optional.ofNullable(project);
+		} catch (Exception e) {
 			return Optional.empty();
-		}
+		}		
 	}
 
 	@Override
 	public int updateProject(Project projectUpdate) {
-		String sql = "update project set project_name = ?, project_content = ?, project_owner = ?, project_start = ?, project_end = ? where project_id = ?";
-		return jdbcTemplate.update(sql, projectUpdate.getProjectName(), projectUpdate.getContent(),
-				projectUpdate.getOwner(), 
-				projectUpdate.getStartDate(), projectUpdate.getEndDate(), projectUpdate.getProjectId());
+		String sql = "update project set projectName = ?, projectContent = ?, projectOwner = ?, projectStartDate = ?, projectEndDate = ? where projectId = ?";
+		return jdbcTemplate.update(sql, projectUpdate.getProjectName(), 
+										projectUpdate.getProjectContent(),
+										projectUpdate.getProjectOwner(), 
+										projectUpdate.getProjectStartDate(), 
+										projectUpdate.getProjectEndDate(), 
+										projectUpdate.getProjectId());
 	}
 	
 	// 為 projectMember 注入 employee
@@ -113,7 +105,7 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 		
 		
 		
-		// 設定 Member Employee
-
+		// 設定 Member Employee	
+		
 	}
 }

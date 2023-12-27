@@ -11,94 +11,104 @@ public class Project {
 	
 	private String projectName;
 	
-	private String content;
+	private String projectContent;
 	
-	private String owner;
+	private String projectOwner;
 	
-	private List<Employee> members;
+	private List<Employee> projectMembers;
 	
-	private Date startDate;
+	private Date projectStartDate;
 	
-	private Date endDate;
+	private Date projectEndDate;
 	
 	
 	public Project() {
 		
 	}
 	
-	public Project(String projectId, String projectName, String content, String owner, List<Employee> members,
-			Date startDate, Date endDate) {
+	
+	public Project(String projectId, String projectName, String projectContent, String projectOwner,
+			List<Employee> projectMembers, Date projectStartDate, Date projectEndDate) {
+		super();
 		this.projectId = projectId;
 		this.projectName = projectName;
-		this.content = content;
-		this.owner = owner;
-		this.members = members;
-		this.startDate = startDate;
-		this.endDate = endDate;
+		this.projectContent = projectContent;
+		this.projectOwner = projectOwner;
+		this.projectMembers = projectMembers;
+		this.projectStartDate = projectStartDate;
+		this.projectEndDate = projectEndDate;
 	}
 
+	
 	public String getProjectId() {
 		return projectId;
 	}
 
-	public String getProjectName() {
-		return projectName;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public String getOwner() {
-		return owner;
-	}
-
-	public List<Employee> getMembers() {
-		return members;
-	}
-
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
 
 	public void setProjectId(String projectId) {
 		this.projectId = projectId;
 	}
 
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+
+	public String getProjectContent() {
+		return projectContent;
 	}
 
-	public void setOwner(String owner) {
-		this.owner = owner;
+
+	public void setProjectContent(String projectContent) {
+		this.projectContent = projectContent;
 	}
 
-	public void setMembers(List<Employee> members) {
-		this.members = members;
+
+	public String getProjectOwner() {
+		return projectOwner;
 	}
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+
+	public void setProjectOwner(String projectOwner) {
+		this.projectOwner = projectOwner;
 	}
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+
+	public List<Employee> getProjectMembers() {
+		return projectMembers;
 	}
 
-//	@Override
-//	public String toString() {
-//		return "Project [projectId=" + projectId + ", projectName=" + projectName + ", content=" + content + ", owner="
-//				+ owner + ", members=" + members + ", startDate=" + startDate + ", endDate=" + endDate + "]";
-//	}
-	
+
+	public void setProjectMembers(List<Employee> projectMembers) {
+		this.projectMembers = projectMembers;
+	}
+
+
+	public Date getProjectStartDate() {
+		return projectStartDate;
+	}
+
+
+	public void setProjectStartDate(Date projectStartDate) {
+		this.projectStartDate = projectStartDate;
+	}
+
+
+	public Date getProjectEndDate() {
+		return projectEndDate;
+	}
+
+
+	public void setProjectEndDate(Date projectEndDate) {
+		this.projectEndDate = projectEndDate;
+	}
+
 	@Override
 	public String toString() {
 		return new Gson().toJson(this);
