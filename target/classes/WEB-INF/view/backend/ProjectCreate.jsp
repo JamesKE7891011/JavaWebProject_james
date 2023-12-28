@@ -5,15 +5,24 @@
 	
 <%@ include file="/WEB-INF/view/backendheader.jsp"%>
 
+<style>
+	.disable{
+		pointer-events:none;
+		background:grey;
+	}
+</style>
+
 <div class="vh-100">
-	<div class="row ">		
+	<div class="row ">	
+	${ errorMessage }	
 		<div class="col-5 m-3">
 			<!-- 專案下拉選單 -->
 			<h4 class="fs-4 fw-bolld">Project Name</h4>
 			<div class="d-flex justify-content-start">
 				<select class=" form-select  w-75" aria-label="Default select example">
-  					<option selected>Choose project</option>
-  					<option value="One">AC23020</option>
+					<c:forEach items="${ projects }" var="project">
+  						<option value="${project.projectId }">${ project.projectId }  ${ project.projectName }</option>
+  					</c:forEach>
 				</select>
 				<button class="ms-2  btn btn-secondary btn-md" href="/JavaWebProject_james/mvc/project/viewprojects" >
 				Search
@@ -59,7 +68,10 @@
 	      							href="javascript:void(0);"
 	      							onclick="/JavaWebProject_james/mvc/project/cancelproject/+ document.getElementById('projectId')" 
 	      							role="button">Delete</a>
-	      						<a class="col-3 btn btn-secondary href="#" role="button"">Revise</a>
+	      						<a class="col-3 btn btn-secondary 
+	      							href="javascript:void(0);"
+	      							onclick="/JavaWebProject_james/mvc/project/cancelproject/+ document.getElementById('projectId')" 
+	      							role="button"">Revise</a>
 	      						</td>
 	    				</tr>
 	  				</c:forEach>
@@ -93,7 +105,7 @@
 			<div class="col-md-6 justify-content-start"> 
 				<label for="validationDefault01" class="form-label">projectOwner</label> 
 				<div class="d-flex justift-content-start">
-					<input type="text" class="form-control" id="projectOwner" name="projectOwner" disabled>
+					<input type="text" class="form-control disable" id="projectOwner" name="projectOwner">
 					<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#projectModal">+</button>
 				</div>
 				<!-- Modal -->
@@ -106,12 +118,14 @@
       						</div>
       						<div class="modal-body">
         						<div class=" d-flex justify-content-center mt-2">
-        							<div style="height: 500px; width: 500px;" class="shadow" id="left">
+        							<div style="height: 500px; width: 500px;" class="shadow overflow-auto" id="left">
             							<h3 class="text-center">Employee</h3>
-            							<ul class="list-group">
-                							<button type="button" class="listItem list-group-item list-group-item-action mb-1">{$employee.employeeName}</button>
-                							<button type="button" class="listItem list-group-item list-group-item-action mb-1">B</button>
-                							<button type="button" class="listItem list-group-item list-group-item-action mb-1">C</button>
+            							<ul class="list-group overflow-auto">
+            								<c:forEach items="${ employees }" var="employee">
+                								<button type="button" class="listItem list-group-item list-group-item-action mb-1">
+                									${employee.employeeName}
+                								</button>
+            								</c:forEach>
             							</ul>
         							</div>
         							<div style="width: 50px; height: 500px;" class="d-flex flex-column align-items-center justify-content-center mx-1">
@@ -119,7 +133,7 @@
             							<button id="toLeft" class="btn btn-outline-primary"> << </button>
         							</div>
         							<div style="height: 500px; width: 500px;" class="shadow" id="right">
-            							<h3 class="text-center">Projrct Owner</h3>
+            							<h3 class="text-center">Project Owner</h3>
             							<ul class="list-group"></ul>
         							</div>
     							</div>
@@ -137,7 +151,7 @@
 			<div class="col-md-6">
 				<label for="validationDefault01" class="form-label">projectMember</label> 
 				<div class="d-flex justift-content-start">
-					<input type="text" class="form-control" id="projectMember" name="projectMember" disabled>
+					<input type="text" class="form-control disable" id="projectMember" name="projectMember">
 					<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleMember">+</button>
 				</div>
 				<!-- Modal -->
@@ -150,12 +164,14 @@
       						</div>
       						<div class="modal-body">
         						<div class=" d-flex justify-content-center mt-2">
-        							<div style="height: 500px; width: 500px;" class="shadow" id="left2">
+        							<div style="height: 500px; width: 500px;" class="shadow overflow-auto" id="left2">
             							<h3 class="text-center">Employee</h3>
-            							<ul class="list-group">
-                							<button type="button" class="listItem list-group-item list-group-item-action mb-1">A</button>
-                							<button type="button" class="listItem list-group-item list-group-item-action mb-1">B</button>
-                							<button type="button" class="listItem list-group-item list-group-item-action mb-1">C</button>
+            							<ul class="list-group overflow-auto">
+            								<c:forEach items="${ employees }" var="employee">
+                								<button type="button" class="listItem list-group-item list-group-item-action mb-1">
+                									${employee.employeeName}
+                								</button>
+            								</c:forEach>
             							</ul>
         							</div>
         							<div style="width: 50px; height: 500px;" class="d-flex flex-column align-items-center justify-content-center mx-1">

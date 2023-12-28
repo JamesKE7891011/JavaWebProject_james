@@ -1,5 +1,6 @@
 package com.example.dao;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,10 +9,10 @@ import com.example.bean.Project;
 public interface ProjectDao {
 	
 	// 新增專案：
-	int addProject(Project project);
+	int addProject(Project project) throws SQLIntegrityConstraintViolationException;
 	
 	// 新增專案成員
-	int[] addProjectMember(String projectId,List<String> members);
+	int[] addProjectMember(String projectId,List<Integer> members);
 
 	// 根據專案ID刪除指定的專案
 	int removeprojectById(String projectId);
