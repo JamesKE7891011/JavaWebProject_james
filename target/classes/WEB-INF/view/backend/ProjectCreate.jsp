@@ -19,47 +19,44 @@
 			<!-- 專案下拉選單 -->
 			<h4 class="fs-4 fw-bolld">Project Name</h4>
 			<div class="d-flex justify-content-start">
-				<select class=" form-select  w-75" aria-label="Default select example">
+				<select class=" form-select  w-75" aria-label="Default select example" onchange="selectProject(event)">
 					<c:forEach items="${ projects }" var="project">
   						<option value="${ project.projectId }">${ project.projectId }  ${ project.projectName }</option>
   					</c:forEach>
 				</select>
-				<button class="ms-2  btn btn-secondary btn-md" href="/JavaWebProject_james/mvc/project/viewprojects" >
-				Search
-				</button>
 			</div>
 					
 			<!-- 專案顯示資訊 -->
 			<table class="table mt-2">
-  				<tbody>
-	  				<c:forEach var="project" items="${ projects }">
+			    <c:forEach var="project" items="${ projects }" varStatus="loop">
+	  				<tbody class="${loop.index >0 ? 'd-none': 'd-block'}" id="${ project.projectId }">
 	    				<tr>
 	      					<th scope="row">projectId:</th>
-	      						<td>${ project.projectId }</td>
+	      					<td class="w-100">${ project.projectId }</td>
 	    				</tr>
 	    				<tr>
 	      					<th scope="row">projectName:</th>
-	      						<td>${ project.projectName }</td>
+	      					<td class="w-100">${ project.projectName }</td>
 	    				</tr>
 	    				<tr>
 	      					<th scope="row">projectContent:</th>
-	      						<td>${ project.projectContent }</td>
+	      					<td class="w-100">${ project.projectContent }</td>
 	    				</tr>
 	    				<tr>
 	      					<th scope="row">projectOwner:</th>
-	      						<td>${ project.projectOwner }</td>
+	      					<td class="w-100">${ project.projectOwner }</td>
 	    				</tr>
 	    				<tr>
 	      					<th scope="row">projectMember:</th>
-	      						<td>${ project.projectMembers }</td>
+	      					<td class="w-100">${ project.projectMembers }</td>
 	    				</tr>
 	    				<tr>
 	      					<th scope="row">projectStartDate:</th>
-	      						<td>${ project.projectStartDate }</td>
+	      					<td class="w-100">${ project.projectStartDate }</td>
 	    				</tr>
 	    				<tr>
 	      					<th scope="row">projectEndDate:</th>
-	      						<td>${ project.projectEndDate }</td>
+	      					<td class="w-100">${ project.projectEndDate }</td>
 	    				</tr>
 	    				<tr>
 	      					<th scope="row"></th>
@@ -74,9 +71,8 @@
 	      							role="button"">Revise</a>
 	      						</td>
 	    				</tr>
-	  				</c:forEach>
-  				</tbody>
-  			
+	  				</tbody>
+  				</c:forEach>
 			</table>
 		</div>
 		<!-- 新增專案表格 -->
@@ -294,6 +290,14 @@ myModal.addEventListener('shown.bs.modal', function () {
     function saveProjectMember() {
     	$('#projectMember').val(projectMember);
     	$('#projectMember2').val(projectMember2);
+    }
+    
+    //----------------selectProject----------------------//
+    function selectProject(event) {
+    	let elementId = event.target.value;
+    	$('tbody').addClass('d-none');
+    	$('#'+elementId).removeClass('d-none');
+    	$('#'+elementId).addClass('d-block');
     }
     
 </script>

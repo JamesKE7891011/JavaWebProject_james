@@ -83,13 +83,5 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 				projectUpdate.getProjectId());
 	}
 
-	// 為 projectMember 注入 employee
-	// details: 專案(project) 與 員工(employees)資料
-	private void enrichProjectMemberWithEmployee(Project project) {
 
-		// 設定 Project Member
-
-		// 設定 Member Employee
-
-	}
 }
