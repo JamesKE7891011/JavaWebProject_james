@@ -18,7 +18,7 @@ public interface ProjectMemberDao {
 	
 	
 	// 根據Project Id 去找 ProjectMember
-	Optional<ProjectMember> findProjectMemberById(String projectId);
+	List<ProjectMember> findProjectMemberById(String projectId);
 	
 	
 }

@@ -2,6 +2,7 @@ package com.example.controller;
 
 import java.sql.Date;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.bean.Employee;
 import com.example.bean.Project;
+import com.example.bean.ProjectMember;
 import com.example.dao.EmployeeDaoimplMySQL;
 import com.example.dao.ProjectDao;
 import com.example.dao.ProjectMemberDao;
@@ -44,7 +46,6 @@ public class ProjectController {
 	@Qualifier("employeedaomysql")
 	private EmployeeDaoimplMySQL employeedao;
 	
-
 	@GetMapping
 	public String getProjectPage(Model model) {
 		
@@ -52,13 +53,22 @@ public class ProjectController {
 		List<Project> projects = projectDao.findAllProjects();
 		model.addAttribute("projects", projects);
 		
+		for(Project project:projects) {
+			List<ProjectMember> projectMembers = projectMemberDao.findProjectMemberById(project.getProjectId());
+			List<Employee> employees = new ArrayList<Employee>();
+			for(ProjectMember projectMember:projectMembers) {
+				Employee employee = employeedao.findEmployeeById(projectMember.getEmployeeId()).get();
+				employees.add(employee);
+			}
+			project.setProjectMembers(employees);
+		}
+		
 		// 2. members
 		List<Employee> employees = employeedao.findAllEmployees();
 		model.addAttribute("employees", employees);
 		
 		return "/backend/ProjectCreate";
 	}
-	
 	
 	//新增專案
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -93,7 +103,7 @@ public class ProjectController {
 				model.addAttribute("errorMessage", "新增失敗，請通知管理員");
 				return "backend/ProjectCreate";
 			}else {
-				return "redirect:/mvc/project/viewprojects";
+				return "redirect:/mvc/project";
 			}
 		}catch (SQLIntegrityConstraintViolationException e) {
 			model.addAttribute("errorMessage", "Project 已經建立");
@@ -112,17 +122,7 @@ public class ProjectController {
 	    int rowcount = projectDao.removeprojectById(projectId);
 	    return rowcount == 1 ? "專案取消失敗" : "專案取消成功";
 	}
-	
-	//查看所有專案內容
-	@GetMapping(value = "/viewprojects", produces = "text/plain;charset=utf-8")
-	@ResponseBody
-	public String findAllProjects(Model model) {
-		List<Project> projects = projectDao.findAllProjects();
-		model.addAttribute("projects", projects);
-		return "backend/ProjectCreate";
-	}
-	
-	
+
 	// 修改專案內容
 	@RequestMapping(value = "/{projectId}/updateproject", method = {RequestMethod.PUT, RequestMethod.POST}, produces = "text/plain;charset=utf-8")
 	@ResponseBody

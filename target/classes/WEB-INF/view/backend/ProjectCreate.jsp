@@ -21,7 +21,7 @@
 			<div class="d-flex justify-content-start">
 				<select class=" form-select  w-75" aria-label="Default select example">
 					<c:forEach items="${ projects }" var="project">
-  						<option value="${project.projectId }">${ project.projectId }  ${ project.projectName }</option>
+  						<option value="${ project.projectId }">${ project.projectId }  ${ project.projectName }</option>
   					</c:forEach>
 				</select>
 				<button class="ms-2  btn btn-secondary btn-md" href="/JavaWebProject_james/mvc/project/viewprojects" >
@@ -105,7 +105,8 @@
 			<div class="col-md-6 justify-content-start"> 
 				<label for="validationDefault01" class="form-label">projectOwner</label> 
 				<div class="d-flex justift-content-start">
-					<input type="text" class="form-control disable" id="projectOwner" name="projectOwner">
+				    <input type="text" class="form-control disable" id="projectOwner" name="projectOwner" hidden>
+					<input type="text" class="form-control disable" id="projectOwner2" name="projectOwner2">
 					<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#projectModal">+</button>
 				</div>
 				<!-- Modal -->
@@ -122,7 +123,8 @@
             							<h3 class="text-center">Employee</h3>
             							<ul class="list-group overflow-auto">
             								<c:forEach items="${ employees }" var="employee">
-                								<button type="button" class="listItem list-group-item list-group-item-action mb-1">
+                								<button type="button" class="listItem list-group-item list-group-item-action mb-1" 
+                								        data-employee-id="${ employee.employeeId }">
                 									${employee.employeeName}
                 								</button>
             								</c:forEach>
@@ -151,7 +153,8 @@
 			<div class="col-md-6">
 				<label for="validationDefault01" class="form-label">projectMember</label> 
 				<div class="d-flex justift-content-start">
-					<input type="text" class="form-control disable" id="projectMember" name="projectMember">
+					<input type="text" class="form-control disable" id="projectMember" name="projectMember" hidden>
+					<input type="text" class="form-control disable" id="projectMember2" name="projectMember2">
 					<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleMember">+</button>
 				</div>
 				<!-- Modal -->
@@ -168,7 +171,8 @@
             							<h3 class="text-center">Employee</h3>
             							<ul class="list-group overflow-auto">
             								<c:forEach items="${ employees }" var="employee">
-                								<button type="button" class="listItem list-group-item list-group-item-action mb-1">
+                								<button type="button" class="listItem list-group-item list-group-item-action mb-1"
+                								        data-employee-id="${ employee.employeeId }">
                 									${employee.employeeName}
                 								</button>
             								</c:forEach>
@@ -227,7 +231,10 @@ myModal.addEventListener('shown.bs.modal', function () {
 <!-- 成員新增 -->
 <script>
 
-	let projectOwner = [];
+    //----------------projectOwner----------------------//
+    
+	let projectOwner = [];  // 儲存 Member 的 ID
+	let projectOwner2 = []; // 儲存 Member 的 Name
 
     $('.listItem').on('click',function() {
        $(this).toggleClass('active');
@@ -237,7 +244,8 @@ myModal.addEventListener('shown.bs.modal', function () {
         $('#left .active').each(function() {
             $('#right').append($(this)[0]);
             //加入至右邊欄位
-            projectOwner.push($(this)[0].innerText);
+            projectOwner.push($(this).eq(0).attr("data-employee-id"));
+            projectOwner2.push($(this)[0].innerText);
         });
     });
 
@@ -245,25 +253,30 @@ myModal.addEventListener('shown.bs.modal', function () {
         $('#right .active').each(function() {
             $('#left').append($(this)[0]);
             //移除還原至左邊欄位
-            let ownerstr = $(this)[0].innerText;
+            let ownerstr = $(this).eq(0).attr("data-employee-id");
+            let ownerstr2 = $(this)[0].innerText;
             projectOwner = projectOwner.filter(owner => owner !== ownerstr);
+            projectOwner2 = projectOwner2.filter(owner => owner !== ownerstr2);
         });
     });
     
     //儲存至框格內
     function saveProjectOwner() {
     	$('#projectOwner').val(projectOwner);
+    	$('#projectOwner2').val(projectOwner2);
     }
 
+    //----------------projectMember----------------------//
     
-    
-    let projectMember = [];
+    let projectMember = [];  // 儲存 Member 的 ID
+    let projectMember2 = []; // 儲存 Member 的 Name
 
     $('#toRight2').on('click',function() {
         $('#left2 .active').each(function() {
             $('#right2').append($(this)[0]);
             //加入至右邊欄位
-            projectMember.push($(this)[0].innerText);
+            projectMember.push($(this).eq(0).attr("data-employee-id"));
+            projectMember2.push($(this)[0].innerText);
         });
     });
 
@@ -271,13 +284,16 @@ myModal.addEventListener('shown.bs.modal', function () {
         $('#right2 .active').each(function() {
             $('#left2').append($(this)[0]);
             //移除還原至左邊欄位
-            let ownerstr = $(this)[0].innerText;
-            projectMember = projectMember.filter(owner => owner !== ownerstr);
+            let memberstr = $(this).eq(0).attr("data-employee-id");
+            let memberstr2 = $(this)[0].innerText;
+            projectMember = projectMember.filter(memeber => memeber !== memberstr);
+            projectMember2 = projectMember2.filter(memeber => memeber !== memberstr2);
         });
     });
     
     function saveProjectMember() {
     	$('#projectMember').val(projectMember);
+    	$('#projectMember2').val(projectMember2);
     }
     
 </script>
