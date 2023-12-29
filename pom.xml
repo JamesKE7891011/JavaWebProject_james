@@ -262,5 +262,10 @@
 			<version>2.7</version>
 		</dependency>
 
+		<dependency>
+			<groupId>GroupBuy</groupId>
+			<artifactId>GroupBuy</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

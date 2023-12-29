@@ -63,6 +63,7 @@ public class ProjectController {
 			project.setProjectMembers(employees);
 		}
 		
+		
 		// 2. members
 		List<Employee> employees = employeedao.findAllEmployees();
 		model.addAttribute("employees", employees);
@@ -72,7 +73,7 @@ public class ProjectController {
 	
 	//新增專案
 	@Transactional(propagation = Propagation.REQUIRED)
-	@RequestMapping(value = "/addproject", method = {RequestMethod.GET,RequestMethod.POST},produces = "text/plain;charset=utf-8")
+	@RequestMapping(value = "/addproject", method = {RequestMethod.GET,RequestMethod.POST}, produces = "text/plain;charset=utf-8")
 	public String addProject(@RequestParam(name = "projectId")String projectId,
 							 @RequestParam(name = "projectName")String projectName,
 							 @RequestParam(name = "projectContent")String projectContent,
@@ -116,11 +117,20 @@ public class ProjectController {
 	}
 	
 	// 取消專案
-	@GetMapping("/cancelproject/{projectId}")
-	@ResponseBody
+	@GetMapping("/cancelproject/{projectId}" )
 	public String cancelProject(@PathVariable("projectId") String projectId) {
-	    int rowcount = projectDao.removeprojectById(projectId);
-	    return rowcount == 1 ? "專案取消失敗" : "專案取消成功";
+	    try {
+	        int rowcount = projectMemberDao.removeProjectMember(projectId); // 刪除專案成員
+	        if (rowcount >= 0) {
+	            rowcount = projectDao.removeprojectById(projectId); // 刪除專案
+	            return "redirect:/mvc/project";
+	        } else {
+	            return "專案取消失敗";
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return "專案取消失敗：" + e.getMessage();
+	    }
 	}
 
 	// 修改專案內容

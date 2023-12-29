@@ -14,7 +14,7 @@ public interface ProjectMemberDao {
 	int addProjectMember(ProjectMember projectMember);
 	
 	// 移除專案成員
-	int removeProjectMember(int projectId, int employeeId);
+	int removeProjectMember(String projectId);
 	
 	
 	// 根據Project Id 去找 ProjectMember

@@ -22,9 +22,9 @@ public class ProjectMemberDaoimplMySQL implements ProjectMemberDao {
 	}
 
 	@Override
-	public int removeProjectMember(int projectId, int employeeId) {
-		String sql = "delete from projectMember where projectId = ? and employeeId = ?";
-		return jdbcTemplate.update(sql, projectId, employeeId);
+    public int removeProjectMember(String projectId) {
+        String sql = "delete from projectMember where projectId = ?";
+        return jdbcTemplate.update(sql,projectId);
 	}
 
 	@Override
