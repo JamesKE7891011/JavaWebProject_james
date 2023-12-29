@@ -46,6 +46,8 @@ public class ProjectController {
 	@Qualifier("employeedaomysql")
 	private EmployeeDaoimplMySQL employeedao;
 	
+	
+	//查詢專案
 	@GetMapping
 	public String getProjectPage(Model model) {
 		
@@ -99,7 +101,7 @@ public class ProjectController {
 					.collect(Collectors.toList());
 
 			int rowcount = projectDao.addProject(project);
-			projectDao.addProjectMember(projectId, members);
+			projectMemberDao.addProjectMember(projectId, members);
 			if (rowcount == 0) {
 				model.addAttribute("errorMessage", "新增失敗，請通知管理員");
 				return "backend/ProjectCreate";
@@ -122,7 +124,7 @@ public class ProjectController {
 	    try {
 	        int rowcount = projectMemberDao.removeProjectMember(projectId); // 刪除專案成員
 	        if (rowcount >= 0) {
-	            rowcount = projectDao.removeprojectById(projectId); // 刪除專案
+	            rowcount = projectDao.removeProjectById(projectId); // 刪除專案
 	            return "redirect:/mvc/project";
 	        } else {
 	            return "專案取消失敗";
@@ -133,29 +135,51 @@ public class ProjectController {
 	    }
 	}
 
-	// 修改專案內容
+	// 更新專案
+	@Transactional(propagation = Propagation.REQUIRED)
 	@RequestMapping(value = "/{projectId}/updateproject", method = {RequestMethod.PUT, RequestMethod.POST}, produces = "text/plain;charset=utf-8")
-	@ResponseBody
 	public String updateProject(@PathVariable("projectId") String projectId,
 	                            @RequestParam(name = "projectName") String newprojectName,
-	                            @RequestParam(name = "content") String newcontent,
-	                            @RequestParam(name = "owner") String newowner,
-	                            @RequestParam(name = "members") List<Employee> newmembers,
-	                            @RequestParam(name = "startDate") Date newstartDate,
-	                            @RequestParam(name = "endDate") Date newendDate) {
-		
-		Project projectUpdate = new Project();
-		projectUpdate.setProjectId(projectId);
-		projectUpdate.setProjectName(newprojectName);
-		projectUpdate.setProjectContent(newcontent);
-		projectUpdate.setProjectMembers(newmembers);
-		projectUpdate.setProjectStartDate(newstartDate);
-		projectUpdate.setProjectEndDate(newendDate);
-		
-	    return projectDao.updateProject(projectUpdate) == 0 ? "專案修改失敗" : "專案修改成功";
-	}
-	
-	
+	                            @RequestParam(name = "projectContent") String newprojectContent,
+	                            @RequestParam(name = "projectOwner") String newprojectOwner,
+	                            @RequestParam(name = "projectMember") String newprojectMember,
+	                            @RequestParam(name = "projectStartDate") Date newprojectStartDate,
+	                            @RequestParam(name = "projectEndDate") Date newprojectEndDate,
+	                            HttpSession session, Model model) throws ParseException {
+	    try {
+	        // 创建一个新的 Project 对象来保存更新后的信息
+	        Project projectUpdate = new Project();
+	        projectUpdate.setProjectId(projectId);
+	        projectUpdate.setProjectName(newprojectName);
+	        projectUpdate.setProjectContent(newprojectContent);
+	        projectUpdate.setProjectOwner(newprojectOwner);
+	        projectUpdate.setProjectStartDate(newprojectStartDate);
+	        projectUpdate.setProjectEndDate(newprojectEndDate);
+
+	        // projectMember: 將 1,2,3 轉成 List<Integer>
+	        List<Integer> newMembers = Arrays.asList(newprojectMember.split(","))
+	                .stream()
+	                .mapToInt(Integer::parseInt)
+	                .boxed()
+	                .collect(Collectors.toList());
+
+	        // 更新项目信息
+	        int updateResult = projectDao.updateProject(projectUpdate);
+
+	        if (updateResult == 0) {
+	            return "專案修改失敗";
+	        }
+
+	        // 更新项目成员信息
+	        projectMemberDao.removeProjectMember(projectId);
+	        projectMemberDao.addProjectMember(projectId, newMembers); 
+
+	        return "redirect:/mvc/project";
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return "專案修改失敗：" + e.getMessage();
+	    }
+	}	
 	
 }
 	

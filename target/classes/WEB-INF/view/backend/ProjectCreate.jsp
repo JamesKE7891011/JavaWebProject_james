@@ -65,14 +65,17 @@
 						</tr>
 						<tr>
 							<th scope="row"></th>
-							<td class="row justify-content-end">
-							<a class="mx-4 col-3 btn btn-danger" href="javascript:void(0);"
+								<td class="row justify-content-end">
+								
+								<!-- 刪除專案按鈕 -->
+								<a class="mx-4 col-3 btn btn-danger" href="javascript:void(0);"
 								onclick="deleteProject('${project.projectId}')" role="button">Delete</a>
-							<a class="col-3 btn btn-secondary 
-	      							href="
-								javascript:void(0);"
-	      							onclick="/JavaWebProject_james/mvc/project/cancelproject/+ document.getElementById('projectId')"
-								role="button"">Revise</a></td>
+								
+								<!-- 更新專案按鈕 -->
+								<a class="col-3 btn btn-secondary" href="javascript:void(0);"
+    							onclick="updateProject('${project.projectId}')" role="button">Update</a>
+							
+							</td>
 						</tr>
 					</tbody>
 				</c:forEach>
@@ -343,6 +346,11 @@ myModal.addEventListener('shown.bs.modal', function () {
         if (confirm("確定要刪除專案嗎？")) {
             window.location.href = '/JavaWebProject_james/mvc/project/cancelproject/' + projectId;
         }
+    }
+   
+  //----------------updateProject----------------------//
+    function updateProject(projectId) {
+        window.location.href = '/JavaWebProject_james/mvc/project/updateproject/' + projectId;
     }
     
 </script>

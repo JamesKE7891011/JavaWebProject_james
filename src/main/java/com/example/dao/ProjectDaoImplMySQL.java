@@ -29,31 +29,10 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 				project.getProjectOwner(), project.getProjectStartDate(), project.getProjectEndDate());
 	}
 
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
-	public int[] addProjectMember(String projectId, List<Integer> projectMembers) {
-
-		String sql = "insert into projectmember(projectId, employeeId) values(?,?)";
-
-		BatchPreparedStatementSetter bps = new BatchPreparedStatementSetter() {
-			@Override
-			public void setValues(PreparedStatement ps, int i) throws SQLException {
-				ps.setString(1, projectId);
-				ps.setInt(2, projectMembers.get(i));
-			}
-
-			@Override
-			public int getBatchSize() {
-				return projectMembers.size();
-			}
-
-		};
-
-		return jdbcTemplate.batchUpdate(sql, bps);
-	}
+	
 
 	@Override
-	public int removeprojectById(String projectId) {
+	public int removeProjectById(String projectId) {
 		String sql = "delete from project where projectId = ? ";
 		return jdbcTemplate.update(sql, projectId);
 	}

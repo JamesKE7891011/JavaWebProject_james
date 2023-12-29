@@ -10,8 +10,8 @@ import com.google.protobuf.Option;
 
 public interface ProjectMemberDao {
 
-	// 增加專案成員
-	int addProjectMember(ProjectMember projectMember);
+	// 新增專案成員
+	int[] addProjectMember(String projectId,List<Integer> members);
 	
 	// 移除專案成員
 	int removeProjectMember(String projectId);
