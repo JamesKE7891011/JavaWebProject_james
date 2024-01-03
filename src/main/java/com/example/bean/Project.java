@@ -3,6 +3,12 @@ package com.example.bean;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.gson.Gson;
 
 public class Project {
@@ -17,8 +23,14 @@ public class Project {
 	
 	private List<Employee> projectMembers;
 	
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
 	private Date projectStartDate;
 	
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
 	private Date projectEndDate;
 	
 	
@@ -29,7 +41,6 @@ public class Project {
 	
 	public Project(String projectId, String projectName, String projectContent, String projectOwner,
 			List<Employee> projectMembers, Date projectStartDate, Date projectEndDate) {
-		super();
 		this.projectId = projectId;
 		this.projectName = projectName;
 		this.projectContent = projectContent;

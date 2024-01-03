@@ -12,6 +12,43 @@
   			<option value="One">AC23020</option>
 		</select>
 	</div>
+	
+	<!-- Issue顯示狀態列 -->
+	<div>
+		<table class="table table-hover text-center">
+  			<thead>
+    			<tr>
+      				<th scope="col">IssueID</th>
+      				<th scope="col">IssueName</th>
+      				<th scope="col">IssueClass</th>
+      				<th scope="col">IssueContent</th>
+      				<th scope="col">IssuePath</th>
+      				<th scope="col">IssueDatetime</th>
+      				<th scope="col">IssueStatus</th>
+      				<th scope="col">Revise</th>
+      				<th scope="col">Delete</th>
+    			</tr>
+  			</thead>
+  			<tbody>
+    			<tr>
+      				<th scope="row">1</th>
+      					<td>馬桶壞掉</td>
+      					<td>D</td>
+      					<td>因投入不當物品，造成堵塞</td>
+      					<td>馬桶.jpg</td>
+      					<td>2023-12-07 00:00:00</td>
+      					<td>Open</td>
+      					<td>
+      					<button type="button" class=" btn btn-secondary ">修改</button>
+      					</td>
+      					<td>
+      					<button type="button" class="mx-4  btn btn-danger ">刪除</button>
+      					</td>
+    			</tr>    			
+  			</tbody>
+		</table>
+	</div>
+	
 	<!-- 議題新增 -->
 	<div class=" ms-3 w-75">
 		<h4 class="fw-bold fs-3 text-center ">ISSUE CREATE</h4>
@@ -42,41 +79,13 @@
     			<textarea class="form-control" id="issuecontent" name="issuecontent" " placeholder="" required></textarea>
 				<div class="invalid-feedback ">請備註!</div>
 			</div>
+			<div class="col-12 d-flex justify-content-center mt-2">
+				<button class="btn btn-secondary col-12" type="submit">Submit
+					Form</button>
+			</div>
 		</form>
 	</div>
-	<!-- Issue顯示狀態列 -->
-	<div>
-		<table class="table table-hover">
-  			<thead>
-    			<tr>
-      				<th scope="col">IssueID</th>
-      				<th scope="col">IssueName</th>
-      				<th scope="col">IssueClass</th>
-      				<th scope="col">IssueContent</th>
-      				<th scope="col">IssuePath</th>
-      				<th scope="col">IssueDatetime</th>
-      				<th scope="col">IssueStatus</th>
-    			</tr>
-  			</thead>
-  			<tbody>
-    			<tr>
-      				<th scope="row">1</th>
-      					<td>馬桶壞掉</td>
-      					<td>D</td>
-      					<td>因投入不當物品，造成堵塞</td>
-      					<td>馬桶.jpg</td>
-      					<td>2023-12-07 00:00:00</td>
-      					<td>Open</td>
-      					<td>
-      					<button type="button" class=" btn btn-secondary ">修改</button>
-      					</td>
-      					<td>
-      					<button type="button" class="mx-4  btn btn-danger ">刪除</button>
-      					</td>
-    			</tr>    			
-  			</tbody>
-		</table>
-	</div>
+	
 </div>
 
 

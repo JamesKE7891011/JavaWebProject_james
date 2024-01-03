@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-	rel="stylesheet">
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <%@ include file="/WEB-INF/view/backendheader.jsp"%>
 
@@ -41,15 +41,21 @@
 						</tr>
 						<tr>
 							<th scope="row">projectName:</th>
-							<td class="w-100">${ project.projectName }</td>
+							<td class="w-100">
+								<input type="text" value="${ project.projectName }" class="w-75" id="upadte_projectName">
+							</td>
 						</tr>
 						<tr>
 							<th scope="row">projectContent:</th>
-							<td class="w-100">${ project.projectContent }</td>
+							<td class="w-100">
+								<input type="text" value="${ project.projectContent }" class="w-75" id="upadte_projectContent">
+							</td>
 						</tr>
 						<tr>
 							<th scope="row">projectOwner:</th>
-							<td class="w-100">${ project.projectOwner }</td>
+							<td class="w-100">
+								<input type="text" value="${ project.projectOwner }" class="w-75" id="upadte_projectOwner">
+							</td>
 						</tr>
 						<tr>
 							<th scope="row">projectMember:</th>
@@ -57,23 +63,25 @@
 						</tr>
 						<tr>
 							<th scope="row">projectStartDate:</th>
-							<td class="w-100">${ project.projectStartDate }</td>
+							<td class="w-100">
+								<input type="date" value="<fmt:formatDate value="${ project.projectStartDate }" pattern="yyyy-MM-dd" />" class="w-75" id="upadte_projectStartDate">
+							</td>
 						</tr>
 						<tr>
 							<th scope="row">projectEndDate:</th>
-							<td class="w-100">${ project.projectEndDate }</td>
+							<td class="w-100">
+								<input type="date" value="<fmt:formatDate value="${ project.projectEndDate }" pattern="yyyy-MM-dd" />" class="w-75" id="upadte_projectEndDate">
+							</td>
 						</tr>
 						<tr>
 							<th scope="row"></th>
 								<td class="row justify-content-end">
 								
 								<!-- 刪除專案按鈕 -->
-								<a class="mx-4 col-3 btn btn-danger" href="javascript:void(0);"
-								onclick="deleteProject('${project.projectId}')" role="button">Delete</a>
+								<a class="mx-4 col-3 btn btn-danger" href="javascript:void(0);" onclick="deleteProject('${project.projectId}')" role="button">Delete</a>
 								
 								<!-- 更新專案按鈕 -->
-								<a class="col-3 btn btn-secondary" href="javascript:void(0);"
-    							onclick="updateProject('${project.projectId}')" role="button">Update</a>
+								<a class="col-3 btn btn-secondary" href="javascript:void(0);" onclick="updateProject('${project.projectId}')" role="button">Update</a>
 							
 							</td>
 						</tr>
@@ -350,8 +358,32 @@ myModal.addEventListener('shown.bs.modal', function () {
    
   //----------------updateProject----------------------//
     function updateProject(projectId) {
-        window.location.href = '/JavaWebProject_james/mvc/project/updateproject/' + projectId;
-    }
+	  
+	  	let field = {
+	  		"projectId": projectId,
+	  		"projectName": $('#upadte_projectName').val()
+	  			
+	  	};
+	  	
+	    // 使用 AJAX 向後端傳遞資料，這裡只是示例
+	    $.ajax({
+	        type: 'POST', // 或 'PUT'，根據實際情況
+	        url: '/JavaWebProject_james/mvc/project/' + projectId + '/updateproject',
+	        data: {
+	            field: field,
+	            value: value
+	        },
+	        success: function (response) {
+	            // 根據後端的回應執行適當的操作
+	            alert('專案更新成功');
+	            // 刷新頁面或執行其他操作
+	            location.reload();
+	        },
+	        error: function (error) {
+	            alert('專案更新失敗');
+	        }
+	    });
+	}
     
 </script>
 <script

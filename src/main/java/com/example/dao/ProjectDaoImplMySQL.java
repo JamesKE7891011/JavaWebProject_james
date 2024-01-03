@@ -1,11 +1,9 @@
 package com.example.dao;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -28,8 +26,6 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 		return jdbcTemplate.update(sql, project.getProjectId(), project.getProjectName(), project.getProjectContent(),
 				project.getProjectOwner(), project.getProjectStartDate(), project.getProjectEndDate());
 	}
-
-	
 
 	@Override
 	public int removeProjectById(String projectId) {
@@ -61,6 +57,5 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 				projectUpdate.getProjectOwner(), projectUpdate.getProjectStartDate(), projectUpdate.getProjectEndDate(),
 				projectUpdate.getProjectId());
 	}
-
 
 }

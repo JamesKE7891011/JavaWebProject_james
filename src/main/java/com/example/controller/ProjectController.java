@@ -46,7 +46,6 @@ public class ProjectController {
 	@Qualifier("employeedaomysql")
 	private EmployeeDaoimplMySQL employeedao;
 	
-	
 	//查詢專案
 	@GetMapping
 	public String getProjectPage(Model model) {
@@ -54,6 +53,8 @@ public class ProjectController {
 		// 1. projects
 		List<Project> projects = projectDao.findAllProjects();
 		model.addAttribute("projects", projects);
+		
+		System.out.println(projects);
 		
 		for(Project project:projects) {
 			List<ProjectMember> projectMembers = projectMemberDao.findProjectMemberById(project.getProjectId());
@@ -120,18 +121,19 @@ public class ProjectController {
 	
 	// 取消專案
 	@GetMapping("/cancelproject/{projectId}" )
-	public String cancelProject(@PathVariable("projectId") String projectId) {
+	public String cancelProject(@PathVariable("projectId") String projectId,Model model) {
 	    try {
 	        int rowcount = projectMemberDao.removeProjectMember(projectId); // 刪除專案成員
 	        if (rowcount >= 0) {
 	            rowcount = projectDao.removeProjectById(projectId); // 刪除專案
 	            return "redirect:/mvc/project";
 	        } else {
-	            return "專案取消失敗";
+	        	model.addAttribute("errorMessage","刪除失敗，請通知管理員");
+	            return "backend/ProjectCreate";
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        return "專案取消失敗：" + e.getMessage();
+	        return "backend/ProjectCreate" + e.getMessage();
 	    }
 	}
 
@@ -147,7 +149,6 @@ public class ProjectController {
 	                            @RequestParam(name = "projectEndDate") Date newprojectEndDate,
 	                            HttpSession session, Model model) throws ParseException {
 	    try {
-	        // 创建一个新的 Project 对象来保存更新后的信息
 	        Project projectUpdate = new Project();
 	        projectUpdate.setProjectId(projectId);
 	        projectUpdate.setProjectName(newprojectName);
@@ -163,14 +164,14 @@ public class ProjectController {
 	                .boxed()
 	                .collect(Collectors.toList());
 
-	        // 更新项目信息
+	        // 更新專案訊息
 	        int updateResult = projectDao.updateProject(projectUpdate);
 
 	        if (updateResult == 0) {
 	            return "專案修改失敗";
 	        }
 
-	        // 更新项目成员信息
+	        // 更新專案成員
 	        projectMemberDao.removeProjectMember(projectId);
 	        projectMemberDao.addProjectMember(projectId, newMembers); 
 
