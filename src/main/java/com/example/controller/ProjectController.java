@@ -53,10 +53,13 @@ public class ProjectController {
 		// 1. projects
 		List<Project> projects = projectDao.findAllProjects();
 		model.addAttribute("projects", projects);
-		
-		System.out.println(projects);
-		
+
 		for(Project project:projects) {
+			
+			// owner id -> owner employee name
+			Employee owner = employeedao.findEmployeeById( Integer.parseInt(project.getProjectOwner())).get();
+			project.setProjectOwner(owner.getEmployeeName());
+			
 			List<ProjectMember> projectMembers = projectMemberDao.findProjectMemberById(project.getProjectId());
 			List<Employee> employees = new ArrayList<Employee>();
 			for(ProjectMember projectMember:projectMembers) {
@@ -66,6 +69,7 @@ public class ProjectController {
 			project.setProjectMembers(employees);
 		}
 		
+		System.out.println(projects);
 		
 		// 2. members
 		List<Employee> employees = employeedao.findAllEmployees();
