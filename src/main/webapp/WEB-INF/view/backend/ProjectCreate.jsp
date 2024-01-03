@@ -58,60 +58,24 @@
 						</tr>
 							<th scope="row">projectMember:</th>
 							<td class="w-100">
+								<c:set var="membersString" value="" />
+								<c:set var="membersIdString" value="" />
 								<c:forEach items="${ project.projectMembers }" var="member"  varStatus="loop">
 									<c:if test="${ loop.index < project.projectMembers.size() -1 }">
 										<c:set var="membersString" value="${membersString}${member}," />
+										<c:set var="membersIdString" value="${membersIdString}${member.employeeId}," />
 									</c:if>
-									<c:if test="${ loop.index == project.projectMembers.size() -1 }">
+									<c:if test="${ loop.index == project.projectMembers.size() - 1 }">
 										<c:set var="membersString" value="${membersString}${member}" />
+										<c:set var="membersIdString" value="${membersIdString}${member.employeeId}" />
 									</c:if>
 								</c:forEach>
 								<!-- Project Member -->
 								<div class="d-flex justift-content-start">
-									<input type="text" class="form-control disable" id="update_projectMember" name="projectMember" value="${membersString}"  hidden> 
-									<input type="text" class="form-control disable" id="update_projectMember2" name="projectMember2" value="${membersString}" >
-									
-									<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#update_exampleMember">+</button>
+									<input type="text" class="form-control disable" id="update_projectMember_${ project.projectId }" name="projectMember" value="${membersIdString}" hidden> 
+									<input type="text" class="form-control disable" id="update_projectMember2_${ project.projectId }" name="projectMember2" value="${membersString}" >
+									<button type="button" class="btn btn-secondary" data-bs-toggle="modal" onclick="openModal('${ project.projectId }')" >+</button>
 								</div>
-								<!-- Modal -->
-								<div class="modal fade" id="update_exampleMember" tabindex="-1"
-									aria-labelledby="exampleMemberLabel" aria-hidden="true">
-									<div class="modal-dialog modal-lg">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="exampleModalLabel">Project Member</h5>
-												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-											</div>
-											<div class="modal-body">
-												<div class=" d-flex justify-content-center mt-2">
-													<div style="height: 500px; width: 500px;"
-														class="shadow overflow-auto" id="left3">
-														<h3 class="text-center">Employee</h3>
-														<ul class="list-group overflow-auto">
-															<c:forEach items="${ employees }" var="employee">
-																<button type="button" class="listItem list-group-item list-group-item-action mb-1" data-employee-id="${ employee.employeeId }">${ employee.employeeName}</button>
-															</c:forEach>
-														</ul>
-													</div>
-													<div style="width: 50px; height: 500px;"
-														class="d-flex flex-column align-items-center justify-content-center mx-1">
-														<button id="toRight3" class="btn btn-outline-primary toRight">>></button>
-														<button id="toLeft3" class="btn btn-outline-primary toLeft"><<</button>
-													</div>
-													<div style="height: 500px; width: 500px;" class="shadow" id="right3">
-														<h3 class="text-center">Projrct Member</h3>
-														<ul class="list-group"></ul>
-													</div>
-												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary"	data-bs-dismiss="modal">Close</button>
-												<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="updateProjectMember()">Savechanges</button>
-											</div>
-										</div>
-									</div>
-								</div>
-
 							</td>
 						</tr>
 						<tr>
@@ -141,6 +105,43 @@
 					</tbody>
 				</c:forEach>
 			</table>
+		</div>
+		<!-- Update Project Member Modal -->
+		<div class="modal fade" id="update_exampleMember" tabindex="-1" aria-labelledby="exampleMemberLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Project Member</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class=" d-flex justify-content-center mt-2">
+							<div style="height: 500px; width: 500px;"
+								class="shadow overflow-auto" id="left3">
+								<h3 class="text-center">Employee</h3>
+								<ul class="list-group overflow-auto">
+									<c:forEach items="${ employees }" var="employee">
+										<button type="button" class="listItem list-group-item list-group-item-action mb-1" data-employee-id="${ employee.employeeId }">${ employee.employeeName}</button>
+									</c:forEach>
+								</ul>
+							</div>
+							<div style="width: 50px; height: 500px;"
+								class="d-flex flex-column align-items-center justify-content-center mx-1">
+								<button id="toRight3" class="btn btn-outline-primary toRight">>></button>
+								<button id="toLeft3" class="btn btn-outline-primary toLeft"><<</button>
+							</div>
+							<div style="height: 500px; width: 500px;" class="shadow" id="right3">
+								<h3 class="text-center">Projrct Member</h3>
+								<ul class="list-group"></ul>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"	data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="updateProjectMember()">Savechanges</button>
+					</div>
+				</div>
+			</div>
 		</div>
 		
 		<!-- 新增專案表格 -->
@@ -328,17 +329,33 @@ myModal.addEventListener('shown.bs.modal', function () {
 </script>
 <!-- 成員新增 -->
 <script>
-	//----------------projectMember----------------------//
+
+	//----------------update projectMember----------------------//
+	var update_project = '';
+	var update_projectMember = [];  // 儲存 Member 的 ID
+	var update_projectMember2 = []; // 儲存 Member 的 Name
 	
-	let update_projectMember = [];  // 儲存 Member 的 ID
-	let update_projectMember2 = []; // 儲存 Member 的 Name
-	
+	function openModal(projectId) {
+		update_project = projectId;
+    	update_projectMember = $('#update_projectMember_'+update_project).val().split(',');
+    	update_projectMember2 = $('#update_projectMember2_'+update_project).val().split(',');
+    	$('#left3 .listItem').each(function() {
+    		let employeeId = $(this).eq(0).attr("data-employee-id");
+    		if(update_projectMember.includes(employeeId)) {
+    	        $('#right3').append($(this)[0]);
+    		}
+	    });
+    	var myModal = new bootstrap.Modal(document.getElementById('update_exampleMember'));
+    	myModal.show();
+  	}
+    
 	$('#toRight3').on('click',function() {
 	    $('#left3 .active').each(function() {
 	        $('#right3').append($(this)[0]);
 	        //加入至右邊欄位
-	        projectMember.push($(this).eq(0).attr("data-employee-id"));
-	        projectMember2.push($(this)[0].innerText);
+	        update_projectMember.push($(this).eq(0).attr("data-employee-id"));
+	        update_projectMember2.push($(this)[0].innerText);
+	        console.log(update_projectMember);
 	    });
 	});
 	
@@ -352,12 +369,12 @@ myModal.addEventListener('shown.bs.modal', function () {
 	        update_projectMember2 = update_projectMember2.filter(memeber => memeber !== memberstr2);
 	    });
 	});
-	
+
 	function updateProjectMember() {
+		$('#update_projectMember_'+update_project).val(update_projectMember);
+		$('#update_projectMember2_'+update_project).val(update_projectMember2);
 		console.log(update_projectMember);
 		console.log(update_projectMember2);
-		$('#update_projectMember').val(update_projectMember);
-		$('#update_projectMember2').val(update_projectMember2);
 	}
 
     //----------------projectOwner----------------------//
