@@ -339,12 +339,23 @@ myModal.addEventListener('shown.bs.modal', function () {
 		update_project = projectId;
     	update_projectMember = $('#update_projectMember_'+update_project).val().split(',');
     	update_projectMember2 = $('#update_projectMember2_'+update_project).val().split(',');
+
+    	//加入員工至右邊欄位
     	$('#left3 .listItem').each(function() {
     		let employeeId = $(this).eq(0).attr("data-employee-id");
     		if(update_projectMember.includes(employeeId)) {
     	        $('#right3').append($(this)[0]);
     		}
 	    });
+    	
+        //移除員工至左邊欄位
+    	$('#right3 .listItem').each(function() {
+    		let employeeId = $(this).eq(0).attr("data-employee-id");
+    		if(!update_projectMember.includes(employeeId)) {
+    			$('#left3').append($(this)[0]);
+    		}
+	    });
+        
     	var myModal = new bootstrap.Modal(document.getElementById('update_exampleMember'));
     	myModal.show();
   	}
@@ -355,7 +366,6 @@ myModal.addEventListener('shown.bs.modal', function () {
 	        //加入至右邊欄位
 	        update_projectMember.push($(this).eq(0).attr("data-employee-id"));
 	        update_projectMember2.push($(this)[0].innerText);
-	        console.log(update_projectMember);
 	    });
 	});
 	
