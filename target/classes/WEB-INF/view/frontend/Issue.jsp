@@ -3,27 +3,26 @@
 
 <%@ include file="/WEB-INF/view/header.jsp" %>
 
-<div class="mx-5 mt-4 vh-100 row">
-	<!-- 專案下拉選單 -->
-	<div>
-		<h4 class="fs-4 fw-bolld">Project Name</h4>
-		<select class=" form-select mt-2" aria-label="Default select example">
-  			<option selected>Choose project</option>
-  			<option value="One">AC23020</option>
-		</select>
-	</div>
+<div class="mx-5 mt-4 row" style="height: auto">	
 	<!-- 議題新增 -->
 	<div class=" ms-3 w-75">
 		<h4 class="fw-bold fs-3 text-center ">ISSUE CREATE</h4>
 		<form class="w-80 needs-validation" method="post" action="./frontend/page1.jsp" novalidate >
-		 	<div class="mb-1">
+			<div class="mb-1">
+				<label for="issuename" class="form-label" >專案名稱</label>
+				<select class=" form-select mb-1" aria-label="Default select example">
+  					<option selected>Choose project</option>
+  					<option value="One">AC23020</option>
+				</select>
+			</div>
+		 	<div class="mb-1 mt-1">
 				<label for="issuename" class="form-label" >議題名稱</label>
 				<input class="form-control" list="datalistOptions" id="issuename" name="issuename" placeholder="請輸入議題名稱...">
   	    		<div class="invalid-feedback w-75">請輸入議題名稱!</div>
   	    		
   	    	</div>
   			<div class="mb-1">
-  				<label for="issueclass" class="form-label mt-3" id="issueclass" name="issueclass">檔案類別</label>
+  				<label for="issueclass" class="form-label mt-2" id="issueclass" name="issueclass">檔案類別</label>
    	 			<select class="form-select" required aria-label="select example">         
      				<option value="">請選擇議題類別...</option>
       				<option value="A">A類別</option> 
@@ -42,11 +41,25 @@
     			<textarea class="form-control" id="issuecontent" name="issuecontent" " placeholder="" required></textarea>
 				<div class="invalid-feedback ">請備註!</div>
 			</div>
+			<div class="col-12 d-flex justify-content-center mt-2">
+				<button class="btn btn-secondary col-12" type="submit">Submit
+					Form</button>
+			</div>
 		</form>
 	</div>
+	
+	<!-- 專案下拉選單 -->
+	<div>
+		<h4 class="fs-4 fw-bolld mt-4">Project Name</h4>
+		<select class=" form-select mt-2" aria-label="Default select example">
+  			<option selected>Choose project</option>
+  			<option value="One">AC23020</option>
+		</select>
+	</div>
+	
 	<!-- Issue顯示狀態列 -->
 	<div>
-		<table class="table table-hover">
+		<table class="table table-hover text-center">
   			<thead>
     			<tr>
       				<th scope="col">IssueID</th>
@@ -56,6 +69,8 @@
       				<th scope="col">IssuePath</th>
       				<th scope="col">IssueDatetime</th>
       				<th scope="col">IssueStatus</th>
+      				<th scope="col">Revise</th>
+      				<th scope="col">Delete</th>
     			</tr>
   			</thead>
   			<tbody>
@@ -77,6 +92,7 @@
   			</tbody>
 		</table>
 	</div>
+	
 </div>
 
 

@@ -10,12 +10,9 @@ public interface ProjectDao {
 	
 	// 新增專案：
 	int addProject(Project project) throws SQLIntegrityConstraintViolationException;
-	
-	// 新增專案成員
-	int[] addProjectMember(String projectId,List<Integer> members);
 
 	// 根據專案ID刪除指定的專案
-	int removeprojectById(String projectId);
+	int removeProjectById(String projectId);
 	
 	// 查詢專案(多筆)
 	List<Project> findAllProjects();
@@ -25,6 +22,8 @@ public interface ProjectDao {
 	
 	// 修改專案內容
 	int updateProject(Project projectUpdate);
+
+	
 
 	
 }
