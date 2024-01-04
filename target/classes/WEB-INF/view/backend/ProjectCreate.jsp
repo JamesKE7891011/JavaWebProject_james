@@ -315,8 +315,7 @@
 					name="projectEndDate" required>
 			</div>
 			<div class="col-12 d-flex justify-content-center ">
-				<button class="btn btn-secondary col-12" type="submit">Submit
-					Form</button>
+				<button class="btn btn-secondary col-12" type="button" onclick="addproject()" id="submitBtn">Submit Form</button>
 			</div>
 		</form>
 	</div>
@@ -523,6 +522,34 @@ myModal.addEventListener('shown.bs.modal', function () {
     	$('#'+elementId).addClass('d-block');
     }
     
+  //----------------addProject----------------------//
+  	function addproject() {
+    // Get form data
+    let formData = {
+        "projectId": $('#projectId').val(),
+        "projectName": $('#projectName').val(),
+        "projectContent": $('#projectContent').val(),
+        "projectOwner": $('#projectOwner').val(),
+        "projectMember": $('#projectMember').val(),
+        "projectStartDate": $('#projectStartDate').val(),
+        "projectEndDate": $('#projectEndDate').val(),
+    };
+
+    // Using AJAX to submit the form data
+    $.ajax({
+        type: 'POST',
+        url: '/JavaWebProject_james/mvc/project/addproject',
+        data: formData,
+        success: function (response) {
+        	location.reload("redirect:/mvc/project");
+            alert('專案提交成功');
+        },
+        error: function (error) {
+            alert('專案提交失敗');
+        }
+    });
+}
+    
   //----------------deleteProject----------------------//
     function deleteProject(projectId) {
         if (confirm("確定要刪除專案嗎？")) {
@@ -536,7 +563,11 @@ myModal.addEventListener('shown.bs.modal', function () {
 	  	let field = {
 	  		"projectId": projectId,
 	  		"projectName": $('#upadte_projectName').val(),
+	  		"projectContent": $('#upadte_projectContent').val(),
 	  		"projectOwner": $('#upadte_projectOwner').val(),
+	  		"projectMember": $('#upadte_projectMember').val(),
+	  		"projectStartDate": $('#upadte_projectStartDate').val(),
+	  		"projectEndDate": $('#upadte_projectEndDate').val(),
 	  			
 	  	};
 	  	
@@ -545,8 +576,8 @@ myModal.addEventListener('shown.bs.modal', function () {
 	        type: 'POST', // 或 'PUT'，根據實際情況
 	        url: '/JavaWebProject_james/mvc/project/' + projectId + '/updateproject',
 	        data: {
-	            field: field,
-	            value: value
+	            field: field
+	            //value: value
 	        },
 	        success: function (response) {
 	            // 根據後端的回應執行適當的操作
