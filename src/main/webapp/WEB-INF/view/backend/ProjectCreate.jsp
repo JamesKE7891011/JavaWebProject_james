@@ -56,7 +56,11 @@
 								<div class="d-flex justift-content-start">
 									<select class="form-select" value="${project.projectOwner.employeeId}" id="upadte_projectOwner">
 									  <c:forEach items="${ employees }" var="employee">
-									     <option value="${ employee.employeeId }">${ employee.employeeName}</option>
+									     <option value="${ employee.employeeId }" 
+									        <c:if test="${ employee.employeeId == project.projectOwner.employeeId }">selected</c:if>
+									     >
+									        ${ employee.employeeName}
+									     </option>
 									  </c:forEach>
 									</select>
 								</div>
@@ -335,63 +339,7 @@ myModal.addEventListener('shown.bs.modal', function () {
 </script>
 <!-- 成員新增 -->
 <script>
-//----------------update projectOwner----------------------//
-	var update_project = '';
-	var update_projectOwner = [];  // 儲存 Owner 的 ID
-	var update_projectOwner2 = []; // 儲存 Owner 的 Name
 
-	function openModalOwner(projectId) {
-		update_project = projectId;
-		update_projectOwner = $('#update_projectOwner_'+update_project).val().split(',');
-		update_projectOwner2 = $('#update_projectOwner2_'+update_project).val().split(',');
-
-		//加入員工至右邊欄位
-		$('#left3 .listItem').each(function() {
-			let employeeId = $(this).eq(0).attr("data-employee-id");
-			if(update_projectOwner.includes(employeeId)) {
-	        	$('#right3').append($(this)[0]);
-			}
-    	});
-	
-    	//移除員工至左邊欄位
-		$('#right3 .listItem').each(function() {
-			let employeeId = $(this).eq(0).attr("data-employee-id");
-			if(!update_projectOwner.includes(employeeId)) {
-				$('#left3').append($(this)[0]);
-			}
-    	});
-    
-		var myModal = new bootstrap.Modal(document.getElementById('update_exampleOwner'));
-		myModal.show();
-		}
-
-		$('#toRight3').on('click',function() {
-    		$('#left3 .active').each(function() {
-        		$('#right3').append($(this)[0]);
-        		//加入至右邊欄位
-        		update_projectOwner.push($(this).eq(0).attr("data-employee-id"));
-        		update_projectOwner2.push($(this)[0].innerText);
-    		});
-		});
-
-		$('#toLeft4').on('click',function() {
-    		$('#right4 .active').each(function() {
-        		$('#left4').append($(this)[0]);
-        		//移除還原至左邊欄位
-        		let ownerstr = $(this).eq(0).attr("data-employee-id");
-        		let ownerstr2 = $(this)[0].innerText;
-        		update_projectOwner = update_projectOwner.filter(owner => owner !== ownerstr);
-        		update_projectOwner2 = uupdate_projectOwner2.filter(owner => owner !== ownerstr2);
-    		});
-		});
-
-	function updateProjectOwner() {
-		$('#update_projectOwner_'+update_project).val(update_projectOwner);
-		$('#update_projectOwner2_'+update_project).val(update_projectOwner2);
-		console.log(update_projectOwner);
-		console.log(update_projectOwner);
-	}
-	
 	//----------------update projectMember----------------------//
 	var update_project = '';
 	var update_projectMember = [];  // 儲存 Member 的 ID
@@ -565,20 +513,18 @@ myModal.addEventListener('shown.bs.modal', function () {
 	  		"projectName": $('#upadte_projectName').val(),
 	  		"projectContent": $('#upadte_projectContent').val(),
 	  		"projectOwner": $('#upadte_projectOwner').val(),
-	  		"projectMember": $('#upadte_projectMember').val(),
+	  		"projectMember": $('#update_projectMember_' + projectId).val(),
 	  		"projectStartDate": $('#upadte_projectStartDate').val(),
 	  		"projectEndDate": $('#upadte_projectEndDate').val(),
-	  			
 	  	};
+	  	
+	  	console.log(projectId);
 	  	
 	    // 使用 AJAX 向後端傳遞資料，這裡只是示例
 	    $.ajax({
 	        type: 'POST', // 或 'PUT'，根據實際情況
 	        url: '/JavaWebProject_james/mvc/project/' + projectId + '/updateproject',
-	        data: {
-	            field: field
-	            //value: value
-	        },
+	        data: field,
 	        success: function (response) {
 	            // 根據後端的回應執行適當的操作
 	            alert('專案更新成功');

@@ -89,8 +89,12 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 	@Override
 	public int updateProject(Project projectUpdate) {
 		String sql = "update project set projectName = ?, projectContent = ?, projectOwner = ?, projectStartDate = ?, projectEndDate = ? where projectId = ?";
-		return jdbcTemplate.update(sql, projectUpdate.getProjectName(), projectUpdate.getProjectContent(),
-				projectUpdate.getProjectOwner(), projectUpdate.getProjectStartDate(), projectUpdate.getProjectEndDate(),
+		return jdbcTemplate.update(sql, 
+				projectUpdate.getProjectName(), 
+				projectUpdate.getProjectContent(),
+				projectUpdate.getProjectOwner().getEmployeeId(), 
+				projectUpdate.getProjectStartDate(), 
+				projectUpdate.getProjectEndDate(),
 				projectUpdate.getProjectId());
 	}
 
