@@ -19,7 +19,7 @@ public class Project {
 	
 	private String projectContent;
 	
-	private String projectOwner;
+	private Employee projectOwner;
 	
 	private List<Employee> projectMembers;
 	
@@ -39,7 +39,7 @@ public class Project {
 	}
 	
 	
-	public Project(String projectId, String projectName, String projectContent, String projectOwner,
+	public Project(String projectId, String projectName, String projectContent, Employee projectOwner,
 			List<Employee> projectMembers, Date projectStartDate, Date projectEndDate) {
 		this.projectId = projectId;
 		this.projectName = projectName;
@@ -81,12 +81,12 @@ public class Project {
 	}
 
 
-	public String getProjectOwner() {
+	public Employee getProjectOwner() {
 		return projectOwner;
 	}
 
 
-	public void setProjectOwner(String projectOwner) {
+	public void setProjectOwner(Employee projectOwner) {
 		this.projectOwner = projectOwner;
 	}
 

@@ -10,7 +10,6 @@
 <style>
 .disable {
 	pointer-events: none;
-	background: grey;
 }
 </style>
 
@@ -53,22 +52,10 @@
 						<tr>
 							<th scope="row">projectOwner:</th>
 							<td class="w-100"> 
-								<c:set var="ownerString" value="" />
-								<c:set var="ownerIdString" value="" />
-								<c:forEach items="${ project.projectOwner }" var="owner"  varStatus="loop">
-									<c:if test="${ loop.index < project.projectOwner.size() -1 }">
-										<c:set var="ownerString" value="${ownerString}${owner}," />
-										<c:set var="ownerIdString" value="${ownerIdString}${owner.employeeId}," />
-									</c:if>
-									<c:if test="${ loop.index == project.projectowner.size() - 1 }">
-										<c:set var="ownerString" value="${ownerString}${owner}" />
-										<c:set var="ownerIdString" value="${ownerIdString}${owner.employeeId}" />
-									</c:if>
-								</c:forEach>
 								<!-- Project Owner Update -->
 								<div class="d-flex justift-content-start">
-									<input type="text" class="form-control disable" id="update_projectOwner_${ project.projectId }" name="projectOwner" value="${ownerIdString}" hidden> 
-									<input type="text" class="form-control disable" id="update_projectOwner2_${ project.projectId }" name="projectOwner2" value="${ownerIdString}" >
+									<input type="text" class="form-control disable" name="projectOwner" value="${project.projectOwner.employeeId}"> 
+									<input type="text" class="form-control disable" name="projectOwner2" value="${project.projectOwner.employeeName}" >
 									<button type="button" class="btn btn-secondary" data-bs-toggle="modal" onclick="openModal('${ project.projectId }')" >+</button>
 								</div>
 							</td>

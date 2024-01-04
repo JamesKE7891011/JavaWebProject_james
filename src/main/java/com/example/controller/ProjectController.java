@@ -54,21 +54,6 @@ public class ProjectController {
 		List<Project> projects = projectDao.findAllProjects();
 		model.addAttribute("projects", projects);
 
-		for(Project project:projects) {
-			
-			// owner id -> owner employee name
-			Employee owner = employeedao.findEmployeeById( Integer.parseInt(project.getProjectOwner())).get();
-			project.setProjectOwner(owner.getEmployeeName());
-			
-			List<ProjectMember> projectMembers = projectMemberDao.findProjectMemberById(project.getProjectId());
-			List<Employee> employees = new ArrayList<Employee>();
-			for(ProjectMember projectMember:projectMembers) {
-				Employee employee = employeedao.findEmployeeById(projectMember.getEmployeeId()).get();
-				employees.add(employee);
-			}
-			project.setProjectMembers(employees);
-		}
-		
 		System.out.println(projects);
 		
 		// 2. members
@@ -84,7 +69,7 @@ public class ProjectController {
 	public String addProject(@RequestParam(name = "projectId")String projectId,
 							 @RequestParam(name = "projectName")String projectName,
 							 @RequestParam(name = "projectContent")String projectContent,
-							 @RequestParam(name = "projectOwner")String projectOwner,
+							 @RequestParam(name = "projectOwner") Integer projectOwner,
 							 @RequestParam(name = "projectMember") String projectMember,
 							 @RequestParam(name = "projectStartDate")Date projectStartDate,
 							 @RequestParam(name = "projectEndDate")Date projectEndDate,HttpSession session,Model model) throws ParseException{
@@ -94,7 +79,7 @@ public class ProjectController {
 			project.setProjectId(projectId);
 			project.setProjectName(projectName);
 			project.setProjectContent(projectContent);
-			project.setProjectOwner(projectOwner);
+			project.setProjectOwner(employeedao.findEmployeeById(projectOwner).get());
 			project.setProjectStartDate(projectStartDate);
 			project.setProjectEndDate(projectEndDate);
 			
@@ -147,7 +132,7 @@ public class ProjectController {
 	public String updateProject(@PathVariable("projectId") String projectId,
 	                            @RequestParam(name = "projectName") String newprojectName,
 	                            @RequestParam(name = "projectContent") String newprojectContent,
-	                            @RequestParam(name = "projectOwner") String newprojectOwner,
+	                            @RequestParam(name = "projectOwner") Integer newprojectOwner,
 	                            @RequestParam(name = "projectMember") String newprojectMember,
 	                            @RequestParam(name = "projectStartDate") Date newprojectStartDate,
 	                            @RequestParam(name = "projectEndDate") Date newprojectEndDate,
@@ -157,7 +142,7 @@ public class ProjectController {
 	        projectUpdate.setProjectId(projectId);
 	        projectUpdate.setProjectName(newprojectName);
 	        projectUpdate.setProjectContent(newprojectContent);
-	        projectUpdate.setProjectOwner(newprojectOwner);
+	        projectUpdate.setProjectOwner(employeedao.findEmployeeById(newprojectOwner).get());
 	        projectUpdate.setProjectStartDate(newprojectStartDate);
 	        projectUpdate.setProjectEndDate(newprojectEndDate);
 
