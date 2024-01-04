@@ -54,12 +54,7 @@
 							<td class="w-100"> 
 								<!-- Project Owner Update -->
 								<div class="d-flex justift-content-start">
-									<!-- 
-									<input type="text" class="form-control disable" name="projectOwner" value="${project.projectOwner.employeeId}"> 
-									<input type="text" class="form-control disable" name="projectOwner2" value="${project.projectOwner.employeeName}" >
-									<button type="button" class="btn btn-secondary" data-bs-toggle="modal" onclick="openModal('${ project.projectId }')" >+</button>
-									 -->
-									<select class="form-select" value="${project.projectOwner.employeeId}">
+									<select class="form-select" value="${project.projectOwner.employeeId}" id="upadte_projectOwner">
 									  <c:forEach items="${ employees }" var="employee">
 									     <option value="${ employee.employeeId }">${ employee.employeeName}</option>
 									  </c:forEach>
@@ -117,43 +112,6 @@
 					</tbody>
 				</c:forEach>
 			</table>
-		</div>
-		<!-- Update Project Owner Modal -->
-		<div class="modal fade" id="update_exampleOwner" tabindex="-1" aria-labelledby="exampleOwnerLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabelOwner">Project Owner</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<div class=" d-flex justify-content-center mt-2">
-							<div style="height: 500px; width: 500px;"
-								class="shadow overflow-auto" id="left3">
-								<h3 class="text-center">Employee</h3>
-								<ul class="list-group overflow-auto">
-									<c:forEach items="${ employees }" var="employee">
-										<button type="button" class="listItem list-group-item list-group-item-action mb-1" data-employee-id="${ employee.employeeId }">${ employee.employeeName}</button>
-									</c:forEach>
-								</ul>
-							</div>
-							<div style="width: 50px; height: 500px;"
-								class="d-flex flex-column align-items-center justify-content-center mx-1">
-								<button id="toRight3" class="btn btn-outline-primary toRight">>></button>
-								<button id="toLeft3" class="btn btn-outline-primary toLeft"><<</button>
-							</div>
-							<div style="height: 500px; width: 500px;" class="shadow" id="right3">
-								<h3 class="text-center">Project Owner</h3>
-								<ul class="list-group"></ul>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"	data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="updateProjectMember()">Savechanges</button>
-					</div>
-				</div>
-			</div>
 		</div>
 		<!-- Update Project Member Modal -->
 		<div class="modal fade" id="update_exampleMember" tabindex="-1" aria-labelledby="exampleMemberLabel" aria-hidden="true">
@@ -578,7 +536,7 @@ myModal.addEventListener('shown.bs.modal', function () {
 	  	let field = {
 	  		"projectId": projectId,
 	  		"projectName": $('#upadte_projectName').val(),
-	  		"projectOwner": $('#upadte_projectName').val(),
+	  		"projectOwner": $('#upadte_projectOwner').val(),
 	  			
 	  	};
 	  	
