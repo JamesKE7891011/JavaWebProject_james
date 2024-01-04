@@ -2,15 +2,17 @@ package com.example.bean;
 
 public class IssueFile {
 	private Integer issueFileId;
+	private Integer issueId;
 	private String issueFileName;
 	
 	public IssueFile() {
 		
 	}
-	
-	public IssueFile(Integer issueFileId, String issueFileName) {
+
+	public IssueFile(Integer issueFileId, Integer issueId, String issueFileName) {
 		super();
 		this.issueFileId = issueFileId;
+		this.issueId = issueId;
 		this.issueFileName = issueFileName;
 	}
 
@@ -18,12 +20,20 @@ public class IssueFile {
 		return issueFileId;
 	}
 
-	public void setIssueFileId(Integer issueFileId) {
-		this.issueFileId = issueFileId;
+	public Integer getIssueId() {
+		return issueId;
 	}
 
 	public String getIssueFileName() {
 		return issueFileName;
+	}
+
+	public void setIssueFileId(Integer issueFileId) {
+		this.issueFileId = issueFileId;
+	}
+
+	public void setIssueId(Integer issueId) {
+		this.issueId = issueId;
 	}
 
 	public void setIssueFileName(String issueFileName) {
@@ -32,7 +42,8 @@ public class IssueFile {
 
 	@Override
 	public String toString() {
-		return "IssueFile [issueFileId=" + issueFileId + ", issueFileName=" + issueFileName + "]";
+		return "IssueFile [issueFileId=" + issueFileId + ", issueId=" + issueId + ", issueFileName=" + issueFileName
+				+ "]";
 	}
 		
 }
