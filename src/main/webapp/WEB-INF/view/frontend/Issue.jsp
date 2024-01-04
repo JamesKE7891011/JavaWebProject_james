@@ -33,8 +33,8 @@
     			<div class="invalid-feedback ">請選擇議題!</div>
   	    	</div>
 			<div class="mt-3 mb-3">
-  				<label for="issuepath" class="form-label">備註檔案上傳</label>
-  				<input class="form-control" type="file" id="issuepath" name="issuepath">
+  				<label for="issuefile" class="form-label">備註檔案上傳</label>
+  				<input class="form-control" type="file" id="issuefile" name="issuefile">
 			</div>
 			<div class="mb-1">
   				<label for="issuecontent" class="form-label">議題內容(請敘述原因:)</label>

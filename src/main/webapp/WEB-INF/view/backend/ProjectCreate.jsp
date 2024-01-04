@@ -52,10 +52,28 @@
 						</tr>
 						<tr>
 							<th scope="row">projectOwner:</th>
-							<td class="w-100">
-								<input type="text" value="${ project.projectOwner }" class="w-75" id="upadte_projectOwner">
+							<td class="w-100"> 
+								<c:set var="ownerString" value="" />
+								<c:set var="ownerIdString" value="" />
+								<c:forEach items="${ project.projectOwner }" var="owner"  varStatus="loop">
+									<c:if test="${ loop.index < project.projectOwner.size() -1 }">
+										<c:set var="ownerString" value="${ownerString}${owner}," />
+										<c:set var="ownerIdString" value="${ownerIdString}${owner.employeeId}," />
+									</c:if>
+									<c:if test="${ loop.index == project.projectowner.size() - 1 }">
+										<c:set var="ownerString" value="${ownerString}${owner}" />
+										<c:set var="ownerIdString" value="${ownerIdString}${owner.employeeId}" />
+									</c:if>
+								</c:forEach>
+								<!-- Project Owner Update -->
+								<div class="d-flex justift-content-start">
+									<input type="text" class="form-control disable" id="update_projectOwner_${ project.projectId }" name="projectOwner" value="${ownerIdString}" hidden> 
+									<input type="text" class="form-control disable" id="update_projectOwner2_${ project.projectId }" name="projectOwner2" value="${ownerIdString}" >
+									<button type="button" class="btn btn-secondary" data-bs-toggle="modal" onclick="openModal('${ project.projectId }')" >+</button>
+								</div>
 							</td>
 						</tr>
+						<tr>
 							<th scope="row">projectMember:</th>
 							<td class="w-100">
 								<c:set var="membersString" value="" />
@@ -70,11 +88,11 @@
 										<c:set var="membersIdString" value="${membersIdString}${member.employeeId}" />
 									</c:if>
 								</c:forEach>
-								<!-- Project Member -->
+								<!-- Project Member Update -->
 								<div class="d-flex justift-content-start">
 									<input type="text" class="form-control disable" id="update_projectMember_${ project.projectId }" name="projectMember" value="${membersIdString}" hidden> 
 									<input type="text" class="form-control disable" id="update_projectMember2_${ project.projectId }" name="projectMember2" value="${membersString}" >
-									<button type="button" class="btn btn-secondary" data-bs-toggle="modal" onclick="openModal('${ project.projectId }')" >+</button>
+									<button type="button" class="btn btn-secondary" data-bs-toggle="modal" onclick="openModalMember('${ project.projectId }')" >+</button>
 								</div>
 							</td>
 						</tr>
@@ -106,12 +124,12 @@
 				</c:forEach>
 			</table>
 		</div>
-		<!-- Update Project Member Modal -->
-		<div class="modal fade" id="update_exampleMember" tabindex="-1" aria-labelledby="exampleMemberLabel" aria-hidden="true">
+		<!-- Update Project Owner Modal -->
+		<div class="modal fade" id="update_exampleOwner" tabindex="-1" aria-labelledby="exampleOwnerLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Project Member</h5>
+						<h5 class="modal-title" id="exampleModalLabelOwner">Project Owner</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -131,6 +149,43 @@
 								<button id="toLeft3" class="btn btn-outline-primary toLeft"><<</button>
 							</div>
 							<div style="height: 500px; width: 500px;" class="shadow" id="right3">
+								<h3 class="text-center">Project Owner</h3>
+								<ul class="list-group"></ul>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"	data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="updateProjectMember()">Savechanges</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Update Project Member Modal -->
+		<div class="modal fade" id="update_exampleMember" tabindex="-1" aria-labelledby="exampleMemberLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabelMember">Project Member</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class=" d-flex justify-content-center mt-2">
+							<div style="height: 500px; width: 500px;"
+								class="shadow overflow-auto" id="left4">
+								<h3 class="text-center">Employee</h3>
+								<ul class="list-group overflow-auto">
+									<c:forEach items="${ employees }" var="employee">
+										<button type="button" class="listItem list-group-item list-group-item-action mb-1" data-employee-id="${ employee.employeeId }">${ employee.employeeName}</button>
+									</c:forEach>
+								</ul>
+							</div>
+							<div style="width: 50px; height: 500px;"
+								class="d-flex flex-column align-items-center justify-content-center mx-1">
+								<button id="toRight4" class="btn btn-outline-primary toRight">>></button>
+								<button id="toLeft4" class="btn btn-outline-primary toLeft"><<</button>
+							</div>
+							<div style="height: 500px; width: 500px;" class="shadow" id="right4">
 								<h3 class="text-center">Projrct Member</h3>
 								<ul class="list-group"></ul>
 							</div>
@@ -231,7 +286,7 @@
 					</div>
 				</div>
 			</div>
-
+			
 			<!-- Project Member -->
 			<div class="col-md-6">
 				<label for="validationDefault01" class="form-label">projectMember</label>
@@ -329,30 +384,86 @@ myModal.addEventListener('shown.bs.modal', function () {
 </script>
 <!-- 成員新增 -->
 <script>
+//----------------update projectOwner----------------------//
+	var update_project = '';
+	var update_projectOwner = [];  // 儲存 Owner 的 ID
+	var update_projectOwner2 = []; // 儲存 Owner 的 Name
 
+	function openModalOwner(projectId) {
+		update_project = projectId;
+		update_projectOwner = $('#update_projectOwner_'+update_project).val().split(',');
+		update_projectOwner2 = $('#update_projectOwner2_'+update_project).val().split(',');
+
+		//加入員工至右邊欄位
+		$('#left3 .listItem').each(function() {
+			let employeeId = $(this).eq(0).attr("data-employee-id");
+			if(update_projectOwner.includes(employeeId)) {
+	        	$('#right3').append($(this)[0]);
+			}
+    	});
+	
+    	//移除員工至左邊欄位
+		$('#right3 .listItem').each(function() {
+			let employeeId = $(this).eq(0).attr("data-employee-id");
+			if(!update_projectOwner.includes(employeeId)) {
+				$('#left3').append($(this)[0]);
+			}
+    	});
+    
+		var myModal = new bootstrap.Modal(document.getElementById('update_exampleOwner'));
+		myModal.show();
+		}
+
+		$('#toRight3').on('click',function() {
+    		$('#left3 .active').each(function() {
+        		$('#right3').append($(this)[0]);
+        		//加入至右邊欄位
+        		update_projectOwner.push($(this).eq(0).attr("data-employee-id"));
+        		update_projectOwner2.push($(this)[0].innerText);
+    		});
+		});
+
+		$('#toLeft4').on('click',function() {
+    		$('#right4 .active').each(function() {
+        		$('#left4').append($(this)[0]);
+        		//移除還原至左邊欄位
+        		let ownerstr = $(this).eq(0).attr("data-employee-id");
+        		let ownerstr2 = $(this)[0].innerText;
+        		update_projectOwner = update_projectOwner.filter(owner => owner !== ownerstr);
+        		update_projectOwner2 = uupdate_projectOwner2.filter(owner => owner !== ownerstr2);
+    		});
+		});
+
+	function updateProjectOwner() {
+		$('#update_projectOwner_'+update_project).val(update_projectOwner);
+		$('#update_projectOwner2_'+update_project).val(update_projectOwner2);
+		console.log(update_projectOwner);
+		console.log(update_projectOwner);
+	}
+	
 	//----------------update projectMember----------------------//
 	var update_project = '';
 	var update_projectMember = [];  // 儲存 Member 的 ID
 	var update_projectMember2 = []; // 儲存 Member 的 Name
 	
-	function openModal(projectId) {
+	function openModalMember(projectId) {
 		update_project = projectId;
     	update_projectMember = $('#update_projectMember_'+update_project).val().split(',');
     	update_projectMember2 = $('#update_projectMember2_'+update_project).val().split(',');
 
     	//加入員工至右邊欄位
-    	$('#left3 .listItem').each(function() {
+    	$('#left4 .listItem').each(function() {
     		let employeeId = $(this).eq(0).attr("data-employee-id");
     		if(update_projectMember.includes(employeeId)) {
-    	        $('#right3').append($(this)[0]);
+    	        $('#right4').append($(this)[0]);
     		}
 	    });
     	
         //移除員工至左邊欄位
-    	$('#right3 .listItem').each(function() {
+    	$('#right4 .listItem').each(function() {
     		let employeeId = $(this).eq(0).attr("data-employee-id");
     		if(!update_projectMember.includes(employeeId)) {
-    			$('#left3').append($(this)[0]);
+    			$('#left4').append($(this)[0]);
     		}
 	    });
         
@@ -360,18 +471,18 @@ myModal.addEventListener('shown.bs.modal', function () {
     	myModal.show();
   	}
     
-	$('#toRight3').on('click',function() {
-	    $('#left3 .active').each(function() {
-	        $('#right3').append($(this)[0]);
+	$('#toRight4').on('click',function() {
+	    $('#left4 .active').each(function() {
+	        $('#right4').append($(this)[0]);
 	        //加入至右邊欄位
 	        update_projectMember.push($(this).eq(0).attr("data-employee-id"));
 	        update_projectMember2.push($(this)[0].innerText);
 	    });
 	});
 	
-	$('#toLeft3').on('click',function() {
-	    $('#right3 .active').each(function() {
-	        $('#left3').append($(this)[0]);
+	$('#toLeft4').on('click',function() {
+	    $('#right4 .active').each(function() {
+	        $('#left4').append($(this)[0]);
 	        //移除還原至左邊欄位
 	        let memberstr = $(this).eq(0).attr("data-employee-id");
 	        let memberstr2 = $(this)[0].innerText;

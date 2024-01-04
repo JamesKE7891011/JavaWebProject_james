@@ -16,7 +16,7 @@ public class IssueDaoImplMySQL implements IssueDao {
 
 	@Override
 	public int addIssue(Issue issue) {
-		String sql = "insert into issue(projectId,issueName,issueClass,issueContent) values(?,?,?,?,?)";
+		String sql = "insert into issue(projectId,issueName,issueClass,issueContent) values(?,?,?,?)";
 		return jdbcTemplate.update(sql, issue.getProjectId(),issue.getIssueName(),issue.getIssueClass(),issue.getIssueContent());
 	}
 
