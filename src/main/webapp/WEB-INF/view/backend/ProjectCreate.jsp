@@ -54,9 +54,16 @@
 							<td class="w-100"> 
 								<!-- Project Owner Update -->
 								<div class="d-flex justift-content-start">
+									<!-- 
 									<input type="text" class="form-control disable" name="projectOwner" value="${project.projectOwner.employeeId}"> 
 									<input type="text" class="form-control disable" name="projectOwner2" value="${project.projectOwner.employeeName}" >
 									<button type="button" class="btn btn-secondary" data-bs-toggle="modal" onclick="openModal('${ project.projectId }')" >+</button>
+									 -->
+									<select class="form-select" value="${project.projectOwner.employeeId}">
+									  <c:forEach items="${ employees }" var="employee">
+									     <option value="${ employee.employeeId }">${ employee.employeeName}</option>
+									  </c:forEach>
+									</select>
 								</div>
 							</td>
 						</tr>
@@ -570,7 +577,8 @@ myModal.addEventListener('shown.bs.modal', function () {
 	  
 	  	let field = {
 	  		"projectId": projectId,
-	  		"projectName": $('#upadte_projectName').val()
+	  		"projectName": $('#upadte_projectName').val(),
+	  		"projectOwner": $('#upadte_projectName').val(),
 	  			
 	  	};
 	  	
