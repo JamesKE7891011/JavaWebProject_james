@@ -16,8 +16,8 @@ public class IssueDaoImplMySQL implements IssueDao {
 
 	@Override
 	public int addIssue(Issue issue) {
-		String sql = "insert into issue(projectId,issueName,issueClass,issueContent) values(?,?,?,?)";
-		return jdbcTemplate.update(sql, issue.getProjectId(),issue.getIssueName(),issue.getIssueClass(),issue.getIssueContent());
+		String sql = "insert into issue(projectId,issueName,issueClass,issueContent,issueStatus) values(?,?,?,?,?)";
+		return jdbcTemplate.update(sql, issue.getProjectId(),issue.getIssueName(),issue.getIssueClass(),issue.getIssueContent(),issue.getIssueStatus());
 	}
 
 	@Override
@@ -33,10 +33,10 @@ public class IssueDaoImplMySQL implements IssueDao {
 	}
 
 	@Override
-	public Optional<Issue> findIssuesByProjectId(String projectId) {
+	public Optional<Issue> findIssuesByIssueId(Integer issueId) {
 		String sql = "select issueId,projectId,issueName,issueClass,issueContent,issueStatus,issueDateTime from issue where projectId";
 		try {
-			Issue issue = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Issue.class),projectId);
+			Issue issue = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Issue.class),issueId);
 			return Optional.ofNullable(issue);
 		} catch (Exception e) {
 			return Optional.empty();
@@ -46,7 +46,11 @@ public class IssueDaoImplMySQL implements IssueDao {
 	@Override
 	public int updateIssue(Issue issueUpdate) {
 		String sql = "update issue set projectId = ?,issueName = ?,issueClass = ?,issueContent = ?,issueStatus = ?,issueDateTime = ? where issueId = ?";
-		return jdbcTemplate.update(sql, issueUpdate.getProjectId(),issueUpdate.getIssueName(),issueUpdate.getIssueClass(),
-										issueUpdate.getIssueContent(),issueUpdate.getIssueDateTime());
+		return jdbcTemplate.update(sql, 
+				issueUpdate.getProjectId(),
+				issueUpdate.getIssueName(),
+				issueUpdate.getIssueClass(),
+				issueUpdate.getIssueContent(),
+				issueUpdate.getIssueStatus());
 	}	
 }

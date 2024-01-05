@@ -13,7 +13,7 @@ public interface IssueDao {
 	
 	List<Issue> findAllIssues();
 	
-	Optional<Issue> findIssuesByProjectId(String projectId);
+	Optional<Issue> findIssuesByIssueId(Integer issueId);
 	
 	int updateIssue(Issue issueUpdate);
 	
