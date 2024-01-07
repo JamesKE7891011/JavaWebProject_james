@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%@ include file="/WEB-INF/view/header.jsp" %>
 
@@ -49,47 +53,53 @@
 	</div>
 	
 	<!-- 專案下拉選單 -->
-	<div>
-		<h4 class="fs-4 fw-bolld mt-4">Project Name</h4>
-		<select class=" form-select mt-2" aria-label="Default select example">
-  			<option selected>Choose project</option>
-  			<option value="One">AC23020</option>
-		</select>
-	</div>
+	<div class="col-5 m-3">
+		<h4 class="fs-4 fw-bolld">Project Name</h4>
+		<div class="d-flex justify-content-start">
+			<select class=" form-select  w-75"
+				aria-label="Default select example" onchange="selectProject(event)">
+				<c:forEach items="${ projects }" var="project">
+						<option value="${ project.projectId }">${ project.projectId }
+							${ project.projectName }</option>
+					</c:forEach>
+			</select>
+		</div>
 	
 	<!-- Issue顯示狀態列 -->
 	<div>
 		<table class="table table-hover text-center">
-  			<thead>
-    			<tr>
-      				<th scope="col">IssueID</th>
-      				<th scope="col">IssueName</th>
-      				<th scope="col">IssueClass</th>
-      				<th scope="col">IssueContent</th>
-      				<th scope="col">IssuePath</th>
-      				<th scope="col">IssueDatetime</th>
-      				<th scope="col">IssueStatus</th>
-      				<th scope="col">Revise</th>
-      				<th scope="col">Delete</th>
-    			</tr>
-  			</thead>
-  			<tbody>
-    			<tr>
-      				<th scope="row">1</th>
-      					<td>馬桶壞掉</td>
-      					<td>D</td>
-      					<td>因投入不當物品，造成堵塞</td>
-      					<td>馬桶.jpg</td>
-      					<td>2023-12-07 00:00:00</td>
-      					<td>Open</td>
-      					<td>
-      					<button type="button" class=" btn btn-secondary ">修改</button>
-      					</td>
-      					<td>
-      					<button type="button" class="mx-4  btn btn-danger ">刪除</button>
-      					</td>
-    			</tr>    			
-  			</tbody>
+			<c:forEach items="${ issues }" var="issue" varStatus="loop">
+  				<thead>
+    				<tr>
+      					<th scope="col">IssueID:</th>
+	      				<th scope="col">IssueName:</th>
+	      				<th scope="col">IssueClass:</th>
+	      				<th scope="col">IssueContent:</th>
+	      				<th scope="col">IssuePath:</th>
+	      				<th scope="col">IssueDatetime:</th>
+	      				<th scope="col">IssueStatus:</th>
+	      				<th scope="col">Revise:</th>
+	      				<th scope="col">Delete:</th>
+    				</tr>
+	  			</thead>
+	  			<tbody>
+	    			<tr>
+	      				<th scope="row">1</th>
+	      					<td>馬桶壞掉</td>
+	      					<td>D</td>
+	      					<td>因投入不當物品，造成堵塞</td>
+	      					<td>馬桶.jpg</td>
+	      					<td>2023-12-07 00:00:00</td>
+	      					<td>Open</td>
+	      					<td>
+	      						<button type="button" class=" btn btn-secondary ">修改</button>
+	      					</td>
+	      					<td>
+	      						<button type="button" class="mx-4  btn btn-danger ">刪除</button>
+	      					</td>
+	    			</tr>    			
+	  			</tbody>
+  			</c:forEach>
 		</table>
 	</div>
 	
