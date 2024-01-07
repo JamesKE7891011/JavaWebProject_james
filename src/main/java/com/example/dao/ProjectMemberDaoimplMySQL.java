@@ -26,7 +26,7 @@ public class ProjectMemberDaoimplMySQL implements ProjectMemberDao {
 
 		String sql = "insert into projectmember(projectId, employeeId) values(?,?)";
 
-		BatchPreparedStatementSetter bps = new BatchPreparedStatementSetter() {
+	BatchPreparedStatementSetter bps = new BatchPreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				ps.setString(1, projectId);
