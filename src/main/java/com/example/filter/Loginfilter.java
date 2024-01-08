@@ -22,7 +22,8 @@ public class Loginfilter extends HttpFilter{
 		if(urlString.endsWith("login.jsp") || urlString.endsWith("login") 
 				|| urlString.indexOf("/images")>=0 
 				|| urlString.endsWith(".css")
-				|| urlString.endsWith(".js") ) {
+				|| urlString.endsWith(".js") 
+				|| urlString.indexOf("/upload")>=0 ) {
 			chain.doFilter(req, resp);
 			return;
 		}

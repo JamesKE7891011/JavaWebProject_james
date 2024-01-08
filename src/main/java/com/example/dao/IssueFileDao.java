@@ -22,4 +22,6 @@ public interface IssueFileDao {
 	int updateIssueFile(IssueFile issueFileUpdate);
 
 	
+
+	
 }

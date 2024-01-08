@@ -53,6 +53,7 @@ public class IssueDaoImplMySQL implements IssueDao {
 		issue.setIssueStatus(rs.getInt("issueStatus"));
 		issue.setIssueDateTime(rs.getDate("issueDateTime"));
 		
+		
 //		List<Issue> issues = issue.findIssuesByIssueId(issue.getIssueId()).get();
 //		List<IssueFile> issueFiles = new ArrayList<IssueFile>();
 //		for(Issue currentIssue :issues) {
@@ -62,8 +63,8 @@ public class IssueDaoImplMySQL implements IssueDao {
 //		
 //		issue.setIssueFiles(issueFiles);
 		
-		int issueId = rs.getInt("issueId");
-	    List<IssueFile> issueFiles = issueFileDao.findIssueFilesByIssueId(issueId);
+		
+	    List<IssueFile> issueFiles = issueFileDao.findIssueFilesByIssueId(rs.getInt("issueId"));
 	    issue.setIssueFiles(issueFiles);
 		
 		return issue;
