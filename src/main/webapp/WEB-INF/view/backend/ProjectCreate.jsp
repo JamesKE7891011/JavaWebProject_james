@@ -23,8 +23,7 @@
 				<select class=" form-select  w-75"
 					aria-label="Default select example" onchange="selectProject(event)">
 					<c:forEach items="${ projects }" var="project">
-						<option value="${ project.projectId }">${ project.projectId }
-							${ project.projectName }</option>
+						<option value="${ project.projectId }">${ project.projectId }   ${ project.projectName }</option>
 					</c:forEach>
 				</select>
 			</div>
@@ -520,9 +519,9 @@ myModal.addEventListener('shown.bs.modal', function () {
 	  	
 	  	console.log(projectId);
 	  	
-	    // 使用 AJAX 向後端傳遞資料，這裡只是示例
+	    // 使用 AJAX 向後端傳遞資料
 	    $.ajax({
-	        type: 'POST', // 或 'PUT'，根據實際情況
+	        type: 'POST', 
 	        url: '/JavaWebProject_james/mvc/project/' + projectId + '/updateproject',
 	        data: field,
 	        success: function (response) {

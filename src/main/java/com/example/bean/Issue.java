@@ -9,10 +9,10 @@ public class Issue {
 	
 	private Integer issueId;
 	
-	private String issueClass;
-	
 	private String issueName;
 	
+	private String issueClassId;
+			
 	private String issueContent;
 	
 	private List<IssueFile> issueFiles;
@@ -27,12 +27,12 @@ public class Issue {
 		
 	}
 
-	public Issue(String projectId, Integer issueId, String issueClass, String issueName, String issueContent,
+	public Issue(String projectId, Integer issueId, String issueName, String issueClassId, String issueContent,
 			List<IssueFile> issueFiles, Integer issueStatus, Date issueDateTime) {
 		this.projectId = projectId;
 		this.issueId = issueId;
-		this.issueClass = issueClass;
 		this.issueName = issueName;
+		this.issueClassId = issueClassId;
 		this.issueContent = issueContent;
 		this.issueFiles = issueFiles;
 		this.issueStatus = issueStatus;
@@ -55,20 +55,20 @@ public class Issue {
 		this.issueId = issueId;
 	}
 
-	public String getIssueClass() {
-		return issueClass;
-	}
-
-	public void setIssueClass(String issueClass) {
-		this.issueClass = issueClass;
-	}
-
 	public String getIssueName() {
 		return issueName;
 	}
 
 	public void setIssueName(String issueName) {
 		this.issueName = issueName;
+	}
+
+	public String getIssueClassId() {
+		return issueClassId;
+	}
+
+	public void setIssueClassId(String issueClassId) {
+		this.issueClassId = issueClassId;
 	}
 
 	public String getIssueContent() {
@@ -105,13 +105,11 @@ public class Issue {
 
 	@Override
 	public String toString() {
-		return "Issue [projectId=" + projectId + ", issueId=" + issueId + ", issueClass=" + issueClass + ", issueName="
-				+ issueName + ", issueContent=" + issueContent + ", issueFiles=" + issueFiles + ", issueStatus="
+		return "Issue [projectId=" + projectId + ", issueId=" + issueId + ", issueName=" + issueName + ", issueClassId="
+				+ issueClassId + ", issueContent=" + issueContent + ", issueFiles=" + issueFiles + ", issueStatus="
 				+ issueStatus + ", issueDateTime=" + issueDateTime + "]";
 	}
 	
-	
-
 	
 	
 }

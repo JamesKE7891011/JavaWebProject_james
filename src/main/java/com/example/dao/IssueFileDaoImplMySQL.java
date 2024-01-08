@@ -32,7 +32,7 @@ public class IssueFileDaoImplMySQL implements IssueFileDao{
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				ps.setInt(1, issueId);
-				ps.setInt(2,issueFiles.size());
+				ps.setInt(2,issueFiles.get(i));
 				
 			}
 			
