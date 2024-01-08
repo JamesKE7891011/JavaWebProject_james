@@ -52,14 +52,14 @@ CREATE TABLE `issue` (
   `issueId` int NOT NULL AUTO_INCREMENT,
   `projectId` varchar(45) NOT NULL,
   `issueName` varchar(45) NOT NULL,
-  `issueClass` varchar(45) NOT NULL,
+  `issueClassId` varchar(45) NOT NULL,
   `issueContent` varchar(255) NOT NULL,
   `issueStatus` tinyint NOT NULL DEFAULT '1',
   `issueDateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`issueId`),
   KEY `fk_issue_project_id_idx` (`projectId`),
-  KEY `fk_issue_issue_class_idx` (`issueClass`),
-  CONSTRAINT `fk_issue_issue_class` FOREIGN KEY (`issueClass`) REFERENCES `issueclass` (`issueClassId`),
+  KEY `fk_issue_issue_class_idx` (`issueClassId`),
+  CONSTRAINT `fk_issue_issue_class_id` FOREIGN KEY (`issueClassId`) REFERENCES `issueclass` (`issueClassId`),
   CONSTRAINT `fk_issue_project_id` FOREIGN KEY (`projectId`) REFERENCES `project` (`projectId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -94,7 +94,7 @@ CREATE TABLE `issueclass` (
 
 LOCK TABLES `issueclass` WRITE;
 /*!40000 ALTER TABLE `issueclass` DISABLE KEYS */;
-INSERT INTO `issueclass` VALUES ('A','稽核缺失'),('B','進度DELAY'),('C','工安事件'),('D','事務維修');
+INSERT INTO `issueclass` VALUES ('A','設計類'),('B','公務類'),('C','環安衛類'),('D','其他');
 /*!40000 ALTER TABLE `issueclass` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -223,4 +223,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-08  0:53:27
+-- Dump completed on 2024-01-09  0:57:53
