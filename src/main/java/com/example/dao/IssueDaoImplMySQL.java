@@ -39,9 +39,15 @@ public class IssueDaoImplMySQL implements IssueDao {
 	}
 
 	@Override
+	@Transactional
 	public int removeIssueById(Integer issueId) {
-		String sql = "delete from issue where issueId = ?";
-		return jdbcTemplate.update(sql,issueId);
+	    // 刪除相應的子表記錄
+	    String deleteIssueFileSql = "delete from issuefile where issueId = ?";
+	    jdbcTemplate.update(deleteIssueFileSql, issueId);
+
+	    // 現在可以刪除父表記錄
+	    String deleteIssueSql = "delete from issue where issueId = ?";
+	    return jdbcTemplate.update(deleteIssueSql, issueId);
 	}
 	
 	RowMapper<Issue> issueMapper = (ResultSet rs, int rowNum) -> {

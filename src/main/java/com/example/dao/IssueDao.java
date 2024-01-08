@@ -16,5 +16,6 @@ public interface IssueDao {
 	Optional<Issue> findIssuesByIssueId(Integer issueId);
 	
 	int updateIssue(Issue issueUpdate);
+
 	
 }

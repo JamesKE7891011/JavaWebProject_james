@@ -10,5 +10,7 @@ public interface IssueClassDao {
 	List<IssueClass> findAllIssueClass();
 	
 	Optional<IssueClass> findIssueClassById(String issueClassId);
+
+	
 	
 }
