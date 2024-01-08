@@ -27,12 +27,11 @@
   	    	</div>
   			<div class="mb-1">
   				<label for="issueclass" class="form-label mt-2" id="issueclass" name="issueclass">檔案類別</label>
-   	 			<select class="form-select" required aria-label="select example">         
-     				<option value="">請選擇議題類別...</option>
-      				<option value="A">A類別</option> 
-      				<option value="B">B類別</option>
-     				<option value="C">C類別</option>
-     				<option value="D">D類別</option>
+   	 			<select class="form-select" required aria-label="select example">
+   	 				<c:forEach var="issue" items="${ issues }" >       
+	     				<option value="">請選擇議題類別...</option>
+	      				<option value="${ issueclass.issueClassId }"> ${ issueclass.issueClassName }</option> 
+      				</c:forEach>  
     			</select>
     			<div class="invalid-feedback ">請選擇議題!</div>
   	    	</div>
@@ -64,6 +63,7 @@
 					</c:forEach>
 			</select>
 		</div>
+	</div>
 	
 	<!-- Issue顯示狀態列 -->
 	<div>

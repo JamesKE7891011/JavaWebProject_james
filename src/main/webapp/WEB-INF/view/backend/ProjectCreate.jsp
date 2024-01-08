@@ -84,7 +84,7 @@
 								<!-- Project Member Update -->
 								<div class="d-flex justift-content-start">
 									<input type="text" class="form-control disable" id="update_projectMember_${ project.projectId }" name="projectMember" value="${membersIdString}" hidden> 
-									<input type="text" class="form-control disable" id="update_projectMember2_${ project.projectId }" name="projectMember2" value="${membersString}" >
+									<input type="text" class="form-control disable " id="update_projectMember2_${ project.projectId }" name="projectMember2" value="${membersString}" >
 									<button type="button" class="btn btn-secondary" data-bs-toggle="modal" onclick="openModalMember('${ project.projectId }')" >+</button>
 								</div>
 							</td>

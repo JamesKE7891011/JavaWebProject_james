@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,6 +18,7 @@ import com.example.bean.IssueFile;
 @Repository("issuefiledaomysql")
 public class IssueFileDaoImplMySQL implements IssueFileDao{
 	
+	@Resource(name = "jdbcTemplate")
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
@@ -50,7 +53,7 @@ public class IssueFileDaoImplMySQL implements IssueFileDao{
 	
 	@Override
 	public List<IssueFile> findIssueFilesByIssueId(int issueId) {
-	    String sql = "select issueFileId,issueID,issueFilePath from issue_file where issueId = ?";
+	    String sql = "select issueFileId,issueID,issueFilePath from issuefile where issueId = ?";
 	    return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(IssueFile.class), issueId);
 	}
 	
