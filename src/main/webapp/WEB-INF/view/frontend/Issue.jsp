@@ -10,13 +10,13 @@
 	<!-- 議題新增 -->
 	<div class=" ms-3 w-75">
 		<h4 class="fw-bold fs-3 text-center ">ISSUE CREATE</h4>
-		<form class="w-80 needs-validation" method="post" action="/JavaWebProject_james/mvc/issue/addissue" novalidate >
+		<form class="w-80 needs-validation" method="post" action="/JavaWebProject_james/mvc/issue/addissue" enctype="multipart/form-data" novalidate >
 			<div class="mb-1">
 				<label for="issuename" class="form-label" >隸屬專案名稱</label>
-				<select class=" form-select  w-75"
+				<select class=" form-select  w-75" id="projectId" name="projectId"
 					aria-label="Default select example" onchange="selectProject(event)">
 					<c:forEach items="${ projects }" var="project">
-						<option value="${ project.projectId }">${ project.projectId } ${ project.projectName }</option>
+						<option  value="${ project.projectId }">${ project.projectId } ${ project.projectName }</option>
 					</c:forEach>
 				</select>
 			</div>
@@ -27,8 +27,9 @@
   	    		
   	    	</div>
   			<div class="mb-1">
-  				<label for="issueClass" class="form-label mt-2" id="issueClass" name="issueClass">議題類別</label>
-   	 			<select class="form-select" required aria-label="Default select example" onchange="selectIssueClass(event)">
+  				<label for="issueClass" class="form-label mt-2" >議題類別</label>
+   	 			<select class="form-select" required aria-label="Default select example" onchange="selectIssueClass(event)"
+   	 			id="issueClassId" name="issueClassId">
    	 				<c:forEach var="issueClass" items="${ issueClasses }" >       
 	      				<option value="${ issueClass.issueClassId }"> ${ issueClass.issueClassName }</option> 
       				</c:forEach>  
@@ -37,7 +38,7 @@
   	    	</div>
 			<div class="mt-3 mb-3">
   				<label for="issueFile" class="form-label">備註檔案上傳</label>
-  				<input class="form-control" type="file" id="issueFile" name="issueFile">
+  				<input class="form-control" type="file" id="issueFilePath" name="issueFilePath" multiple="multiple">
 			</div>
 			<div class="mb-1">
   				<label for="issuecontent" class="form-label">議題內容(請敘述原因:)</label>
@@ -90,7 +91,7 @@
 		      					<td>${ issue.issueContent }</td>
 		      					<c:forEach items="${ issuefiles }" var="issuefile">
 		      						<c:if test="${not empty issuefile}">
-    									<td><c:out value="${issuefile.issueFileName}" /></td>
+    									<td><c:out value="${issuefile.issueFilePath}" /></td>
 									</c:if>
 		      					</c:forEach>	
 		      					<td>${ issue.issueStatus }</td>

@@ -1,6 +1,8 @@
 package com.example.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Propagation;
@@ -31,11 +35,38 @@ public class IssueDaoImplMySQL implements IssueDao {
 	@Qualifier("issuefiledaomysql")
 	private IssueFileDao issueFileDao;
 
+//	@Override
+//	@Transactional(propagation = Propagation.REQUIRED)
+//	public int addIssue(Issue issue) {
+//		
+//		String sql = "insert into issue(projectId,issueName,issueClassId,issueContent) values(?,?,?,?)";
+//		
+//		return jdbcTemplate.update(sql, issue.getProjectId(),issue.getIssueName(),issue.getIssueClassId(),issue.getIssueContent());
+//	}
+	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public int addIssue(Issue issue) {
-		String sql = "insert into issue(projectId,issueName,issueClassId,issueContent,issueStatus) values(?,?,?,?,?)";
-		return jdbcTemplate.update(sql, issue.getProjectId(),issue.getIssueName(),issue.getIssueClassId(),issue.getIssueContent(),issue.getIssueStatus());
+		int issueId = -1;
+	    String sql = "insert into issue(projectId, issueName, issueClassId, issueContent) values(?,?,?,?)";
+
+	    KeyHolder keyHolder = new GeneratedKeyHolder();
+	    
+	    int affectedRows = jdbcTemplate.update(connection -> {
+	        PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	        ps.setString(1, issue.getProjectId());
+	        ps.setString(2, issue.getIssueName());
+	        ps.setString(3, issue.getIssueClassId());
+	        ps.setString(4, issue.getIssueContent());
+	        return ps;
+	    }, keyHolder);
+
+	    // Now you can retrieve the generated key
+	    if (keyHolder.getKey() != null) {
+	        issueId = keyHolder.getKey().intValue();
+	    }
+
+	    return issueId;
 	}
 
 	@Override

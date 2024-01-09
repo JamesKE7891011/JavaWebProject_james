@@ -2,12 +2,14 @@ package com.example.dao;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.bean.IssueFile;
 
 public interface IssueFileDao {
 	
 	//新增檔案
-	int[] addIssueFile(Integer issueId,List<Integer> issueFiles);
+	int[] addIssueFile(Integer issueId,List<MultipartFile> issuePaths);
 	
 	//移除檔案
 	int removeIssueFile(String issueId);

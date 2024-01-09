@@ -1,10 +1,12 @@
 package com.example.bean;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class IssueFile {
 	private Integer issueFileId;
 	private Integer issueId;
 	private String issueFilePath;
-	
+
 	public IssueFile() {
 		
 	}
@@ -20,20 +22,20 @@ public class IssueFile {
 		return issueFileId;
 	}
 
-	public void setIssueFileId(Integer issueFileId) {
-		this.issueFileId = issueFileId;
-	}
-
 	public Integer getIssueId() {
 		return issueId;
 	}
 
-	public void setIssueId(Integer issueId) {
-		this.issueId = issueId;
-	}
-
 	public String getIssueFilePath() {
 		return issueFilePath;
+	}
+
+	public void setIssueFileId(Integer issueFileId) {
+		this.issueFileId = issueFileId;
+	}
+
+	public void setIssueId(Integer issueId) {
+		this.issueId = issueId;
 	}
 
 	public void setIssueFilePath(String issueFilePath) {
@@ -45,5 +47,7 @@ public class IssueFile {
 		return "IssueFile [issueFileId=" + issueFileId + ", issueId=" + issueId + ", issueFilePath=" + issueFilePath
 				+ "]";
 	}
+
+	
 	
 }

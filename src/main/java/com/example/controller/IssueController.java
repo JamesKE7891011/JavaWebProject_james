@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.ParseException;
@@ -36,96 +37,78 @@ import com.example.dao.ProjectDao;
 @Controller
 @RequestMapping("/issue")
 public class IssueController {
-	
+
 	private static final String uploadDir = "C:/uploads/";
 
 	@Autowired
 	@Qualifier("issuedaomysql")
 	private IssueDao issueDao;
-	
+
 	@Autowired
 	@Qualifier("issueclassdaomysql")
 	private IssueClassDao issueClassDao;
-	
+
 	@Autowired
 	@Qualifier("issuefiledaomysql")
 	private IssueFileDao issueFileDao;
-	
+
 	@Autowired
 	@Qualifier("projectdaomysql")
 	private ProjectDao projectDao;
-	
-	//查詢Issue
-	@GetMapping
+
+	// 查詢Issue
+	@GetMapping()
 	public String getIssuePage(Model model) {
-		
+
 		// 1. issues
 		List<Issue> issues = issueDao.findAllIssues();
 		model.addAttribute("issues", issues);
-		
-		//2.issuefiles
+
+		// 2.issuefiles
 		List<IssueFile> issuefiles = issueFileDao.findAllIssueFiles();
 		model.addAttribute("issuefiles", issuefiles);
-		
-		//3.issueclass
+
+		// 3.issueclass
 		List<IssueClass> issueClasses = issueClassDao.findAllIssueClass();
-		model.addAttribute("issueClasses",issueClasses);
-		
-		//4.project
+		model.addAttribute("issueClasses", issueClasses);
+
+		// 4.project
 		List<Project> projects = projectDao.findAllProjects();
 		model.addAttribute("projects", projects);
-		
-		
+
 		return "/frontend/Issue";
 	}
-	
-	// 新增Issue
-    @Transactional(propagation = Propagation.REQUIRED)
-    @RequestMapping(value = "/addissue", method = { RequestMethod.GET, RequestMethod.POST }, produces = "text/plain;charset=utf-8")
-    public String addIssue(@RequestParam(name = "projectId") String projectId,
-            			   @RequestParam(name = "issueName") String issueName, 
-            			   @RequestParam(name = "issueClassId") String issueClassId,
-            			   @RequestParam(name = "issueContent") String issueContent, 
-            			   @RequestParam(name = "issueFile") MultipartFile issueFile,
-            			   HttpSession session, Model model) throws ParseException {
-        try {
-            Issue issue = new Issue();
-            issue.setProjectId(projectId);
-            issue.setIssueName(issueName);
-            issue.setIssueClassId(issueClassId);
-            issue.setIssueContent(issueContent);
 
-            // 檢查是否有上傳檔案
-            if (issueFile != null && !issueFile.isEmpty()) {
-                String fileName = issueFile.getOriginalFilename();
-
-                // 將檔案寫入指定目錄
-                File uploadFile = new File(uploadDir + fileName);
-                issueFile.transferTo(uploadFile);
-            }
-
-            int rowcount = issueDao.addIssue(issue);
-
-            if (rowcount == 0) {
-                model.addAttribute("errorMessage", "新增失敗，請通知管理員");
-                return "/frontend/Issue"; // 返回前端頁面，提供錯誤信息
-            } else {
-                return "redirect:/mvc/issue";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("errorMessage", "新增失敗，請通知管理員" + e.getMessage());
-            return "/frontend/Issue"; // 返回前端頁面，提供錯誤信息
-        }
-    }
-
-	
-}
+	@Transactional(propagation = Propagation.REQUIRED)
+	@RequestMapping(value = "/addissue", method = {RequestMethod.POST }, produces = "text/plain;charset=utf-8")
+	public String addIssue(@RequestParam(name = "projectId") String projectId,
+			@RequestParam(name = "issueName") String issueName,
+			@RequestParam(name = "issueClassId") String issueClassId,
+			@RequestParam(name = "issueContent") String issueContent,
+			@RequestParam(name = "issueFilePath") List<MultipartFile> issueFilePaths, HttpSession session, Model model)
+			throws Exception{
 		
-	
-	
-	
+		Issue issue = new Issue();
+		issue.setProjectId(projectId);
+		issue.setIssueName(issueName);
+		issue.setIssueClassId(issueClassId);
+		issue.setIssueContent(issueContent);
 
-
-
-
+		int issueId = issueDao.addIssue(issue);
+		if (issueId == -1) {
+			model.addAttribute("errorMessage", "新增失敗，請通知管理員");
+			return "/frontend/Issue"; // 返回前端頁面，提供錯誤信息
+		} 
+		
+		if (issueFilePaths != null) {
+			for (MultipartFile issueFilePath : issueFilePaths) {
+				String fileName = issueFilePath.getOriginalFilename();
+				// 將檔案寫入指定目錄
+				File uploadFile = new File(uploadDir + fileName);
+				issueFilePath.transferTo(uploadFile);
+			}
+			issueFileDao.addIssueFile(issueId, issueFilePaths);
+		}
+		return "redirect:/mvc/issue";
+	}
+}
