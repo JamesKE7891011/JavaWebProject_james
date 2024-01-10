@@ -130,7 +130,7 @@
 	
 	function selectProject(event) {
 		
-		$('#issue_table > tr').remove();
+		$('#issue_table  tr').remove();
 		
 		let projectId = event.target.value;
 		

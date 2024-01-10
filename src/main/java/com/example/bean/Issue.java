@@ -28,7 +28,7 @@ public class Issue {
 	
 	
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd hh:MM:dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
 	private Date issueDateTime;
 	
