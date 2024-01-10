@@ -1,7 +1,14 @@
 package com.example.bean;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Issue {
 	
@@ -19,9 +26,7 @@ public class Issue {
 	
 	private Integer issueStatus;
 	
-	private  Date issueDateTime;
-	
-	
+	private Date issueDateTime;
 	
 	public Issue() {
 		

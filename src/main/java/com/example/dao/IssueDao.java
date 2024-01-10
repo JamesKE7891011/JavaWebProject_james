@@ -15,7 +15,7 @@ public interface IssueDao {
 	
 	Optional<Issue> findIssuesByIssueId(Integer issueId);
 	
-	Optional<Issue> findIssuesByProjectId(String projectId);
+	List<Issue> findIssuesByProjectId(String projectId);
 	
 	int updateIssue(Issue issueUpdate);
 

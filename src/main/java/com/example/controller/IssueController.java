@@ -8,21 +8,25 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.bean.Issue;
@@ -78,7 +82,13 @@ public class IssueController {
 
 		return "/frontend/Issue";
 	}
-
+	
+	@GetMapping(value = "/{id}",produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@ResponseBody
+	public List<Issue> findIssueById(@PathVariable("id") String projectId) {
+		return issueDao.findIssuesByProjectId(projectId);
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRED)
 	@RequestMapping(value = "/addissue", method = {RequestMethod.POST }, produces = "text/plain;charset=utf-8")
 	public String addIssue(@RequestParam(name = "projectId") String projectId,
@@ -107,7 +117,7 @@ public class IssueController {
 				File uploadFile = new File(uploadDir + fileName);
 				issueFilePath.transferTo(uploadFile);
 			}
-			issueFileDao.addIssueFile(issueId, issueFilePaths);
+			issueFileDao.addIssueFile(issue.getIssueId(), issueFilePaths);
 		}
 		return "redirect:/mvc/issue";
 	}

@@ -68,44 +68,22 @@
 	<!-- Issue顯示狀態列 -->
 	<div>
 		<table class="table table-hover text-center">
-			<c:forEach items="${ issues }" var="issue" varStatus="loop">
-				<div class="${loop.index >0 ? 'd-none': 'd-block'}" id="${ issue.projectId }">
-	  				<thead>
-	    				<tr>
-	      					<th scope="col">IssueID:</th>
-		      				<th scope="col">IssueName:</th>
-		      				<th scope="col">IssueClass:</th>
-		      				<th scope="col">IssueContent:</th>
-		      				<th scope="col">IssuePath:</th>
-		      				<th scope="col">IssueDatetime:</th>
-		      				<th scope="col">IssueStatus:</th>
-		      				<th scope="col">Revise:</th>
-		      				<th scope="col">Delete:</th>
-	    				</tr>
-		  			</thead>
-		  			<tbody>
-		    			<tr>
-		      					<td>${ issue.issueId }</td>
-		      					<td>${ issue.issueName }</td>
-		      					<td>${ issue.issueClassId }</td>
-		      					<td>${ issue.issueContent }</td>
-		      					<c:forEach items="${ issuefiles }" var="issuefile">
-		      						<c:if test="${not empty issuefile}">
-    									<td><c:out value="${issuefile.issueFilePath}" /></td>
-									</c:if>
-		      					</c:forEach>	
-		      					<td>${ issue.issueStatus }</td>
-		      					<td>${ issue.issueDateTime }</td>
-		      					<td>
-		      						<button type="button" class=" btn btn-secondary ">修改</button>
-		      					</td>
-		      					<td>
-		      						<button type="button" class="mx-4  btn btn-danger ">刪除</button>
-		      					</td>
-		    			</tr>    			
-		  			</tbody>
-	  			</div>
-  			</c:forEach>
+			<thead>
+   				<tr>
+     				<th scope="col">IssueID:</th>
+      				<th scope="col">IssueName:</th>
+      				<th scope="col">IssueClass:</th>
+      				<th scope="col">IssueContent:</th>
+      				<th scope="col">IssuePath:</th>
+      				<th scope="col">IssueDatetime:</th>
+      				<th scope="col">IssueStatus:</th>
+      				<th scope="col">Revise:</th>
+      				<th scope="col">Delete:</th>
+   				</tr>
+		  	</thead>
+  			<tbody id="issue_table">
+    			<tr></tr>    			
+  			</tbody>
 		</table>
 	</div>
 	
@@ -115,6 +93,93 @@
 <%@ include file="/WEB-INF/view/footer.jsp" %>
 
 <script>
+
+	/*
+	{
+	    "projectId": "AC23020",
+	    "issueId": 1,
+	    "issueName": null,
+	    "issueClassId": "D",
+	    "issueContent": "因投入不當物品，造成堵塞",
+	    "issueFiles": [
+	        {
+	            "issueFileId": 501,
+	            "issueId": 1,
+	            "issueFilePath": "馬桶.jpg"
+	        }
+	    ],
+	    "issueStatus": 1,
+	    "issueDateTime": 1701878400000
+	}
+	*/
+	
+	function getStringCommaSeparated(jsonData, propertyName) {
+	    var propertyArray = jsonData.map(function(item) {
+	        return item[propertyName];
+	    });
+
+	    return propertyArray.join('<br>');
+	}
+	
+	function formatDate(date) {
+		  return (
+		    [
+		      date.getFullYear(),
+		      padTo2Digits(date.getMonth() + 1),
+		      padTo2Digits(date.getDate()),
+		    ].join('-') +
+		    ' ' +
+		    [
+		      padTo2Digits(date.getHours()),
+		      padTo2Digits(date.getMinutes()),
+		      padTo2Digits(date.getSeconds()),
+		    ].join(':')
+		  );
+	}
+	
+	function padTo2Digits(num) {
+		  return num.toString().padStart(2, '0');
+	}
+	
+	function formatDateTime(timestamp) {
+		let date = new Date(timestamp);
+		return formatDate(date);
+	}
+	
+	function selectProject(event) {
+		 $('#issue_table > tr').remove();
+		fetch('/JavaWebProject_james/mvc/issue/'+event.target.value, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			}
+		})
+		.then(response => response.json())
+		.then(data => {
+			 $.each(data, function( index, issue ) {
+				 console.log(issue);
+				 let issueFilePath = getStringCommaSeparated(issue.issueFiles,"issueFilePath");
+				 let issueDateTime = formatDateTime(issue.issueDateTime);
+				 
+				 let tr = `
+				 	<tr>
+				 		<td>\${issue.issueId}</td>
+				 		<td>\${issue.issueName}</td>
+				 		<td>\${issue.issueClassId}</td>
+				 		<td>\${issue.issueContent}</td>
+				 		<td>\${issueFilePath}</td>
+				 		<td>\${issueDateTime}</td>
+				 		<td>\${issue.issueStatus}</td>
+				 		<td><button class="btn btn-primary" id="revise_"+\${issue.issueId}>修改</button></td>
+				 		<td><button class="btn btn-danger" id="delete_"+\${issue.issueId}>刪除</button></td>
+				 	</tr>
+				 `;
+				 console.log(tr);
+				 $('#issue_table').append(tr);
+			});
+		});
+	}
+
 	//Example starter JavaScript for disabling form submissions if there are invalid fields
 	(function() {
 		'use strict'

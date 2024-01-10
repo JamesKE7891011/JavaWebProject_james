@@ -83,13 +83,10 @@ public class IssueDaoImplMySQL implements IssueDao {
 		issue.setIssueClassId(rs.getString("issueClassId"));
 		issue.setIssueContent(rs.getString("issueContent"));
 		issue.setIssueStatus(rs.getInt("issueStatus"));
-		issue.setIssueDateTime(rs.getDate("issueDateTime"));
-		
+		issue.setIssueDateTime(rs.getTimestamp("issueDateTime"));
 	    List<IssueFile> issueFiles = issueFileDao.findIssueFilesByIssueId(rs.getInt("issueId"));
 	    issue.setIssueFiles(issueFiles);
-		
 		return issue;
-		
 	};
 
 	@Override
@@ -112,14 +109,9 @@ public class IssueDaoImplMySQL implements IssueDao {
 	
 
 	@Override
-	public Optional<Issue> findIssuesByProjectId(String projectId) {
+	public List<Issue> findIssuesByProjectId(String projectId) {
 		String sql = "select issueId,projectId,issueName,issueClassId,issueContent,issueStatus,issueDateTime from issue where projectId = ?";
-		try {
-			Issue issue = jdbcTemplate.queryForObject(sql,issueMapper,projectId);
-			return Optional.ofNullable(issue);
-		} catch (Exception e) {
-			return Optional.empty();
-		}
+		return jdbcTemplate.query(sql, issueMapper,projectId);
 	}
 
 	@Override
