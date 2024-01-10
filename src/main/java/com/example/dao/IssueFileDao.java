@@ -25,7 +25,7 @@ public interface IssueFileDao {
 	int updateIssueFile(IssueFile issueFileUpdate);
 	
 	//根據Issuefile Id 查詢 Issuefile
-	Optional<IssueFile> findIssueFileByIssueFileId(Integer issueFileId);
+	List<IssueFile> findIssueFilesByIssueFileId(Integer issueFileId);
 
 
 

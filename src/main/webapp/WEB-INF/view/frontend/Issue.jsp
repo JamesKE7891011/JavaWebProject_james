@@ -155,16 +155,19 @@
 				 		<td>\${issue.issueName}</td>
 				 		<td>\${issue.issueClassId}</td>
 				 		<td>\${issue.issueContent}</td>
-				 		<td><a class = "btn btn-danger" href="/JavaWebProject_james/mvc/issue/download/{issueFileId}">
-				 			\${issueFilePath}
-				 			</a>
-				 			</td>
+				 		<td>
+				 		<!--<a class="btn btn-danger" href="/JavaWebProject_james/mvc/issue/download/${issue.issueId}">
+		                \${issueFilePath}
+		            	</a>-->
+				 			<button class="btn btn-danger" onclick="downloadFile(${issue.issueId})">\${issueFilePath}</button>
+				 		</td>
 				 		<td>\${issue.issueDateTime}</td>
 				 		<td>\${issue.issueStatus}</td>
 				 		<td><button class="btn btn-primary" id="revise_"+\${issue.issueId}>修改</button></td>
 				 		<td><button class="btn btn-danger" id="delete_"+\${issue.issueId}>刪除</button></td>
 				 	</tr>
 				 `;
+				 console.log(issueFilePath);
 				 //console.log(tr);
 				 $('#issue_table').append(tr);
 			});
@@ -189,7 +192,26 @@
 				form.classList.add('was-validated')
 			}, false)
 		})
-	})()
+	})
+	
+	function downloadFile(issueId) {
+        // 构建下载链接
+        var downloadLink = '/JavaWebProject_james/mvc/issue/download/' + issueId;
+
+        // 创建一个隐藏的<a>元素
+        var link = document.createElement('a');
+        link.href = downloadLink;
+        link.download = '';  // 如果你希望浏览器提示保存文件对话框，可以设置一个文件名
+
+        // 将<a>元素附加到文档中
+        document.body.appendChild(link);
+
+        // 模拟点击事件
+        link.click();
+
+        // 从文档中移除<a>元素
+        document.body.removeChild(link);
+    }
 </script>
 
 
