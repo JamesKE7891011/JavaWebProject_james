@@ -128,6 +128,8 @@
 		return formatDate(date);
 	}
 	
+
+	
 	function selectProject(event) {
 		
 		$('#issue_table  tr').remove();

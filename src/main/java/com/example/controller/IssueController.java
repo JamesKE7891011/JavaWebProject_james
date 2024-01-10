@@ -117,7 +117,7 @@ public class IssueController {
 				File uploadFile = new File(uploadDir + fileName);
 				issueFilePath.transferTo(uploadFile);
 			}
-			issueFileDao.addIssueFile(issue.getIssueId(), issueFilePaths);
+			issueFileDao.addIssueFile(issueId, issueFilePaths);
 		}
 		return "redirect:/mvc/issue";
 	}
