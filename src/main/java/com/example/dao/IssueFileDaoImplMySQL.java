@@ -3,9 +3,11 @@ package com.example.dao;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Resource;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.bean.IssueFile;
+
 
 @Repository("issuefiledaomysql")
 public class IssueFileDaoImplMySQL implements IssueFileDao{
@@ -57,7 +60,7 @@ public class IssueFileDaoImplMySQL implements IssueFileDao{
 	}
 
 	@Override
-	public int removeIssueFile(String issueId) {
+	public int removeIssueFile(Integer issueId) {
 		String sql = "delete from issueFile where issueId = ?";
 		return jdbcTemplate.update(sql,issueId);
 	}
@@ -81,6 +84,18 @@ public class IssueFileDaoImplMySQL implements IssueFileDao{
 		issueFileUpdate.getIssueId(),
 		issueFileUpdate.getIssueFilePath());	
 	}
-	
 
+	@Override
+	public Optional<IssueFile> findIssueFileByIssueFileId(Integer issueFileId) {
+		String sql = "select issueFileId,issueID,issueFilePath from issuefile where issueFileId = ?";
+		try {
+			IssueFile issueFile = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(IssueFile.class), issueFileId);
+			return Optional.ofNullable(issueFile);
+		} catch (EmptyResultDataAccessException e) {
+			return Optional.empty();
+		}
+	}
+	
+	
+	
 }

@@ -2,6 +2,8 @@ package com.example.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.ParseException;
@@ -15,7 +17,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -121,4 +127,44 @@ public class IssueController {
 		}
 		return "redirect:/mvc/issue";
 	}
+	
+	@GetMapping("/download/{issueFileId}")
+	public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable("issueFileId") Integer issueFileId) {
+	    // 根據 issueFileId 從資料庫中獲取檔案資料（使用 issueFileDao）
+	    Optional<IssueFile> issueFileOpt = issueFileDao.findIssueFileByIssueFileId(issueFileId);
+
+	    if (issueFileOpt.isPresent()) {
+	        // 設定檔案內容
+	        IssueFile issueFile = issueFileOpt.get();
+	        String filePath = issueFile.getIssueFilePath(); // 從資料庫中獲取檔案路徑
+
+	        try {
+	            // 讀取檔案內容
+	            byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
+
+	            // 設定 HTTP 響應標頭
+	            HttpHeaders headers = new HttpHeaders();
+	            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	            headers.setContentDispositionFormData("attachment", issueFile.getIssueFilePath());
+
+	            // 將檔案內容封裝成 ByteArrayResource
+	            ByteArrayResource resource = new ByteArrayResource(fileContent);
+
+	            // 返回 ResponseEntity，將 ByteArrayResource 和標頭合併
+	            return ResponseEntity.ok()
+	                    .headers(headers)
+	                    .contentLength(fileContent.length)
+	                    .body(resource);
+	        } catch (IOException e) {
+	            // 處理讀取檔案失敗的情況
+	            e.printStackTrace();
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	        }
+	    } else {
+	        // 如果找不到檔案，返回相應的 HTTP 響應
+	        return ResponseEntity.notFound().build();
+	    }
+	}
+
 }
+

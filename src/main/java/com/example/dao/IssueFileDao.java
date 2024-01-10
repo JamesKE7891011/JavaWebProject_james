@@ -1,6 +1,7 @@
 package com.example.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +13,7 @@ public interface IssueFileDao {
 	int[] addIssueFile(Integer issueId,List<MultipartFile> issuePaths);
 	
 	//移除檔案
-	int removeIssueFile(String issueId);
+	int removeIssueFile(Integer issueId);
 	
 	//根據Issue Id 查詢所有Issue
 	List<IssueFile> findAllIssueFiles();
@@ -22,6 +23,11 @@ public interface IssueFileDao {
 	
 	//更新Issue檔案
 	int updateIssueFile(IssueFile issueFileUpdate);
+	
+	//根據Issuefile Id 查詢 Issuefile
+	Optional<IssueFile> findIssueFileByIssueFileId(Integer issueFileId);
+
+
 
 	
 

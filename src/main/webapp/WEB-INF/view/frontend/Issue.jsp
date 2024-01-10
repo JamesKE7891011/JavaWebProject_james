@@ -155,7 +155,10 @@
 				 		<td>\${issue.issueName}</td>
 				 		<td>\${issue.issueClassId}</td>
 				 		<td>\${issue.issueContent}</td>
-				 		<td>\${issueFilePath}</td>
+				 		<td><a class = "btn btn-danger" href="/JavaWebProject_james/mvc/issue/download/{issueFileId}">
+				 			\${issueFilePath}
+				 			</a>
+				 			</td>
 				 		<td>\${issue.issueDateTime}</td>
 				 		<td>\${issue.issueStatus}</td>
 				 		<td><button class="btn btn-primary" id="revise_"+\${issue.issueId}>修改</button></td>
