@@ -26,6 +26,10 @@ public class Issue {
 	
 	private Integer issueStatus;
 	
+	
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd hh:MM:dd")
+	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
 	private Date issueDateTime;
 	
 	public Issue() {
