@@ -79,6 +79,7 @@ public class IssueDaoImplMySQL implements IssueDao {
 	RowMapper<Issue> issueMapper = (ResultSet rs, int rowNum) -> {
 		Issue issue = new Issue();
 		issue.setIssueId(rs.getInt("issueId"));
+		issue.setIssueName(rs.getString("issueName"));
 		issue.setProjectId(rs.getString("projectId"));
 		issue.setIssueClassId(rs.getString("issueClassId"));
 		issue.setIssueContent(rs.getString("issueContent"));

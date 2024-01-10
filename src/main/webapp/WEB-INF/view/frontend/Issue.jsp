@@ -58,6 +58,7 @@
 		<div class="d-flex justify-content-start">
 				<select class=" form-select  w-75"
 					aria-label="Default select example" onchange="selectProject(event)">
+					<option select>choose</option>
 					<c:forEach items="${ projects }" var="project">
 						<option value="${ project.projectId }">${ project.projectId } ${ project.projectName }</option>
 					</c:forEach>
@@ -94,25 +95,6 @@
 
 <script>
 
-	/*
-	{
-	    "projectId": "AC23020",
-	    "issueId": 1,
-	    "issueName": null,
-	    "issueClassId": "D",
-	    "issueContent": "因投入不當物品，造成堵塞",
-	    "issueFiles": [
-	        {
-	            "issueFileId": 501,
-	            "issueId": 1,
-	            "issueFilePath": "馬桶.jpg"
-	        }
-	    ],
-	    "issueStatus": 1,
-	    "issueDateTime": 1701878400000
-	}
-	*/
-	
 	function getStringCommaSeparated(jsonData, propertyName) {
 	    var propertyArray = jsonData.map(function(item) {
 	        return item[propertyName];
@@ -147,8 +129,12 @@
 	}
 	
 	function selectProject(event) {
-		 $('#issue_table > tr').remove();
-		fetch('/JavaWebProject_james/mvc/issue/'+event.target.value, {
+		
+		$('#issue_table > tr').remove();
+		
+		let projectId = event.target.value;
+		
+		fetch('/JavaWebProject_james/mvc/issue/'+projectId, {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
@@ -157,7 +143,7 @@
 		.then(response => response.json())
 		.then(data => {
 			 $.each(data, function( index, issue ) {
-				 console.log(issue);
+				 //console.log(issue);
 				 let issueFilePath = getStringCommaSeparated(issue.issueFiles,"issueFilePath");
 				 let issueDateTime = formatDateTime(issue.issueDateTime);
 				 
@@ -168,13 +154,13 @@
 				 		<td>\${issue.issueClassId}</td>
 				 		<td>\${issue.issueContent}</td>
 				 		<td>\${issueFilePath}</td>
-				 		<td>\${issueDateTime}</td>
+				 		<td>\${issue.issueDateTime}</td>
 				 		<td>\${issue.issueStatus}</td>
 				 		<td><button class="btn btn-primary" id="revise_"+\${issue.issueId}>修改</button></td>
 				 		<td><button class="btn btn-danger" id="delete_"+\${issue.issueId}>刪除</button></td>
 				 	</tr>
 				 `;
-				 console.log(tr);
+				 //console.log(tr);
 				 $('#issue_table').append(tr);
 			});
 		});

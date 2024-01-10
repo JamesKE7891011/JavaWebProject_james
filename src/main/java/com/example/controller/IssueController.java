@@ -83,9 +83,9 @@ public class IssueController {
 		return "/frontend/Issue";
 	}
 	
-	@GetMapping(value = "/{id}",produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@GetMapping(value = "/{projectId}",produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	@ResponseBody
-	public List<Issue> findIssueById(@PathVariable("id") String projectId) {
+	public List<Issue> findIssueById(@PathVariable("projectId") String projectId) {
 		return issueDao.findIssuesByProjectId(projectId);
 	}
 	
