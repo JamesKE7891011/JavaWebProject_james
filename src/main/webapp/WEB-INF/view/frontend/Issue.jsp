@@ -155,7 +155,7 @@
 				 		<td>\${issue.issueName}</td>
 				 		<td>\${issue.issueClassId}</td>
 				 		<td>\${issue.issueContent}</td>
-				 		<td><a class = "btn btn-danger" href="/JavaWebProject_james/mvc/issue/download/{issueFileId}">
+				 		<td><a class = "btn btn-danger" href="/JavaWebProject_james/mvc/issue/download/{6}">
 				 			\${issueFilePath}
 				 			</a>
 				 			</td>
