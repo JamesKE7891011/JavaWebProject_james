@@ -13,8 +13,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.mail.internet.ContentDisposition;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
@@ -29,6 +32,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -128,43 +132,54 @@ public class IssueController {
 		return "redirect:/mvc/issue";
 	}
 	
-	@GetMapping("/download/{issueFileId}")
-	public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable("issueFileId") Integer issueFileId) {
-	    // 根據 issueFileId 從資料庫中獲取檔案資料（使用 issueFileDao）
-	    Optional<IssueFile> issueFileOpt = issueFileDao.findIssueFileByIssueFileId(issueFileId);
+	@RequestMapping(value = "/download/{issueId}", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> download(@PathVariable("issueId") Integer issueId) throws IOException {
+	    List<IssueFile> issueFiles = issueFileDao.findIssueFilesByIssueId(issueId);
 
-	    if (issueFileOpt.isPresent()) {
-	        // 設定檔案內容
-	        IssueFile issueFile = issueFileOpt.get();
-	        String filePath = issueFile.getIssueFilePath(); // 從資料庫中獲取檔案路徑
-
-	        try {
-	            // 讀取檔案內容
-	            byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
-
-	            // 設定 HTTP 響應標頭
-	            HttpHeaders headers = new HttpHeaders();
-	            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-	            headers.setContentDispositionFormData("attachment", issueFile.getIssueFilePath());
-
-	            // 將檔案內容封裝成 ByteArrayResource
-	            ByteArrayResource resource = new ByteArrayResource(fileContent);
-
-	            // 返回 ResponseEntity，將 ByteArrayResource 和標頭合併
-	            return ResponseEntity.ok()
-	                    .headers(headers)
-	                    .contentLength(fileContent.length)
-	                    .body(resource);
-	        } catch (IOException e) {
-	            // 處理讀取檔案失敗的情況
-	            e.printStackTrace();
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-	        }
-	    } else {
-	        // 如果找不到檔案，返回相應的 HTTP 響應
+	    if (issueFiles.isEmpty()) {
 	        return ResponseEntity.notFound().build();
 	    }
+
+	    IssueFile issueFile = issueFiles.get(0);
+	    String filePath = issueFile.getIssueFilePath();
+	    File file = new File(filePath);
+
+	    if (!file.exists()) {
+	        return ResponseEntity.notFound().build();
+	    }
+
+	    byte[] fileContent = FileUtils.readFileToByteArray(file);
+
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	    headers.setContentDispositionFormData("attachment", issueFile.getIssueFilePath());
+
+	    return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
 	}
+	
+	//取消專案議題
+	@GetMapping("/cancelissue/{issueId}")
+	@ResponseBody
+	public String cancelIssue(@PathVariable("issueId") Integer issueId, Model model) {
+	    try {
+	        int rowcount = issueDao.removeIssueById(issueId);
+	        if (rowcount > 0) {
+	            // 删除成功，直接重定向到 issue 页面
+	            return "redirect:/mvc/issue";
+	        } else {
+	            // 删除失败，显示错误消息
+	            model.addAttribute("errorMessage", "刪除失敗，請通知管理員");
+	            return "frontend/Issue";
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        // 删除过程中出现异常，显示异常消息
+	        model.addAttribute("errorMessage", "刪除時發生異常，請通知管理員");
+	        return "frontend/Issue";
+	    }
+	}
+	
+
 
 }
 

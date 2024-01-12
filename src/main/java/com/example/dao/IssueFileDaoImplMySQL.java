@@ -86,14 +86,10 @@ public class IssueFileDaoImplMySQL implements IssueFileDao{
 	}
 
 	@Override
-	public Optional<IssueFile> findIssueFileByIssueFileId(Integer issueFileId) {
-		String sql = "select issueFileId,issueID,issueFilePath from issuefile where issueFileId = ?";
-		try {
-			IssueFile issueFile = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(IssueFile.class), issueFileId);
-			return Optional.ofNullable(issueFile);
-		} catch (EmptyResultDataAccessException e) {
-			return Optional.empty();
-		}
+	public List<IssueFile> findIssueFilesByIssueFileId(Integer issueFileId) {
+		String sql = "select issueFileId,issueID,issueFilePath from issuefile where issueFileId = ?";		
+		return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(IssueFile.class));
+		
 	}
 	
 	

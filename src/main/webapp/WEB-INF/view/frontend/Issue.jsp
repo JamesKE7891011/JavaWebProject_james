@@ -10,7 +10,7 @@
 	<!-- 議題新增 -->
 	<div class=" ms-3 w-75">
 		<h4 class="fw-bold fs-3 text-center ">ISSUE CREATE</h4>
-		<form class="w-80 needs-validation" method="post" action="/JavaWebProject_james/mvc/issue/addissue" enctype="multipart/form-data" novalidate >
+		<form class="w-80 needs-validation" id ="issueForm" enctype="multipart/form-data" novalidate >
 			<div class="mb-1">
 				<label for="issuename" class="form-label" >隸屬專案名稱</label>
 				<select class=" form-select  w-75" id="projectId" name="projectId"
@@ -22,14 +22,14 @@
 			</div>
 		 	<div class="mb-1 mt-1">
 				<label for="issueName" class="form-label" >議題名稱</label>
-				<input class="form-control" list="datalistOptions" id="issueName" name="issueName" placeholder="請輸入議題名稱...">
+				<input class="form-control" list="datalistOptions" id="issueName" name="issueName" required>
   	    		<div class="invalid-feedback w-75">請輸入議題名稱!</div>
   	    		
   	    	</div>
   			<div class="mb-1">
   				<label for="issueClass" class="form-label mt-2" >議題類別</label>
    	 			<select class="form-select" required aria-label="Default select example" onchange="selectIssueClass(event)"
-   	 			id="issueClassId" name="issueClassId">
+   	 			id="issueClassId" name="issueClassId" required>
    	 				<c:forEach var="issueClass" items="${ issueClasses }" >       
 	      				<option value="${ issueClass.issueClassId }"> ${ issueClass.issueClassName }</option> 
       				</c:forEach>  
@@ -46,7 +46,7 @@
 				<div class="invalid-feedback ">請備註!</div>
 			</div>
 			<div class="col-12 d-flex justify-content-center mt-2">
-				<button class="btn btn-secondary col-12" type="submit">Submit
+				<button class="btn btn-secondary col-12" type="submit" onclick="submitForm()">Submit
 					Form</button>
 			</div>
 		</form>
@@ -155,23 +155,27 @@
 				 		<td>\${issue.issueName}</td>
 				 		<td>\${issue.issueClassId}</td>
 				 		<td>\${issue.issueContent}</td>
-				 		<td><a class = "btn btn-danger" href="/JavaWebProject_james/mvc/issue/download/{6}">
-				 			\${issueFilePath}
-				 			</a>
-				 			</td>
+				 		<td>
+				 		<!--<a class="btn btn-danger" href="/JavaWebProject_james/mvc/issue/download/${issue.issueId}">
+		                \${issueFilePath}
+		            	</a>-->
+				 			<button class="btn btn-danger" onclick="downloadFile(${issue.issueId})">\${issueFilePath}</button>
+				 		</td>
 				 		<td>\${issue.issueDateTime}</td>
-				 		<td>\${issue.issueStatus}</td>
-				 		<td><button class="btn btn-primary" id="revise_"+\${issue.issueId}>修改</button></td>
-				 		<td><button class="btn btn-danger" id="delete_"+\${issue.issueId}>刪除</button></td>
+				 		<td >\${issue.issueStatus}</td>
+				 		<td><button class="btn btn-primary" onclick="closeIssue(\${issue.issueId},\${issue.issueStatus})" id="revise_"+\${issue.issueId}>close issue</button></td>
+				 		<td><button class="btn btn-danger" onclick="deleteIssue(\${issue.issueId})">刪除</button></td>
 				 	</tr>
 				 `;
+				 console.log(issueFilePath);
 				 //console.log(tr);
 				 $('#issue_table').append(tr);
 			});
 		});
 	}
+	
 
-	//Example starter JavaScript for disabling form submissions if there are invalid fields
+	//使用下拉選單查詢專案
 	(function() {
 		'use strict'
 
@@ -189,7 +193,76 @@
 				form.classList.add('was-validated')
 			}, false)
 		})
-	})()
+	})
+	
+	//下載issue檔案
+	function downloadFile(issueId) {
+        // 构建下载链接
+        var downloadLink = '/JavaWebProject_james/mvc/issue/download/' + issueId;
+
+        // 创建一个隐藏的<a>元素
+        var link = document.createElement('a');
+        link.href = downloadLink;
+        link.download = '';  // 如果你希望浏览器提示保存文件对话框，可以设置一个文件名
+
+        // 将<a>元素附加到文档中
+        document.body.appendChild(link);
+
+        // 模拟点击事件
+        link.click();
+
+        // 从文档中移除<a>元素
+        document.body.removeChild(link);
+    }
+	
+	//專案新增
+	function submitForm() {
+        // Assuming your form has an id 'issueForm'
+        var form = $('#issueForm')[0];
+        var formData = new FormData(form);
+
+        $.ajax({
+            type: 'POST',
+            url: '/JavaWebProject_james/mvc/issue/addissue',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                // Check if the submission was successful
+                location.reload("redirect:/mvc/issue");
+            	alert('專案提交成功');
+            },
+            error: function (error) {
+                console.error('提交失敗：', error);
+                alert('提交失敗！');
+            }
+        });
+    }
+	
+	//刪除專案內issue
+	function deleteIssue(issueId) {
+	    if (confirm("確定要刪除這個議題嗎？")) {
+	        $.ajax({
+	            type: 'GET',
+	            url: '/JavaWebProject_james/mvc/issue/cancelissue/' + issueId,
+	            success: function (data) {
+	                alert('issue刪除成功!');
+	                reload(); // 成功刪除後重新載入議題列表
+	            },
+	            error: function (error) {
+	                console.error('刪除失敗：', error);
+	                alert('刪除失敗！');
+	            }
+	        });
+	    }
+	}
+	
+	function closeIssue(issueId, issueStatus) {
+	    console.log('Issue Id = ', issueId);
+	    console.log('Issue Status = ',issueStatus);
+	
+	}
+	
 </script>
 
 
