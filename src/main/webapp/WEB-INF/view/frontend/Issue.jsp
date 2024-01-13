@@ -256,7 +256,7 @@
 	    }
 	}
 	
-	function closeIssue(issueId, issueStatus) {
+	function closeIssue(issueId, issueStatus) { 
 	    console.log('Issue Id = ', issueId);
 	    console.log('Issue Status = ',issueStatus);
 	

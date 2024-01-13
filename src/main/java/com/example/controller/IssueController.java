@@ -179,6 +179,37 @@ public class IssueController {
 	    }
 	}
 	
+	@PutMapping(value = "/{issueId}/updateissue")
+	public String updateIssueStatus(@PathVariable("issueId") Integer issueId,
+	                                @RequestParam("issueStatus") Integer newIssueStatus,
+	                                HttpSession session, Model model) {
+	    try {
+	        // 創建一個新的 Issue 對象並設置新的狀態
+	        Issue issueUpdate = new Issue();
+	        issueUpdate.setIssueId(issueId);  // 設置問題的 ID
+	        issueUpdate.setIssueStatus(newIssueStatus);
+
+	        // 調用 DAO 層的 updateIssue 方法進行更新
+	        int updateResult = issueDao.updateIssue(issueUpdate);
+
+	        // 檢查更新結果
+	        if (updateResult == 0) {
+	            return "專案修改失敗";
+	        }
+
+	        // 更新成功時，可以進行一些額外的操作，例如更新 Model 或記錄日誌等
+
+	        // 返回成功消息或重定向到適當的頁面
+	        return "專案修改成功";
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        // 在發生異常時返回錯誤消息
+	        return "專案修改失敗: " + e.getMessage();
+	    }
+	}
+
+									
+	
 
 
 }
