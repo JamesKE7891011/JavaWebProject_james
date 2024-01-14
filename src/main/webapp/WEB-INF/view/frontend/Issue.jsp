@@ -79,7 +79,7 @@
       				<th scope="col">IssuePath:</th>
       				<th scope="col">IssueDatetime:</th>
       				<th scope="col">IssueStatus:</th>
-      				<th scope="col">Revise:</th>
+      				<th scope="col">-> Change</th>
       				<th scope="col">Delete:</th>
    				</tr>
 		  	</thead>
@@ -162,7 +162,7 @@
 				 		</td>
 				 		<td>\${issue.issueDateTime}</td>
 				 		<td >\${issue.issueStatus}</td>
-				 		<td><button class="btn btn-primary" onclick="closeIssue(\${issue.issueId},\${issue.issueStatus})" id="revise_"+\${issue.issueId}>close issue</button></td>
+				 		<td><button class="btn btn-primary" onclick="closeIssue(\${issue.issueId},\${issue.issueStatus})" id="revise_"+\${issue.issueId}>I/O</button></td>
 				 		<td><button class="btn btn-danger" onclick="deleteIssue(\${issue.issueId})">刪除</button></td>
 				 	</tr>
 				 `;
