@@ -9,7 +9,9 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -93,12 +95,40 @@ public class IssueController {
 		return "/frontend/Issue";
 	}
 	
+	
 	@GetMapping(value = "/{projectId}",produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 	@ResponseBody
 	public List<Issue> findIssueById(@PathVariable("projectId") String projectId) {
 		return issueDao.findIssuesByProjectId(projectId);
 	}
 	
+	//下載issue內檔案
+	@RequestMapping(value = "/download/{issueId}", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> download(@PathVariable("issueId") Integer issueId) throws IOException {
+	    List<IssueFile> issueFiles = issueFileDao.findIssueFilesByIssueId(issueId);
+
+	    if (issueFiles.isEmpty()) {
+	        return ResponseEntity.notFound().build();
+	    }
+
+	    IssueFile issueFile = issueFiles.get(0);
+	    String filePath = issueFile.getIssueFilePath();
+	    File file = new File(filePath);
+
+	    if (!file.exists()) {
+	        return ResponseEntity.notFound().build();
+	    }
+
+	    byte[] fileContent = FileUtils.readFileToByteArray(file);
+
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	    headers.setContentDispositionFormData("attachment", issueFile.getIssueFilePath());
+
+	    return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
+	}
+	
+	//為專題新增issue
 	@Transactional(propagation = Propagation.REQUIRED)
 	@RequestMapping(value = "/addissue", method = {RequestMethod.POST }, produces = "text/plain;charset=utf-8")
 	public String addIssue(@RequestParam(name = "projectId") String projectId,
@@ -132,30 +162,6 @@ public class IssueController {
 		return "redirect:/mvc/issue";
 	}
 	
-	@RequestMapping(value = "/download/{issueId}", method = RequestMethod.GET)
-	public ResponseEntity<byte[]> download(@PathVariable("issueId") Integer issueId) throws IOException {
-	    List<IssueFile> issueFiles = issueFileDao.findIssueFilesByIssueId(issueId);
-
-	    if (issueFiles.isEmpty()) {
-	        return ResponseEntity.notFound().build();
-	    }
-
-	    IssueFile issueFile = issueFiles.get(0);
-	    String filePath = issueFile.getIssueFilePath();
-	    File file = new File(filePath);
-
-	    if (!file.exists()) {
-	        return ResponseEntity.notFound().build();
-	    }
-
-	    byte[] fileContent = FileUtils.readFileToByteArray(file);
-
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-	    headers.setContentDispositionFormData("attachment", issueFile.getIssueFilePath());
-
-	    return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
-	}
 	
 	//取消專案議題
 	@GetMapping("/cancelissue/{issueId}")
@@ -179,34 +185,43 @@ public class IssueController {
 	    }
 	}
 	
-	@PutMapping(value = "/{issueId}/updateissue")
-	public String updateIssueStatus(@PathVariable("issueId") Integer issueId,
-	                                @RequestParam("issueStatus") Integer newIssueStatus,
-	                                HttpSession session, Model model) {
+	@PutMapping(value = "/{issueId}/updateissuestatus")
+	@ResponseBody
+	public Map<String, Object> updateIssueStatus(@PathVariable(name = "issueId") Integer issueId,
+	                                             @RequestParam(name="issueStatus") Integer newIssueStatus,
+	                                             HttpSession session, Model model) {
+	    Map<String, Object> result = new HashMap<>();
 	    try {
-	        // 創建一個新的 Issue 對象並設置新的狀態
-	        Issue issueUpdate = new Issue();
-	        issueUpdate.setIssueId(issueId);  // 設置問題的 ID
-	        issueUpdate.setIssueStatus(newIssueStatus);
-
-	        // 調用 DAO 層的 updateIssue 方法進行更新
-	        int updateResult = issueDao.updateIssue(issueUpdate);
-
-	        // 檢查更新結果
-	        if (updateResult == 0) {
-	            return "專案修改失敗";
+	        // 使用 issueDao 中的方法更新 Issue 狀態
+	        boolean success;
+	        if (newIssueStatus == 1) {
+	            // 如果新的狀態是 1，表示要關閉 Issue
+	            success = issueDao.closeIssueStatusByIssueId(issueId);
+	        } else if (newIssueStatus == 0) {
+	            // 如果新的狀態是 0，表示要重新開啟 Issue
+	            success = issueDao.openIssueStatusByIssueId(issueId);
+	        } else {
+	            // 其他狀態值可能需要根據具體情況進行處理
+	            success = false;
 	        }
 
-	        // 更新成功時，可以進行一些額外的操作，例如更新 Model 或記錄日誌等
-
-	        // 返回成功消息或重定向到適當的頁面
-	        return "專案修改成功";
+	        // 檢查更新結果
+	        if (success) {
+	            result.put("status", "success");
+	            result.put("message", "專案修改成功");
+	        } else {
+	            result.put("status", "failure");
+	            result.put("message", "專案修改失敗");
+	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        // 在發生異常時返回錯誤消息
-	        return "專案修改失敗: " + e.getMessage();
+	        result.put("status", "error");
+	        result.put("message", "專案修改失敗: " + e.getMessage());
 	    }
+	    return result;
 	}
+
+
 
 									
 	

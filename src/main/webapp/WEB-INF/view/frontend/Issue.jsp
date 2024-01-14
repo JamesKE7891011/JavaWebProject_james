@@ -10,11 +10,12 @@
 	<!-- 議題新增 -->
 	<div class=" ms-3 w-75">
 		<h4 class="fw-bold fs-3 text-center ">ISSUE CREATE</h4>
-		<form class="w-80 needs-validation" id ="issueForm" enctype="multipart/form-data" novalidate >
+		<form class="w-80 needs-validation" id ="issueForm" name="issueForm" enctype="multipart/form-data" novalidate >
 			<div class="mb-1">
-				<label for="issuename" class="form-label" >隸屬專案名稱</label>
+				<label for="issuename" class="form-label" >選擇專案</label>
 				<select class=" form-select  w-75" id="projectId" name="projectId"
-					aria-label="Default select example" onchange="selectProject(event)">
+					aria-label="Default select example" onchange="selectProject(event)" required>
+					<option selected disabled value=""> Please choose project...</option>
 					<c:forEach items="${ projects }" var="project">
 						<option  value="${ project.projectId }">${ project.projectId } ${ project.projectName }</option>
 					</c:forEach>
@@ -28,8 +29,9 @@
   	    	</div>
   			<div class="mb-1">
   				<label for="issueClass" class="form-label mt-2" >議題類別</label>
-   	 			<select class="form-select" required aria-label="Default select example" onchange="selectIssueClass(event)"
+   	 			<select class="form-select" aria-label="Default select example" onchange="selectIssueClass(event)"
    	 			id="issueClassId" name="issueClassId" required>
+   	 				<option selected disabled value="">Please choose issue class...</option>
    	 				<c:forEach var="issueClass" items="${ issueClasses }" >       
 	      				<option value="${ issueClass.issueClassId }"> ${ issueClass.issueClassName }</option> 
       				</c:forEach>  
@@ -46,8 +48,7 @@
 				<div class="invalid-feedback ">請備註!</div>
 			</div>
 			<div class="col-12 d-flex justify-content-center mt-2">
-				<button class="btn btn-secondary col-12" type="submit" onclick="submitForm()">Submit
-					Form</button>
+				<button class="btn btn-secondary col-12" type="submit" onclick="submitForm()">Submit Form</button>
 			</div>
 		</form>
 	</div>
@@ -58,7 +59,7 @@
 		<div class="d-flex justify-content-start">
 				<select class=" form-select  w-75"
 					aria-label="Default select example" onchange="selectProject(event)">
-					<option select>choose</option>
+					<option selected disabled value=""> Please choose project...</option>
 					<c:forEach items="${ projects }" var="project">
 						<option value="${ project.projectId }">${ project.projectId } ${ project.projectName }</option>
 					</c:forEach>
@@ -127,8 +128,6 @@
 		let date = new Date(timestamp);
 		return formatDate(date);
 	}
-	
-
 	
 	function selectProject(event) {
 		
@@ -214,29 +213,42 @@
         document.body.removeChild(link);
     }
 	
-	//專案新增
+	//為專案新增issue
 	function submitForm() {
-        // Assuming your form has an id 'issueForm'
-        var form = $('#issueForm')[0];
-        var formData = new FormData(form);
+	    // 獲取其他需要檢查的表單元素
+	    var projectId = document.getElementById('projectId');
+	    var issueName = document.getElementById('issueName');
+	    var issueClassId = document.getElementById('issueClassId');
+	    var issueContent = document.getElementById('issueContent');
 
-        $.ajax({
-            type: 'POST',
-            url: '/JavaWebProject_james/mvc/issue/addissue',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                // Check if the submission was successful
-                location.reload("redirect:/mvc/issue");
-            	alert('專案提交成功');
-            },
-            error: function (error) {
-                console.error('提交失敗：', error);
-                alert('提交失敗！');
-            }
-        });
-    }
+	    // 獲取檔案上傳元素
+	    var issueFilePath = document.getElementById('issueFilePath');
+
+	    // 檢查其他表單元素是否為空
+	    if (projectId.value.trim() === '' || issueName.value.trim() === '' || issueClassId.value.trim() === '' || issueContent.value.trim() === '') {
+	        return;
+	    }
+
+	        var form = $('#issueForm')[0];
+	        var formData = new FormData(form);
+
+	        $.ajax({
+	            type: 'POST',
+	            url: '/JavaWebProject_james/mvc/issue/addissue',
+	            data: formData,
+	            processData: false,
+	            contentType: false,
+	            success: function (response) {
+	                // Check if the submission was successful
+	                location.reload("redirect:/mvc/issue");
+	                alert('專案提交成功');
+	            },
+	            error: function (error) {
+	                console.error('提交失敗：', error);
+	                alert('提交失敗！');
+	            }
+	        });	     
+	}
 	
 	//刪除專案內issue
 	function deleteIssue(issueId) {
@@ -256,11 +268,78 @@
 	    }
 	}
 	
-	function closeIssue(issueId, issueStatus) { 
-	    console.log('Issue Id = ', issueId);
-	    console.log('Issue Status = ',issueStatus);
 	
+	function closeIssue(issueId, issueStatus) {
+	    console.log('Issue Id = ', issueId);
+	    console.log('Issue Status = ', issueStatus);
+
+	    // 判斷 issueStatus 是否為 1
+	    if (issueStatus === 1) {
+	        // 向後端發送更新請求
+	        $.ajax({
+	            type: 'PUT',
+	            url: '/JavaWebProject_james/mvc/issue/' + issueId + '/updateissuestatus',
+	            contentType: 'application/json',  // 設置請求的內容類型
+	            data: JSON.stringify({ issueStatus: 0 }),  // 將數據轉換為 JSON 格式
+	            success: function (response) {
+	                // 更新成功後的處理
+	                console.log('Issue Status 更新成功:', response);
+	                alert('Issue Status 更新成功!');
+	                // 如果需要刷新頁面或進行其他處理，可以在這裡添加代碼
+	                // 例如，重新載入議題列表
+	                selectProject({ target: { value: $('#projectId').val() } });
+	            },
+	            error: function (error) {
+	                console.error('Issue Status 更新失敗:', error);
+	                alert('Issue Status 更新失敗！');
+	            }
+	        });
+	    } else {
+	        // 如果 issueStatus 不為 1，將其設置為 1
+	        // 向後端發送更新請求
+	        $.ajax({
+	            type: 'PUT',
+	            url: '/JavaWebProject_james/mvc/issue/' + issueId + '/updateissuestatus',
+	            contentType: 'application/json',  // 設置請求的內容類型
+	            data: JSON.stringify({ issueStatus: 1 }),  // 將數據轉換為 JSON 格式
+	            success: function (response) {
+	                // 更新成功後的處理
+	                console.log('Issue Status 更新成功:', response);
+	                alert('Issue Status 更新成功!');
+	                // 如果需要刷新頁面或進行其他處理，可以在這裡添加代碼
+	                // 例如，重新載入議題列表
+	                selectProject({ target: { value: $('#projectId').val() } });
+	            },
+	            error: function (error) {
+	                console.error('Issue Status 更新失敗:', error);
+	                alert('Issue Status 更新失敗！');
+	            }
+	        });
+	    }
 	}
+
+	
+	//表單驗證(Bootstrap)
+	// Example starter JavaScript for disabling form submissions if there are invalid fields
+	(function () {
+	  'use strict'
+
+	  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+	  var forms = document.querySelectorAll('.needs-validation')
+
+	  // Loop over them and prevent submission
+	  Array.prototype.slice.call(forms)
+	    .forEach(function (form) {
+	      form.addEventListener('submit', function (event) {
+	        if (!form.checkValidity()) {
+	          event.preventDefault()
+	          event.stopPropagation()
+	        }
+
+	        form.classList.add('was-validated')
+	      }, false)
+	    })
+	})()
 	
 </script>
 

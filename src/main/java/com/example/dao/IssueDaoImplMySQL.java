@@ -116,13 +116,18 @@ public class IssueDaoImplMySQL implements IssueDao {
 	}
 
 	@Override
-	public int updateIssue(Issue issueUpdate) {
-		String sql = "update issue set projectId = ?,issueName = ?,issueClassId = ?,issueContent = ?,issueStatus = ?,issueDateTime = ? where issueId = ?";
-		return jdbcTemplate.update(sql, 
-				issueUpdate.getProjectId(),
-				issueUpdate.getIssueName(),
-				issueUpdate.getIssueClassId(),
-				issueUpdate.getIssueContent(),
-				issueUpdate.getIssueStatus());
-	}	
+	public Boolean closeIssueStatusByIssueId(Integer issueId) {
+		String sql ="update issue set issueStatus = false where issueId = ? and(issueStatus = true)";
+		return jdbcTemplate.update(sql, issueId)== 0;
+	}
+
+	@Override
+	public Boolean openIssueStatusByIssueId(Integer issueId) {
+		String sql ="update issue set issueStatus = true where issueId = ? and(issueStatus = false)";
+		return jdbcTemplate.update(sql, issueId)== 1;
+	}
+	
+	
+
+	
 }

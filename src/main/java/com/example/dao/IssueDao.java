@@ -17,7 +17,9 @@ public interface IssueDao {
 	
 	List<Issue> findIssuesByProjectId(String projectId);
 	
-	int updateIssue(Issue issueUpdate);
+	Boolean closeIssueStatusByIssueId(Integer issueId);
+	
+	Boolean openIssueStatusByIssueId(Integer issueId);
 
 	
 }
