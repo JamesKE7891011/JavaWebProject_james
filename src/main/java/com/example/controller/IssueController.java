@@ -105,15 +105,15 @@ public class IssueController {
 	}
 	
 	//下載issue內檔案
-	@RequestMapping(value = "/download/{issueId}", method = RequestMethod.GET)
-	public ResponseEntity<byte[]> download(@PathVariable("issueId") Integer issueId) throws IOException {
-	    List<IssueFile> issueFiles = issueFileDao.findIssueFilesByIssueId(issueId);
+	@RequestMapping(value = "/download/{issueFileId}", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> download(@PathVariable("issueFileId") Integer issueFileId) throws IOException {
+	    Optional<IssueFile> issueFiles = issueFileDao.findIssueFilesByIssueFileId(issueFileId);
 
 	    if (issueFiles.isEmpty()) {
 	        return ResponseEntity.notFound().build();
 	    }
 
-	    IssueFile issueFile = issueFiles.get(0);
+	    IssueFile issueFile = issueFiles.get();
 	    String filePath = issueFile.getIssueFilePath();
 	    File file = new File(filePath);
 

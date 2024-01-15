@@ -10,8 +10,7 @@
 	<!-- 議題新增 -->
 	<div class=" ms-3 w-75">
 		<h4 class="fw-bold fs-3 text-center ">ISSUE CREATE</h4>
-		<form class="w-80 needs-validation" id="issueForm" name="issueForm"
-			enctype="multipart/form-data" novalidate>
+		<form class="w-80 needs-validation" id="issueForm" name="issueForm" enctype="multipart/form-data" novalidate>
 			<div class="mb-1">
 				<label for="issuename" class="form-label">選擇專案</label> 
 				<select class=" form-select  w-75" id="projectId" name="projectId" aria-label="Default select example" 
@@ -30,12 +29,10 @@
 
 			</div>
 			<div class="mb-1">
-				<label for="issueClass" class="form-label mt-2">議題類別</label> <select
-					class="form-select" aria-label="Default select example"
-					onchange="selectIssueClass(event)" id="issueClassId"
-					name="issueClassId" required>
-					<option selected disabled value="">Please choose issue
-						class...</option>
+				<label for="issueClass" class="form-label mt-2">議題類別</label> 
+				<select class="form-select" aria-label="Default select example" onchange="selectIssueClass(event)" 
+				  		id="issueClassId" name="issueClassId" required>
+					<option selected disabled value="">Please choose issue class...</option>
 					<c:forEach var="issueClass" items="${ issueClasses }">
 						<option value="${ issueClass.issueClassId }">${ issueClass.issueClassName }</option>
 					</c:forEach>
@@ -48,9 +45,8 @@
 			</div>
 			<div class="mb-1">
 				<label for="issuecontent" class="form-label">議題內容(請敘述原因:)</label>
-				<textarea class="form-control" id="issueContent" name="issueContent"
-					" placeholder="" required></textarea>
-				<div class="invalid-feedback ">請備註!</div>
+				<textarea class="form-control" id="issueContent" name="issueContent" required></textarea>
+				<div class="invalid-feedback ">請敘述原因!</div>
 			</div>
 			<div class="col-12 d-flex justify-content-center mt-2">
 				<button class="btn btn-secondary col-12" type="button"
@@ -153,10 +149,17 @@
 		.then(data => {
 			 $.each(data, function( index, issue ) {
 				 //console.log(issue);
-				 let issueFilePath = getStringCommaSeparated(issue.issueFiles,"issueFilePath");
+				 //let issueFilePath = getStringCommaSeparated(issue.issueFiles,"issueFilePath");
 				 let issueDateTime = formatDateTime(issue.issueDateTime);
 				 let issueId = issue.issueId;
 				 let issueStatus = issue.issueStatus;
+				
+				 
+				// 生成每個檔案路徑的按鈕陣列
+		         let fileButtons = issue.issueFiles.map(function(file) {
+		         	return '<button class="btn btn-primary ms-2 mt-2 text-start" onclick="downloadFile(' + file.issueFileId + ')">' + file.issueFilePath + '</button>';
+		         });
+				 
 				 let tr = `
 				 	<tr>
 				 		<td>\${issue.issueId}</td>
@@ -164,7 +167,8 @@
 				 		<td>\${issue.issueClassId}</td>
 				 		<td>\${issue.issueContent}</td>
 				 		<td class="text-start">
-				 		    \${issue.issueFiles.length > 0 ? '<button class="btn btn-primary" onclick="downloadFile('+issueId+')">'+issueFilePath+'</button>' : ''}
+				 		    <!-- \${issue.issueFiles.length > 0 ? '<button class="btn btn-primary" onclick="downloadFile('+issueId+')">'+issueFilePath+'</button>' : ''} -->
+				 		    \${fileButtons.join('')}
 				 		</td>
 				 		<td>\${issue.issueDateTime}</td>
 				 		<td>
@@ -208,9 +212,9 @@
 	})
 	
 	//下載issue檔案
-	function downloadFile(issueId) {
+	function downloadFile(issueFileId) {
         // 构建下载链接
-        var downloadLink = '/JavaWebProject_james/mvc/issue/download/' + issueId;
+        var downloadLink = '/JavaWebProject_james/mvc/issue/download/' + issueFileId;
 
         // 创建一个隐藏的<a>元素
         var link = document.createElement('a');
