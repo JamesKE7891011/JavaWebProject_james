@@ -13,7 +13,11 @@
 	</select>
 
 	<!-- 日期修改表格 -->
-	<label class="fs-4 fw-bold mt-3">Schedule <button class=" ms-2 btn btn-outline-success btn-sm  fw-bold">add +</button></label>
+	<label class="fs-4 fw-bold mt-3">Schedule </label>
+	<div class="mt-2">
+		<button class=" ms-2 btn btn-outline-success btn-md  fw-bold">add+</button></label>
+		<button class=" ms-2 btn btn-outline-danger btn-  fw-bold">delete</button>
+	</div>
 	<div class=" table-responsive">
   		<table class="table">
     		<thead>
@@ -41,12 +45,7 @@
    				</tr>
   			</tbody>
   		</table>
-	</div>
-	<div class="d-flex justify-content-center  mt-1 mb-5">
-		<button type="reset" class="mx-4 col-2 btn btn-danger ">修改</button>
-		<button type="submit" class="col-2 btn btn-secondary ">提交</button>
-	</div>
-			
+	</div>			
 	<!-- 甘特圖 -->	
 	<div id="chart_div"></div>
 </div>
@@ -55,9 +54,7 @@
 
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
-	google.charts.load("current", {
-		packages : [ "gantt" ]
-	});
+	google.charts.load("current", {packages : [ "gantt" ]});
 	google.charts.setOnLoadCallback(drawChart);
 
 	function toMilliseconds(minutes) {
@@ -85,9 +82,6 @@
 
 		var options = {
 			height : 275,
-			gantt : {
-				defaultStartDate : new Date(2023, 11, 1),
-			},
 		};
 
 		var chart = new google.visualization.Gantt(document.getElementById("chart_div"));
