@@ -94,7 +94,6 @@
 	    return propertyArray.join('<br>');
 	}
 	
-	
 	//日期設定
 	function formatDate(date) {
 		  return (
