@@ -9,11 +9,11 @@
 <div class="mx-5 mt-4 row " style="min-height: 100vh">
 	<!-- 議題新增 -->
 	<div class=" ms-3 w-75">
-		<h4 class="fw-bold fs-3 text-center ">ISSUE CREATE</h4>
+		<h4 class="fw-bold fs-2 text-center ">ISSUE</h4>
 		<form class="w-80 needs-validation" id="issueForm" name="issueForm" enctype="multipart/form-data" novalidate>
 			<div class="mb-1">
-				<label for="issuename" class="form-label">選擇專案</label> 
-				<select class=" form-select  w-75" id="projectId" name="projectId" aria-label="Default select example" 
+				<h5 class="mb-2 form-label fs-4 fw-bolld">Project Select</h5> 
+				<select class="mt-2 form-select w-75" id="projectId" name="projectId" aria-label="Default select example" 
 						onchange="selectProject(event.target.value)" required>
 					<option selected disabled value="">Please choose project...</option>
 					<c:forEach items="${ projects }" var="project">
@@ -21,7 +21,7 @@
 					</c:forEach>
 				</select>
 			</div>
-			<div class="mb-1 mt-1">
+			<div class="mb-1 mt-2">
 				<label for="issueName" class="form-label">議題名稱</label> <input
 					class="form-control" list="datalistOptions" id="issueName"
 					name="issueName" required>
@@ -48,29 +48,16 @@
 				<textarea class="form-control" id="issueContent" name="issueContent" required></textarea>
 				<div class="invalid-feedback ">請敘述原因!</div>
 			</div>
-			<div class="col-12 d-flex justify-content-center mt-2">
+			<div class="col-12 d-flex justify-content-center my-3">
 				<button class="btn btn-secondary col-12" type="button"
 					onclick="submitForm()">Submit Form</button>
 			</div>
 		</form>
 	</div>
 
-	<!-- 專案下拉選單 -->
-	<div class="col-5 m-3">
-		<h4 class="fs-4 fw-bolld">Find Issue</h4>
-		<div class="d-flex justify-content-start">
-			<select class=" form-select  w-75" id="projectId" name="projectId" aria-label="Default select example" 
-						onchange="selectProject(event.target.value)" required>
-					<option selected disabled value="">Please choose project...</option>
-					<c:forEach items="${ projects }" var="project">
-						<option value="${ project.projectId }">${ project.projectId } ${ project.projectName }</option>
-					</c:forEach>
-				</select>
-		</div>
-	</div>
-
 	<!-- Issue顯示狀態列 -->
-	<div>
+	<div class="mx-2">
+		<h5 class="mt-2 form-label fs-4 fw-bolld">Issue Details</h5> 
 		<table class="table table-hover text-center">
 			<thead>
 				<tr>
