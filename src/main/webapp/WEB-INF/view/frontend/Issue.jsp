@@ -168,7 +168,9 @@
 				 		    \${issue.issueFiles.length > 0 ? '<button class="btn btn-primary" onclick="downloadFile('+issueId+')">'+issueFilePath+'</button>' : ''}
 				 		</td>
 				 		<td>\${issue.issueDateTime}</td>
-				 		<td >\${issue.issueStatus}</td>
+				 		<td>
+				 			\${issue.issueStatus == 1 ? 'Open': 'Close'}
+				 		</td>
 				 		<td>
 				 		    \${issue.issueStatus == 1? 
 				 		    		'<button title="Close" class="btn btn-danger" onclick="closeIssue('+issueId+','+issueStatus+')" id="revise_"'+issueId+'>I/O</button>':
