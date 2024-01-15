@@ -32,9 +32,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -123,9 +125,19 @@ public class IssueController {
 
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-	    headers.setContentDispositionFormData("attachment", issueFile.getIssueFilePath());
+	    String filaname = issueFile.getIssueFilePath().substring(issueFile.getIssueFilePath().lastIndexOf("\\")+1);
+	    headers.setContentDispositionFormData("attachment", filenameEncode(filaname));
 
 	    return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
+	}
+	
+	public static String filenameEncode(String name) {
+	    try {
+	        return java.net.URLEncoder.encode(name, "UTF-8").replace("+", "%20");
+	    } catch (java.io.UnsupportedEncodingException e) {
+	        e.printStackTrace();
+	        return name;
+	    }
 	}
 	
 	//為專題新增issue
@@ -150,14 +162,20 @@ public class IssueController {
 			return "/frontend/Issue"; // 返回前端頁面，提供錯誤信息
 		} 
 		
-		if (issueFilePaths != null) {
+		if (issueFilePaths != null && !issueFilePaths.isEmpty()) {
+			boolean hadFiles = false;
 			for (MultipartFile issueFilePath : issueFilePaths) {
 				String fileName = issueFilePath.getOriginalFilename();
-				// 將檔案寫入指定目錄
-				File uploadFile = new File(uploadDir + fileName);
-				issueFilePath.transferTo(uploadFile);
+				if(!StringUtils.isEmpty(fileName)) {
+					// 將檔案寫入指定目錄
+					File uploadFile = new File(uploadDir + fileName);
+					issueFilePath.transferTo(uploadFile);
+					hadFiles = true;
+				}
 			}
-			issueFileDao.addIssueFile(issueId, issueFilePaths);
+			if(hadFiles) {
+				issueFileDao.addIssueFile(issueId, issueFilePaths);
+			}
 		}
 		return "redirect:/mvc/issue";
 	}
@@ -188,18 +206,22 @@ public class IssueController {
 	@PutMapping(value = "/{issueId}/updateissuestatus")
 	@ResponseBody
 	public Map<String, Object> updateIssueStatus(@PathVariable(name = "issueId") Integer issueId,
-	                                             @RequestParam(name="issueStatus") Integer newIssueStatus,
+	                                             @RequestBody Map body,
 	                                             HttpSession session, Model model) {
+		
+		Integer newIssueStatus = (Integer) body.get("newIssueStatus");
+		
 	    Map<String, Object> result = new HashMap<>();
+	    
 	    try {
 	        // 使用 issueDao 中的方法更新 Issue 狀態
 	        boolean success;
 	        if (newIssueStatus == 1) {
-	            // 如果新的狀態是 1，表示要關閉 Issue
-	            success = issueDao.closeIssueStatusByIssueId(issueId);
+	            // 如果新的狀態是 1，表示要開啟 Issue
+	        	success = issueDao.openIssueStatusByIssueId(issueId);
 	        } else if (newIssueStatus == 0) {
-	            // 如果新的狀態是 0，表示要重新開啟 Issue
-	            success = issueDao.openIssueStatusByIssueId(issueId);
+	            // 如果新的狀態是 0，表示要關閉 Issue
+	            success = issueDao.closeIssueStatusByIssueId(issueId);
 	        } else {
 	            // 其他狀態值可能需要根據具體情況進行處理
 	            success = false;
@@ -220,12 +242,6 @@ public class IssueController {
 	    }
 	    return result;
 	}
-
-
-
-									
-	
-
 
 }
 
