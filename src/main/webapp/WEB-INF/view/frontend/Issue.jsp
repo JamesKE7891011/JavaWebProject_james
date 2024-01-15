@@ -13,15 +13,12 @@
 		<form class="w-80 needs-validation" id="issueForm" name="issueForm"
 			enctype="multipart/form-data" novalidate>
 			<div class="mb-1">
-				<label for="issuename" class="form-label">選擇專案</label> <select
-					class=" form-select  w-75" id="projectId" name="projectId"
-					aria-label="Default select example" onchange="selectProject(event.target.value)"
-					required>
-					<option selected disabled value="">Please choose
-						project...</option>
+				<label for="issuename" class="form-label">選擇專案</label> 
+				<select class=" form-select  w-75" id="projectId" name="projectId" aria-label="Default select example" 
+						onchange="selectProject(event.target.value)" required>
+					<option selected disabled value="">Please choose project...</option>
 					<c:forEach items="${ projects }" var="project">
-						<option value="${ project.projectId }">${ project.projectId }
-							${ project.projectName }</option>
+						<option value="${ project.projectId }">${ project.projectId } ${ project.projectName }</option>
 					</c:forEach>
 				</select>
 			</div>
@@ -66,14 +63,13 @@
 	<div class="col-5 m-3">
 		<h4 class="fs-4 fw-bolld">Find Issue</h4>
 		<div class="d-flex justify-content-start">
-			<select class=" form-select  w-75"
-				aria-label="Default select example" onchange="selectProject(event)">
-				<option selected disabled value="">Please choose project...</option>
-				<c:forEach items="${ projects }" var="project">
-					<option value="${ project.projectId }">${ project.projectId }
-						${ project.projectName }</option>
-				</c:forEach>
-			</select>
+			<select class=" form-select  w-75" id="projectId" name="projectId" aria-label="Default select example" 
+						onchange="selectProject(event.target.value)" required>
+					<option selected disabled value="">Please choose project...</option>
+					<c:forEach items="${ projects }" var="project">
+						<option value="${ project.projectId }">${ project.projectId } ${ project.projectName }</option>
+					</c:forEach>
+				</select>
 		</div>
 	</div>
 
@@ -105,7 +101,8 @@
 <%@ include file="/WEB-INF/view/footer.jsp"%>
 
 <script>
-
+	
+	//檔案上傳顯示
 	function getStringCommaSeparated(jsonData, propertyName) {
 	    var propertyArray = jsonData.map(function(item) {
 	        return item[propertyName];
@@ -114,6 +111,8 @@
 	    return propertyArray.join('<br>');
 	}
 	
+	
+	//日期設定
 	function formatDate(date) {
 		  return (
 		    [
