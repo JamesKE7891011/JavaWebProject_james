@@ -32,19 +32,19 @@
 							</tr>
 							<tr>
 								<th scope="row">projectName:</th>
-								<td class="w-100">${ project.projectName }</td>
+								<td class="w-100" id="formProjectName">${ project.projectName }</td>
 							</tr>
 							<tr>
 								<th scope="row">projectContent:</th>
-								<td class="w-100">${ project.projectContent }</td>
+								<td class="w-100" id="formProjectContent">${ project.projectContent }</td>
 							</tr>
 							<tr>
 								<th scope="row">projectOwner:</th>
-								<td class="w-100 d-flex justift-content-start">${project.projectOwner.employeeName}</td>
+								<td class="w-100 d-flex justift-content-start" id="formProjectOwner">${project.projectOwner.employeeName}</td>
 							</tr>
 							<tr>
 								<th scope="row">projectMember:</th>								
-							    <td class="w-100">
+							    <td class="w-100" id="formProjectMember">
 							        <c:if test="${not empty project.projectMembers}">
 							            <c:forEach items="${project.projectMembers}" var="member" varStatus="loop">
 							                <c:if test="${not loop.first}">,</c:if> <!-- 在非第一個成員之前顯示逗號 -->
@@ -55,11 +55,11 @@
 							</tr>
 							<tr>
 								<th scope="row">projectStartDate:</th>
-								<td class="w-100">${ project.projectStartDate }</td>
+								<td class="w-100" id="formProjectStartDate">${ project.projectStartDate }</td>
 							</tr>
 							<tr>
 								<th scope="row">projectEndDate:</th>
-								<td class="w-100">${ project.projectEndDate }</td>
+								<td class="w-100" id="formProjectEndDate">${ project.projectEndDate }</td>
 							</tr>
 						</tbody>
 					</c:forEach>
@@ -89,13 +89,13 @@
 			</thead>
 			<tbody>
  				<tr>
-   					<th scope="row">1</th>
-   						<td>馬桶壞掉</td>
-   						<td>D</td>
-   						<td>因投入不當物品，造成堵塞</td>
-   						<td>馬桶.jpg</td>
-   						<td>2023-12-07 00:00:00</td>
-   						<td>Open</td>
+   						<td id="formIssueId">${issue.issueId}</td>
+   						<td id="formIssueName">${issue.issueName}</td>
+   						<td id="formIssueClass">${issue.issueClassId}</td>
+   						<td id="formIssueContent">${issue.issueContent}</td>
+   						<td id="formIssueFileButton">${fileButtons.join('')}</td>
+   						<td id="formIssueDateTime">${issue.issueDateTime}</td>
+   						<td id="formIssueStaus">${issue.issueStatus == 1 ? 'Open': 'Close'}</td>
  				</tr>    			
 			</tbody>
 		</table>
@@ -106,7 +106,7 @@
 <%@ include file="/WEB-INF/view/footer.jsp" %>
 
 <script>
-
+	
 
 	//----------------selectProject----------------------//
 	function selectProject(event) {
@@ -126,17 +126,62 @@
             let projectEndDate = project.projectEndDate;
 
             // 在這裡可以使用這些變數進行後續操作，例如顯示在控制台上
-            console.log('projectName:', projectName);
-            console.log('projectContent:', projectContent);
-            console.log('projectOwner:', projectOwner);
-            console.log('projectMembers:', projectMembers);
-            console.log('projectStartDate:', projectStartDate);
-            console.log('projectEndDate:', projectEndDate);
+            //console.log('projectName:', projectName);
+            //console.log('projectContent:', projectContent);
+            //console.log('projectOwner:', projectOwner);
+            //console.log('projectMembers:', projectMembers);
+            //console.log('projectStartDate:', projectStartDate);
+            //console.log('projectEndDate:', projectEndDate);
             
             document.getElementById("formProjectId").innerText = projectId;
-            console.log(document.getElementById("formProjectId"));
+            document.getElementById("formProjectName").innerText = projectName;
+            document.getElementById("formProjectContent").innerText = projectContent;
+            document.getElementById("formProjectOwner").innerText = projectOwner;
+            document.getElementById("formProjectMember").innerText = projectMembers.map(member => member.employeeName).join(', ');
+            document.getElementById("formProjectStartDate").innerText = projectStartDate;
+            document.getElementById("formProjectEndDate").innerText = projectEndDate;
+                       
 	    })
 	    .catch(error => console.error('Error fetching project:', error));
+	    
+	    fetch('/JavaWebProject_james/mvc/main/findissue/' + projectId, {method: "GET",headers: {"Content-Type": "application/json",}})
+	    .then(response => response.json())
+	    .then(data => {
+	        $.each(data, function(index, issue) {
+	            // 在這裡可以進一步處理 issue 的資料，例如顯示在控制台上
+	            console.log('Issue Object:', issue);
+
+	            // 使用解構賦值檢查屬性是否存在
+	            let {
+	                issueId,
+	                issueName,
+	                issueClass,
+	                issueContent,
+	                issueFile,
+	                issueDateTime,
+	                issueStatus
+	            } = issue;
+
+	            // 進一步處理 issueFile
+	            if (Array.isArray(issueFile)) {
+	                let issueFileButton = issueFile.map(function(file) {
+	                    return '<button class="btn btn-primary ms-2 mt-2 text-start" onclick="downloadFile(' + file.issueFileId + ')">' + file.issueFilePath + '</button>';
+	                });
+	                console.log('Issue File Buttons:', issueFileButton);
+	            }
+	            
+	            document.getElementById("formIssueId").innerText = issueId;
+	            document.getElementById("formIssueName").innerText = issueName;
+	            document.getElementById("formIssueClass").innerText = issueClass;
+	            document.getElementById("formIssueContent").innerText = issueContent;
+	            document.getElementById("formIssueFileButton").innerText = issueFileButton;
+	            document.getElementById("formIssueDateTime").innerText = issueDateTime;
+	            document.getElementById("formIssueStatus").innerText = issueStatus;
+	            
+	        });
+	    })
+	    .catch(error => console.error('Error fetching issues:', error));
+
 	}
 
 </script>

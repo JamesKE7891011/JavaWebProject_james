@@ -18,6 +18,9 @@ import com.example.bean.Issue;
 import com.example.bean.Project;
 import com.example.bean.ProjectMember;
 import com.example.dao.EmployeeDaoimplMySQL;
+import com.example.dao.IssueClassDao;
+import com.example.dao.IssueDao;
+import com.example.dao.IssueFileDao;
 import com.example.dao.ProjectDao;
 import com.example.dao.ProjectMemberDao;
 
@@ -36,6 +39,18 @@ public class MainController {
 	@Autowired
 	@Qualifier("employeedaomysql")
 	private EmployeeDaoimplMySQL employeedao;
+	
+	@Autowired
+	@Qualifier("issuedaomysql")
+	private IssueDao issueDao;
+
+	@Autowired
+	@Qualifier("issueclassdaomysql")
+	private IssueClassDao issueClassDao;
+
+	@Autowired
+	@Qualifier("issuefiledaomysql")
+	private IssueFileDao issueFileDao;
 	
 	@GetMapping
 	public String getMainPage(Model model) {
@@ -57,6 +72,12 @@ public class MainController {
 	@ResponseBody
 	public Project findProjectByProjectId(@PathVariable("projectId") String projectId){
 		return projectDao.findProjectById(projectId).get();
+	}
+	
+	@GetMapping(value = "findissue/{projectId}")
+	@ResponseBody
+	public List<Issue> findIssueByProjectId(@PathVariable("projectId") String projectId){
+		return issueDao.findIssuesByProjectId(projectId);
 	}
 	
 		
