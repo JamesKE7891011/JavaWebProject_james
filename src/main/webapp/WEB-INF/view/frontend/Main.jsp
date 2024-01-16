@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%@ include file="/WEB-INF/view/header.jsp" %> 
 
@@ -8,44 +10,59 @@
 		<div class="m-3" style="width: 40%">
 			<!-- 專案下拉選單 -->
 			<h4 class="fs-3 fw-bold">Project Name</h4>
-			<select class=" form-select mt-2" aria-label="Default select example">
-  				<option selected>Choose project</option>
-  				<option value="One">AC23020</option>
-			</select>		
+			<div class="d-flex justify-content-start">
+				<select class="mt-2 form-select w-75" id="projectId" name="projectId" aria-label="Default select example" 
+						onchange="selectProject(event)" required>
+					<option selected disabled value="">Please choose project...</option>
+					<c:forEach items="${ projects }" var="project">
+						<option value="${ project.projectId }">${ project.projectId } ${ project.projectName }</option>
+					</c:forEach>
+				</select>
+			</div>		
 			<!-- 專案顯示資訊 -->
 			<div class="mt-3">
 				<label class="fs-4 fw-bold ">Project Information</label>
-				<table class="table">
-  					<tbody>
-    					<tr>
-      						<th scope="row">project_id:</th>
-      						<td>ex:AC23021</td>
-    					</tr>
-    					<tr>
-      						<th scope="row">project_name:</th>
-      							<td>Holystone 轉輪更換</td>
-    					</tr>
-    					<tr>
-      						<th scope="row">project_content:</th>
-      						<td>轉輪一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套一套</td>
-    					</tr>
-    					<tr>
-      						<th scope="row">project_owner:</th>
-      						<td>James</td>
-    					</tr>
-    					<tr>
-      						<th scope="row">project_member:</th>
-      						<td>Leo、Tim、Dan、Adam</td>
-    					</tr>
-    					<tr>
-      						<th scope="row">project_start:</th>
-      						<td>2023/12/09</td>
-    					</tr>
-    					<tr>
-      						<th scope="row">project_end:</th>
-      						<td>2024/12/09</td>
-    					</tr>
-  					</tbody>
+				<!-- 專案顯示資訊 -->
+				<table class="table mt-2">
+					<c:forEach var="project" items="${ projects }" varStatus="loop">
+						<tbody class="${loop.index >0 ? 'd-none': 'd-block'}" id="${ project.projectId }">
+							<tr>
+								<th scope="row">projectId:</th>
+								<td class="w-100">${ project.projectId }</td>
+							</tr>
+							<tr>
+								<th scope="row">projectName:</th>
+								<td class="w-100">${ project.projectName }</td>
+							</tr>
+							<tr>
+								<th scope="row">projectContent:</th>
+								<td class="w-100">${ project.projectContent }</td>
+							</tr>
+							<tr>
+								<th scope="row">projectOwner:</th>
+								<td class="w-100 d-flex justift-content-start">${project.projectOwner.employeeName}</td>
+							</tr>
+							<tr>
+								<th scope="row">projectMember:</th>								
+							    <td class="w-100">
+							        <c:if test="${not empty project.projectMembers}">
+							            <c:forEach items="${project.projectMembers}" var="member" varStatus="loop">
+							                <c:if test="${not loop.first}">,</c:if> <!-- 在非第一個成員之前顯示逗號 -->
+							                ${member.employeeName}
+							            </c:forEach>
+							        </c:if>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">projectStartDate:</th>
+								<td class="w-100">${ project.projectStartDate }</td>
+							</tr>
+							<tr>
+								<th scope="row">projectEndDate:</th>
+								<td class="w-100">${ project.projectEndDate }</td>
+							</tr>
+						</tbody>
+					</c:forEach>
 				</table>
 			</div>
 		</div>
@@ -88,6 +105,50 @@
 
 <%@ include file="/WEB-INF/view/footer.jsp" %>
 
+<script>
+
+
+	//----------------selectProject----------------------//
+	function selectProject(event) {
+    var projectId = event.target.value;
+    console.log('projectId:', projectId);
+
+    fetch('JavaWebProject_james/mvc/main/findproject/' + projectId, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // 使用箭頭函數，並將參數命名為 project
+        $.each(data, (index, project) => {
+            // 將變數宣告在 fetch 之外，以便後續使用
+            let projectName = project.projectName;
+            let projectContent = project.projectContent;
+            let projectOwner = project.projectOwner.employeeName;
+
+            // 注意這裡應該使用 project.projectMembers，而不是單一的 member
+            let projectMembers = project.projectMembers;
+            let projectMemberNames = projectMembers.map(member => member.employeeName).join(', ');
+
+            let projectStartDate = project.projectStartDate;
+            let projectEndDate = project.projectEndDate;
+
+            // 在這裡可以使用這些變數進行後續操作，例如顯示在控制台上
+            console.log('projectName:', projectName);
+            console.log('projectContent:', projectContent);
+            console.log('projectOwner:', projectOwner);
+            console.log('projectMembers:', projectMemberNames);
+            console.log('projectStartDate:', projectStartDate);
+            console.log('projectEndDate:', projectEndDate);
+        });
+    })
+    .catch(error => console.error('Error fetching project:', error));
+}
+
+</script>
+
 <!-- 甘特圖修改 -->
 <script>
 	//Example starter JavaScript for disabling form submissions if there are invalid fields
@@ -108,7 +169,7 @@
 				form.classList.add('was-validated')
 			}, false)
 		})
-	})()
+	})
 </script>
 
 

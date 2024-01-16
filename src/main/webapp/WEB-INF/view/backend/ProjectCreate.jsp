@@ -461,7 +461,7 @@ myModal.addEventListener('shown.bs.modal', function () {
     	$('#projectMember2').val(projectMember2);
     }
     
-    //----------------selectProject----------------------//
+  //----------------selectProject----------------------//
     function selectProject(event) {
     	let elementId = event.target.value;
     	$('tbody').addClass('d-none');
