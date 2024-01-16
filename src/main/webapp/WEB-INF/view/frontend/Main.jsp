@@ -128,9 +128,7 @@
             let projectContent = project.projectContent;
             let projectOwner = project.projectOwner.employeeName;
 
-            // 注意這裡應該使用 project.projectMembers，而不是單一的 member
             let projectMembers = project.projectMembers;
-            let projectMemberNames = projectMembers.map(member => member.employeeName).join(', ');
 
             let projectStartDate = project.projectStartDate;
             let projectEndDate = project.projectEndDate;
