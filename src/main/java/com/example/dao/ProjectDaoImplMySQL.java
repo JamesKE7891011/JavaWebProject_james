@@ -76,7 +76,7 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 
 	@Override
 	public Optional<Project> findProjectById(String projectId) {
-		String sql = "select projectId,projectName,projectContent,projectOwner,projectStartDate,projectEndDate from project where projectId";
+		String sql = "select projectId,projectName,projectContent,projectOwner,projectStartDate,projectEndDate from project where projectId =?";
 		try {
 			Project project = jdbcTemplate.queryForObject(sql, projectMapper, projectId);
 			return Optional.ofNullable(project);

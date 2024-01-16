@@ -55,8 +55,8 @@ public class MainController {
 	
 	@GetMapping(value = "findproject/{projectId}")
 	@ResponseBody
-	public Optional<Project> findProjectByProjectId(@PathVariable("projectId") String projectId){
-		return projectDao.findProjectById(projectId);
+	public Project findProjectByProjectId(@PathVariable("projectId") String projectId){
+		return projectDao.findProjectById(projectId).get();
 	}
 	
 		

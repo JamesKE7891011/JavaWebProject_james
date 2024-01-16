@@ -28,7 +28,7 @@
 						<tbody class="${loop.index >0 ? 'd-none': 'd-block'}" id="${ project.projectId }">
 							<tr>
 								<th scope="row">projectId:</th>
-								<td class="w-100">${ project.projectId }</td>
+								<td class="w-100" id="formProjectId">${ project.projectId }</td>
 							</tr>
 							<tr>
 								<th scope="row">projectName:</th>
@@ -110,26 +110,18 @@
 
 	//----------------selectProject----------------------//
 	function selectProject(event) {
-    var projectId = event.target.value;
-    console.log('projectId:', projectId);
-
-    fetch('JavaWebProject_james/mvc/main/findproject/' + projectId, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        // 使用箭頭函數，並將參數命名為 project
-        $.each(data, (index, project) => {
-            // 將變數宣告在 fetch 之外，以便後續使用
+	    var projectId = event.target.value;
+	    console.log('projectId:', projectId);
+	
+	    fetch('/JavaWebProject_james/mvc/main/findproject/' + projectId, {method: "GET",headers: {"Content-Type": "application/json",}})
+	    .then(response => response.json())
+	    .then(project => {
+	    	
+	        // 將變數宣告在 fetch 之外，以便後續使用
             let projectName = project.projectName;
             let projectContent = project.projectContent;
             let projectOwner = project.projectOwner.employeeName;
-
             let projectMembers = project.projectMembers;
-
             let projectStartDate = project.projectStartDate;
             let projectEndDate = project.projectEndDate;
 
@@ -137,13 +129,15 @@
             console.log('projectName:', projectName);
             console.log('projectContent:', projectContent);
             console.log('projectOwner:', projectOwner);
-            console.log('projectMembers:', projectMemberNames);
+            console.log('projectMembers:', projectMembers);
             console.log('projectStartDate:', projectStartDate);
             console.log('projectEndDate:', projectEndDate);
-        });
-    })
-    .catch(error => console.error('Error fetching project:', error));
-}
+            
+            document.getElementById("formProjectId").innerText = projectId;
+            console.log(document.getElementById("formProjectId"));
+	    })
+	    .catch(error => console.error('Error fetching project:', error));
+	}
 
 </script>
 
