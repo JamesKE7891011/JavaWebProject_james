@@ -44,41 +44,7 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 		return jdbcTemplate.update(sql, project.getProjectId(), project.getProjectName(), project.getProjectContent(),
 				project.getProjectOwner().getEmployeeId(), project.getProjectStartDate(), project.getProjectEndDate());
 	}
-
-	// 定義了一個RowMapper物件，用於"映射"ResultSet中的資料到Project物件(映射:將從資料庫中擷取的資料轉換為應用程式中的對應的Project物件。)
-	RowMapper<Project> projectMapper = (ResultSet rs, int rowNum) -> {
 		
-		 // 創建一個新的Project物件
-		Project project = new Project();
-		
-		// 設定Project的基本屬性
-		project.setProjectId(rs.getString("projectId"));
-		project.setProjectName(rs.getString("projectName"));
-		project.setProjectContent(rs.getString("projectContent"));
-		
-		// 將資料庫中的Employee設定為ProjectOwner
-		project.setProjectOwner(employeedao.findEmployeeById(rs.getInt("projectOwner")).get());
-		
-		// 查詢並設定與該Project相關的所有ProjectMember
-		List<ProjectMember> projectMembers = projectMemberDao.findProjectMemberById(project.getProjectId());
-		List<Employee> employees = new ArrayList<Employee>();
-		
-		// 迭代ProjectMember的集合，查詢並設定相應的Employee，加入到List中(迭代是指遍歷（或循環）一個集合，逐一處理集合中的每一個元素。)
-		for(ProjectMember projectMember:projectMembers) {
-			Employee employee = employeedao.findEmployeeById(projectMember.getEmployeeId()).get();
-			employees.add(employee);
-		}
-		
-		// 設定Project的成員列表
-		project.setProjectMembers(employees);
-		
-		project.setProjectStartDate(rs.getDate("projectStartDate"));
-		project.setProjectEndDate(rs.getDate("projectEndDate"));
-		
-		// 返回完整設定的Project物件
-		return project;
-	};
-	
 	// 根據專案ID刪除指定的專案
 	@Override
 	public int removeProjectById(String projectId) {
@@ -87,6 +53,40 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 		// 表示刪除操作受影響的資料行數的整數，成功->資料行數應該大於 0
 		return jdbcTemplate.update(sql, projectId);
 	}
+	
+	// 定義了一個RowMapper物件，用於"映射"ResultSet中的資料到Project物件(映射:將從資料庫中擷取的資料轉換為應用程式中的對應的Project物件。)
+		RowMapper<Project> projectMapper = (ResultSet rs, int rowNum) -> {
+			
+			 // 創建一個新的Project物件
+			Project project = new Project();
+			
+			// 設定Project的基本屬性
+			project.setProjectId(rs.getString("projectId"));
+			project.setProjectName(rs.getString("projectName"));
+			project.setProjectContent(rs.getString("projectContent"));
+			
+			// 將資料庫中的Employee設定為ProjectOwner
+			project.setProjectOwner(employeedao.findEmployeeById(rs.getInt("projectOwner")).get());
+			
+			// 查詢並設定與該Project相關的所有ProjectMember
+			List<ProjectMember> projectMembers = projectMemberDao.findProjectMemberById(project.getProjectId());
+			List<Employee> employees = new ArrayList<Employee>();
+			
+			// 迭代ProjectMember的集合，查詢並設定相應的Employee，加入到List中(迭代是指遍歷（或循環）一個集合，逐一處理集合中的每一個元素。)
+			for(ProjectMember projectMember:projectMembers) {
+				Employee employee = employeedao.findEmployeeById(projectMember.getEmployeeId()).get();
+				employees.add(employee);
+			}
+			
+			// 設定Project的成員列表
+			project.setProjectMembers(employees);
+			
+			project.setProjectStartDate(rs.getDate("projectStartDate"));
+			project.setProjectEndDate(rs.getDate("projectEndDate"));
+			
+			// 返回完整設定的Project物件
+			return project;
+		};
 	
 	// 查詢專案(多筆)
 	@Override
