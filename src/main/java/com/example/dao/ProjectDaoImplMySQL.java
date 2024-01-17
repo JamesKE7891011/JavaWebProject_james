@@ -34,7 +34,7 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 	private ProjectMemberDao projectMemberDao;
 
 	
-	// 新增Project
+	// 新增專案：
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED) // 確保這些資料庫操作要麼全部成功執行，要麼全部失敗回滾，以保證資料的一致性。(REQUIRED:若是有現有事務，就加入；如果沒有，就創建一個新事務。)
 	public int addProject(Project project) {
@@ -79,7 +79,7 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 		return project;
 	};
 	
-	// 刪除Project依據ProjectId
+	// 根據專案ID刪除指定的專案
 	@Override
 	public int removeProjectById(String projectId) {
 		String sql = "delete from project where projectId = ?";
@@ -88,7 +88,7 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 		return jdbcTemplate.update(sql, projectId);
 	}
 	
-	// 查詢所有專案
+	// 查詢專案(多筆)
 	@Override
 	public List<Project> findAllProjects() {
 		String sql = "select projectId,projectName,projectContent,projectOwner,projectStartDate,projectEndDate from project";
@@ -97,7 +97,7 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 		return jdbcTemplate.query(sql, projectMapper);
 	}
 	
-	// 查詢單一專案根據ProjectId
+	//根據專案ID查找專案(單筆)
 	@Override
 	public Optional<Project> findProjectById(String projectId) {
 		String sql = "select projectId,projectName,projectContent,projectOwner,projectStartDate,projectEndDate from project where projectId =?";

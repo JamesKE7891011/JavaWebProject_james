@@ -20,7 +20,7 @@ public interface ProjectDao {
 	//根據專案ID查找專案(單筆)
 	Optional<Project> findProjectById(String projectId);
 	
-	// 修改專案內容
+	// 更新專案內容
 	int updateProject(Project projectUpdate);
 
 	
