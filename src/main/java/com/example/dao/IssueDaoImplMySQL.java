@@ -60,7 +60,7 @@ public class IssueDaoImplMySQL implements IssueDao {
 	}
 
 	@Override
-	public int removeIssueById(Integer issueId) {
+	public int removeIssueById(Integer issueId ) {
 	    
 		// 刪除相應的子表記錄
 	    String deleteIssueFileSql = "delete from issuefile where issueId = ?";

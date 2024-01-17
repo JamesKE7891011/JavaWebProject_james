@@ -31,11 +31,11 @@ import com.example.dao.IssueDao;
 import com.example.dao.ProjectDao;
 import com.example.dao.ProjectMemberDao;
 
-@Controller
-@RequestMapping("/project")
+@Controller      // 標記這個類別為控制器。控制器負責處理HTTP請求，並返回相應的視圖或數據。
+@RequestMapping("/project")  
 public class ProjectController {
 	
-	@Autowired
+	@Autowired  //是Spring框架的注解，用於自動注入相依的Bean。
 	@Qualifier("projectdaomysql")
 	private ProjectDao projectDao;
 	
@@ -55,13 +55,13 @@ public class ProjectController {
 	@GetMapping
 	public String getProjectPage(Model model) {
 		
-		// 1. projects
+		// 查詢所有專案
 		List<Project> projects = projectDao.findAllProjects();
-		model.addAttribute("projects", projects);
-
-		System.out.println(projects);
 		
-		// 2. members
+		// 將查詢到的專案列表添加到Model，以便在視圖中使用。
+		model.addAttribute("projects", projects);
+		
+		// 查詢所有員工
 		List<Employee> employees = employeedao.findAllEmployees();
 		model.addAttribute("employees", employees);
 		
@@ -80,30 +80,38 @@ public class ProjectController {
 							 @RequestParam(name = "projectEndDate")Date projectEndDate,HttpSession session,Model model) throws ParseException{
 		try {
 			
+			 // 建立 Project 物件，設定相關屬性
 			Project project = new Project();
 			project.setProjectId(projectId);
 			project.setProjectName(projectName);
 			project.setProjectContent(projectContent);
+			
+			// 取得的員工物件設定為專案物件的擁有者
 			project.setProjectOwner(employeedao.findEmployeeById(projectOwner).get());
 			project.setProjectStartDate(projectStartDate);
 			project.setProjectEndDate(projectEndDate);
 			
-			// projectMember: 將 1,2,3 轉成 List<Integer>
+			// // 將 projectMember 轉換成 List<Integer>，才能塞進 addProjectMember()
 			List<Integer> members = Arrays.asList(projectMember.split(","))
 					.stream()
 					.mapToInt(Integer::parseInt)
 					.boxed()
 					.collect(Collectors.toList());
 
+			// 呼叫 ProjectDao 的 addProject 方法，儲存專案資訊
 			int rowcount = projectDao.addProject(project);
+			
+			// 呼叫 ProjectMemberDao 的 addProjectMember 方法，儲存專案成員資訊
 			projectMemberDao.addProjectMember(projectId, members);
+			
+			// 根據執行結果進行導向
 			if (rowcount == 0) {
 				model.addAttribute("errorMessage", "新增失敗，請通知管理員");
 				return "backend/ProjectCreate";
 			}else {
 				return "redirect:/mvc/project";
 			}
-		}catch (SQLIntegrityConstraintViolationException e) {
+		}catch (SQLIntegrityConstraintViolationException e) {  // 發生資料庫完整性約束違反時，提供一個友好的錯誤訊息給使用者
 			model.addAttribute("errorMessage", "Project 已經建立");
 			return "backend/ProjectCreate";
 		} catch (Exception e) {
