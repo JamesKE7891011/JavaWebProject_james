@@ -20,13 +20,15 @@ public class ProjectMemberDaoimplMySQL implements ProjectMemberDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
+	// 新增專案成員
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public int[] addProjectMember(String projectId, List<Integer> projectMembers) {
 
 		String sql = "insert into projectmember(projectId, employeeId) values(?,?)";
 
-	BatchPreparedStatementSetter bps = new BatchPreparedStatementSetter() {
+		BatchPreparedStatementSetter bps = new BatchPreparedStatementSetter() {
+			
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				ps.setString(1, projectId);
@@ -37,18 +39,18 @@ public class ProjectMemberDaoimplMySQL implements ProjectMemberDao {
 			public int getBatchSize() {
 				return projectMembers.size();
 			}
-
 		};
-
 		return jdbcTemplate.batchUpdate(sql, bps);
 	}
 
+	// 根據專案ID刪除該專案成員
 	@Override
     public int removeProjectMember(String projectId) {
         String sql = "delete from projectMember where projectId = ?";
         return jdbcTemplate.update(sql,projectId);
 	}
 
+	// 查詢專案ID查詢多名專案成員(多筆)
 	@Override
 	public List<ProjectMember> findProjectMemberById(String projectId) {
 		String sql = "select projectId,employeeId from projectmember where projectId = ?";

@@ -34,7 +34,7 @@ public class ProjectDaoImplMySQL implements ProjectDao {
 	private ProjectMemberDao projectMemberDao;
 
 	
-	// 新增專案：
+	// 新增專案
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED) // 確保這些資料庫操作要麼全部成功執行，要麼全部失敗回滾，以保證資料的一致性。(REQUIRED:若是有現有事務，就加入；如果沒有，就創建一個新事務。)
 	public int addProject(Project project) {
