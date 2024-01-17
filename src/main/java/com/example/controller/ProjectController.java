@@ -27,6 +27,7 @@ import com.example.bean.Employee;
 import com.example.bean.Project;
 import com.example.bean.ProjectMember;
 import com.example.dao.EmployeeDaoimplMySQL;
+import com.example.dao.IssueDao;
 import com.example.dao.ProjectDao;
 import com.example.dao.ProjectMemberDao;
 
@@ -45,6 +46,10 @@ public class ProjectController {
 	@Autowired
 	@Qualifier("employeedaomysql")
 	private EmployeeDaoimplMySQL employeedao;
+	
+	@Autowired
+	@Qualifier("issuedaomysql")
+	private IssueDao issueDao;
 	
 	//查詢專案
 	@GetMapping
@@ -112,9 +117,10 @@ public class ProjectController {
 	@GetMapping("/cancelproject/{projectId}" )
 	public String cancelProject(@PathVariable("projectId") String projectId,Model model) {
 	    try {
-	        int rowcount = projectMemberDao.removeProjectMember(projectId); // 刪除專案成員
-	        if (rowcount >= 0) {
-	            rowcount = projectDao.removeProjectById(projectId); // 刪除專案
+	        int rowcount1 = projectMemberDao.removeProjectMember(projectId); // 刪除專案成員
+	        int rowcount2 = issueDao.removeIssueByProjectId(projectId);
+	        if (rowcount1 >= 0 || rowcount2 >= 0) {
+	            rowcount1 = projectDao.removeProjectById(projectId); // 刪除專案
 	            return "redirect:/mvc/project";
 	        } else {
 	        	model.addAttribute("errorMessage","刪除失敗，請通知管理員");

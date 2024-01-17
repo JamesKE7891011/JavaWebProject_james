@@ -11,6 +11,8 @@ public interface IssueDao {
 	
 	int removeIssueById(Integer issueId);
 	
+	int removeIssueByProjectId(String projectId);
+	
 	List<Issue> findAllIssues();
 	
 	Optional<Issue> findIssuesByIssueId(Integer issueId);

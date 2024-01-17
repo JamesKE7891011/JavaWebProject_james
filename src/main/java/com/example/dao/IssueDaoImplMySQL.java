@@ -64,6 +64,16 @@ public class IssueDaoImplMySQL implements IssueDao {
 
 	    return issueId;
 	}
+	
+	
+
+	@Override
+	public int removeIssueByProjectId(String projectId) {
+		String sql = "delete from issue where projectId = ?";
+		return jdbcTemplate.update(sql,projectId);
+	}
+
+
 
 	@Override
 	public int removeIssueById(Integer issueId) {
@@ -106,8 +116,6 @@ public class IssueDaoImplMySQL implements IssueDao {
 			return Optional.empty();
 		}
 	}
-	
-	
 
 	@Override
 	public List<Issue> findIssuesByProjectId(String projectId) {

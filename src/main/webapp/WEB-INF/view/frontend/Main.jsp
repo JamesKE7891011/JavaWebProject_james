@@ -88,15 +88,17 @@
  				</tr>
 			</thead>
 			<tbody>
- 				<tr>
-   						<td id="formIssueId">${issue.issueId}</td>
-   						<td id="formIssueName">${issue.issueName}</td>
-   						<td id="formIssueClass">${issue.issueClassId}</td>
-   						<td id="formIssueContent">${issue.issueContent}</td>
-   						<td id="formIssueFileButton">${fileButtons.join('')}</td>
-   						<td id="formIssueDateTime">${issue.issueDateTime}</td>
-   						<td id="formIssueStaus">${issue.issueStatus == 1 ? 'Open': 'Close'}</td>
- 				</tr>    			
+				
+ 					<tr>
+   						<td id="formIssueId"></td>
+   						<td id="formIssueName"></td>
+   						<td id="formIssueClass"></td>
+   						<td id="formIssueContent"></td>
+   						<td id="formIssueFiles"></td>
+   						<td id="formIssueDateTime"></td>
+   						<td id="formIssueStatus"></td> 					
+ 					</tr>    			
+				
 			</tbody>
 		</table>
 	</div>
@@ -155,16 +157,17 @@
 	            let {
 	                issueId,
 	                issueName,
-	                issueClass,
+	                issueClassId,
 	                issueContent,
-	                issueFile,
+	                issueFiles,
 	                issueDateTime,
 	                issueStatus
 	            } = issue;
+	            
 
 	            // 進一步處理 issueFile
-	            if (Array.isArray(issueFile)) {
-	                let issueFileButton = issueFile.map(function(file) {
+	            if (Array.isArray(issueFiles)) {
+	                let issueFileButton = issueFiles.map(function(file) {
 	                    return '<button class="btn btn-primary ms-2 mt-2 text-start" onclick="downloadFile(' + file.issueFileId + ')">' + file.issueFilePath + '</button>';
 	                });
 	                console.log('Issue File Buttons:', issueFileButton);
@@ -172,9 +175,9 @@
 	            
 	            document.getElementById("formIssueId").innerText = issueId;
 	            document.getElementById("formIssueName").innerText = issueName;
-	            document.getElementById("formIssueClass").innerText = issueClass;
+	            document.getElementById("formIssueClass").innerText = issueClassId;
 	            document.getElementById("formIssueContent").innerText = issueContent;
-	            document.getElementById("formIssueFileButton").innerText = issueFileButton;
+	            document.getElementById("formIssueFiles").innerText = issueFileButtons.join('');
 	            document.getElementById("formIssueDateTime").innerText = issueDateTime;
 	            document.getElementById("formIssueStatus").innerText = issueStatus;
 	            
@@ -183,6 +186,26 @@
 	    .catch(error => console.error('Error fetching issues:', error));
 
 	}
+	
+	//下載issue檔案
+	function downloadFile(issueFileId) {
+        // 构建下载链接
+        var downloadLink = '/JavaWebProject_james/mvc/issue/download/' + issueFileId;
+
+        // 创建一个隐藏的<a>元素
+        var link = document.createElement('a');
+        link.href = downloadLink;
+        link.download = '';  // 如果你希望浏览器提示保存文件对话框，可以设置一个文件名
+
+        // 将<a>元素附加到文档中
+        document.body.appendChild(link);
+
+        // 模拟点击事件
+        link.click();
+
+        // 从文档中移除<a>元素
+        document.body.removeChild(link);
+    }
 
 </script>
 

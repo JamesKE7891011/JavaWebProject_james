@@ -28,6 +28,7 @@ import com.example.dao.ProjectMemberDao;
 @RequestMapping("/main")
 public class MainController {
 	
+	//與controller彼此依賴
 	@Autowired
 	@Qualifier("projectdaomysql")
 	private ProjectDao projectDao;

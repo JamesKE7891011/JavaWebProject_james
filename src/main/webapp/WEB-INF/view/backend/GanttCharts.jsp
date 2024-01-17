@@ -3,7 +3,7 @@
 
 <%@ include file="/WEB-INF/view/backendheader.jsp"%>
 
-<div class="m-3">
+	<div class="m-3">
 
 	<!-- 專案下拉選單 -->
 	<h4 class="fs-4 fw-bold">Project Name</h4>
@@ -11,43 +11,74 @@
   		<option selected>Choose project</option>
   		<option value="One">AC23020</option>
 	</select>
-
-	<!-- 日期修改表格 -->
+ 	</div>	
+	<!-- 新增進度條 -->
+	<div class="mx-3">
 	<label class="fs-4 fw-bold mt-3">Schedule </label>
-	<div class="mt-2">
-		<button class=" ms-2 btn btn-outline-success btn-md  fw-bold">add+</button></label>
-		<button class=" ms-2 btn btn-outline-danger btn-  fw-bold">delete</button>
-	</div>
-	<div class=" table-responsive">
-  		<table class="table">
-    		<thead>
-    			<tr>
-      				<th scope="col">purchase_start</th>
-      				<th scope="col">purchase_end</th>
-      				<th scope="col">execution_start</th>
-      				<th scope="col">execution_end</th>
-      				<th scope="col">checkandaccept_start</th>
-      				<th scope="col">checkandaccept_end</th>
-      				<th scope="col">payment_start</th>
-      				<th scope="col">payment_end</th>
-    			</tr>
-  			</thead>
-  			<tbody>
-    			<tr>
-      				<th scope="row">2023-12-01</th>
-      				<td>2024-01-01</td>
-      				<td>2024-01-02</td>
-      				<td>2024-03-01</td>
-      				<td>2024-03-02</td>
-      				<td>2024-05-01</td>
-      				<td>2024-05-02</td>
-      				<td>2024-06-01</td>
-   				</tr>
-  			</tbody>
-  		</table>
+		<form class="row g-3">
+		  <div class="col-md-2">
+		    <label for="validationServer01" class="form-label">Task Name</label>
+		    <input type="text" class="form-control is-valid" id="validationServer01" value="Mark" required>
+		  </div>
+		  <div class="col-md-2">
+		    <label for="validationServer01" class="form-label">Resourse</label>
+		    <input type="text" class="form-control is-valid" id="validationServer01" value="Mark" required>
+		  </div>
+		  <div class="col-md-2">
+		    <label for="validationServer01" class="form-label">Task Start Date</label>
+		    <input type="date" class="form-control is-valid" id="validationServer01" value="Mark" required>
+		  </div>
+		  <div class="col-md-2">
+		    <label for="validationServer01" class="form-label">Task End Date</label>
+		    <input type="date" class="form-control is-valid" id="validationServer01" value="Mark" required>
+		  </div>
+		  <div class="col-md-2">
+		    <label for="validationServer01" class="form-label">Dependencies</label>
+		    <input type="text" class="form-control is-valid" id="validationServer01" value="Mark" required>
+		  </div>
+		  <div class="col-2 mb-0">
+		    <button class="btn btn-primary" type="submit">Add Rows</button>
+		  </div>
+		</form>
+	</div>	
+	<!-- 任務顯示表格 -->
+	<div class="mx-3">
+		<div class=" table-responsive mt-2 mb-0">
+	  		<table class="table table-bordered">
+	    		<thead>
+	    			<tr>
+	      				<th scope="col">Task ID</th>
+	      				<th scope="col">Task Name</th>
+	      				<th scope="col">Resource</th>
+	      				<th scope="col">Start</th>
+	      				<th scope="col">End</th>
+	      				<th scope="col">Duration</th>
+	      				<th scope="col">Percent Complete</th>
+	      				<th scope="col">Dependencies</th>
+	      				<th scope="col">Revise</th>
+	      				<th scope="col">Delete</th>
+	      				
+	    			</tr>
+	  			</thead>
+	  			<tbody>
+	    			<tr>
+	      				<th scope="row">2023-12-01</th>
+	      				<td>1</td>
+	      				<td>採購</td>
+	      				<td>2024-03-01</td>
+	      				<td>2024-03-02</td>
+	      				<td>2024-05-01</td>
+	      				<td>2024-05-02</td>
+	      				<td>2024-06-01</td>
+	      				<td><button class=" ms-2 btn btn-outline-success btn-md  fw-bold">Revise</button></td>
+	      				<td><button class=" ms-2 btn btn-outline-danger btn-  fw-bold">delete</button></td>
+	   				</tr>
+	  			</tbody>
+	  		</table>
+		</div>
 	</div>			
-	<!-- 甘特圖 -->	
-	<div id="chart_div"></div>
+		
+	<div class="mx-3" id="chart_div"></div>
 </div>
 
 <%@ include file="/WEB-INF/view/backendfooter.jsp"%>
@@ -73,7 +104,7 @@
 		otherData.addColumn("string", "Dependencies");
 
 		otherData.addRows([
-	        [ "taskmain", "Project", "blue", new Date(2023, 11, 1), new Date(2024, 5, 1), null, 100, null ],
+	        [ "1", "Project", "blue", new Date(2023, 11, 1), new Date(2024, 5, 1), null, 100, null ],
 	        [ "taskPurchase", "Purchase", "red", new Date(2023, 11, 1), new Date(2024, 0, 1), null, 100, null ],
 	        [ "taskExecution", "Execution", "orange", new Date(2024, 0, 2), new Date(2024, 2, 1), null, 100, "taskPurchase" ],
 	        [ "taskCheckAndAccept", "CheckAndAccept", "green", new Date(2024, 2, 2), new Date(2024, 4, 1), null, 75, "taskExecution" ],
