@@ -119,7 +119,6 @@ public class ProjectController {
 	    try {
 	        int rowcount1 = projectMemberDao.removeProjectMember(projectId); // 刪除專案成員
 	        int rowcount2 = issueDao.removeIssueByProjectId(projectId);
-	        System.out.println("rowcount1");
 	        if (rowcount1 >= 0 || rowcount2 >= 0) {
 	            rowcount1 = projectDao.removeProjectById(projectId); // 刪除專案
 	            return "redirect:/mvc/project";

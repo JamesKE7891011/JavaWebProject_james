@@ -24,22 +24,11 @@ public class IssueDaoImplMySQL implements IssueDao {
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
-	
-	
+
 	@Autowired
 	@Qualifier("issuefiledaomysql")
 	private IssueFileDao issueFileDao;
 
-//	@Override
-//	@Transactional(propagation = Propagation.REQUIRED)
-//	public int addIssue(Issue issue) {
-//		
-//		String sql = "insert into issue(projectId,issueName,issueClassId,issueContent) values(?,?,?,?)";
-//		
-//		return jdbcTemplate.update(sql, issue.getProjectId(),issue.getIssueName(),issue.getIssueClassId(),issue.getIssueContent());
-//	}
-	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public int addIssue(Issue issue) {
@@ -61,23 +50,19 @@ public class IssueDaoImplMySQL implements IssueDao {
 	    if (keyHolder.getKey() != null) {
 	        issueId = keyHolder.getKey().intValue();
 	    }
-
 	    return issueId;
 	}
-	
-	
-
+		
 	@Override
 	public int removeIssueByProjectId(String projectId) {
 		String sql = "delete from issue where projectId = ?";
 		return jdbcTemplate.update(sql,projectId);
 	}
 
-
-
 	@Override
 	public int removeIssueById(Integer issueId) {
-	    // 刪除相應的子表記錄
+	    
+		// 刪除相應的子表記錄
 	    String deleteIssueFileSql = "delete from issuefile where issueId = ?";
 	    jdbcTemplate.update(deleteIssueFileSql, issueId);
 
@@ -134,8 +119,5 @@ public class IssueDaoImplMySQL implements IssueDao {
 		String sql ="update issue set issueStatus = 1 where issueId = ?";
 		return jdbcTemplate.update(sql, issueId)== 1;
 	}
-	
-	
-
-	
+		
 }
