@@ -77,7 +77,7 @@ public class ProjectController {
 							 @RequestParam(name = "projectOwner") Integer projectOwner,
 							 @RequestParam(name = "projectMember") String projectMember,
 							 @RequestParam(name = "projectStartDate")Date projectStartDate,
-							 @RequestParam(name = "projectEndDate")Date projectEndDate,HttpSession session,Model model) throws ParseException{
+							 @RequestParam(name = "projectEndDate")Date projectEndDate,HttpSession session,Model model) throws ParseException{  // ParseException 用於處理與日期和時間解析相關的錯誤
 		try {
 			
 			 // 建立 Project 物件，設定相關屬性
@@ -127,8 +127,8 @@ public class ProjectController {
 	    try {
 	        int rowcount1 = projectMemberDao.removeProjectMember(projectId); // 刪除專案成員
 	        int rowcount2 = issueDao.removeIssueByProjectId(projectId);
-	        if (rowcount1 >= 0 || rowcount2 >= 0) {
-	            rowcount1 = projectDao.removeProjectById(projectId); // 刪除專案
+	        if (rowcount1 > 0 && rowcount2 > 0) {
+	            projectDao.removeProjectById(projectId); // 刪除專案
 	            return "redirect:/mvc/project";
 	        } else {
 	        	model.addAttribute("errorMessage","刪除失敗，請通知管理員");
