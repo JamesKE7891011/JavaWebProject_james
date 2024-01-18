@@ -31,8 +31,7 @@
 				</select>
 			</div>
 
-			<!-- 專案顯示資訊 -->
-			
+			<!-- 專案資訊更新及顯示 -->			
 			<!-- c:forEach 標籤就會在每次迭代時創建一個名為 "loop" 的變數，如果loop.index被第一次尋訪就顯示 -->
 			<table class="table mt-2">
 				<c:forEach var="project" items="${ projects }" varStatus="loop"> 
@@ -78,14 +77,19 @@
 								<c:set var="membersIdString" value="" />
 								<c:forEach items="${ project.projectMembers }" var="member"  varStatus="loop">
 									<c:if test="${ loop.index < project.projectMembers.size() -1 }">
+									
+									<!-- 如果循環索引不是最後一個成員，則加上逗號 -->
 										<c:set var="membersString" value="${membersString}${member}," />
 										<c:set var="membersIdString" value="${membersIdString}${member.employeeId}," />
 									</c:if>
 									<c:if test="${ loop.index == project.projectMembers.size() - 1 }">
+									
+									<!-- 如果循環索引是最後一個成員，則不加逗號 -->
 										<c:set var="membersString" value="${membersString}${member}" />
 										<c:set var="membersIdString" value="${membersIdString}${member.employeeId}" />
 									</c:if>
 								</c:forEach>
+								
 								<!-- Project Member Update -->
 								<div class="d-flex justift-content-start">
 									<input type="text" class="form-control disable" id="update_projectMember_${ project.projectId }" name="projectMember" value="${membersIdString}" hidden> 
@@ -122,6 +126,7 @@
 				</c:forEach>
 			</table>
 		</div>
+		
 		<!-- Update Project Member Modal -->
 		<div class="modal fade" id="update_exampleMember" tabindex="-1" aria-labelledby="exampleMemberLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
@@ -163,8 +168,8 @@
 		<!-- 新增專案表格 -->
 		<form class="ms-4 my-0 row g-3  col-6" method="post"
 			action="/JavaWebProject_james/mvc/project/addproject">
-			<label class="fs-4 fw-bolld">Project Create   ${ errorMessage }</label>
-
+			<label class="fs-4 fw-bolld">Project Create  </label>
+			<div> ${ errorMessage } </div>
 			<!-- Project ID -->
 			<div class="col-md-6">
 				<label for="validationDefault01" class="form-label">projectId</label>
@@ -345,63 +350,6 @@ myModal.addEventListener('shown.bs.modal', function () {
 <!-- 成員新增 -->
 <script>
 
-	//----------------update projectMember----------------------//
-	var update_project = '';
-	var update_projectMember = [];  // 儲存 Member 的 ID
-	var update_projectMember2 = []; // 儲存 Member 的 Name
-	
-	function openModalMember(projectId) {
-		update_project = projectId;
-    	update_projectMember = $('#update_projectMember_'+update_project).val().split(',');
-    	update_projectMember2 = $('#update_projectMember2_'+update_project).val().split(',');
-
-    	//加入員工至右邊欄位
-    	$('#left4 .listItem').each(function() {
-    		let employeeId = $(this).eq(0).attr("data-employee-id");
-    		if(update_projectMember.includes(employeeId)) {
-    	        $('#right4').append($(this)[0]);
-    		}
-	    });
-    	
-        //移除員工至左邊欄位
-    	$('#right4 .listItem').each(function() {
-    		let employeeId = $(this).eq(0).attr("data-employee-id");
-    		if(!update_projectMember.includes(employeeId)) {
-    			$('#left4').append($(this)[0]);
-    		}
-	    });
-        
-    	var myModal = new bootstrap.Modal(document.getElementById('update_exampleMember'));
-    	myModal.show();
-  	}
-    
-	$('#toRight4').on('click',function() {
-	    $('#left4 .active').each(function() {
-	        $('#right4').append($(this)[0]);
-	        //加入至右邊欄位
-	        update_projectMember.push($(this).eq(0).attr("data-employee-id"));
-	        update_projectMember2.push($(this)[0].innerText);
-	    });
-	});
-	
-	$('#toLeft4').on('click',function() {
-	    $('#right4 .active').each(function() {
-	        $('#left4').append($(this)[0]);
-	        //移除還原至左邊欄位
-	        let memberstr = $(this).eq(0).attr("data-employee-id");
-	        let memberstr2 = $(this)[0].innerText;
-	        update_projectMember = update_projectMember.filter(memeber => memeber !== memberstr);
-	        update_projectMember2 = update_projectMember2.filter(memeber => memeber !== memberstr2);
-	    });
-	});
-
-	function updateProjectMember() {
-		$('#update_projectMember_'+update_project).val(update_projectMember);
-		$('#update_projectMember2_'+update_project).val(update_projectMember2);
-		console.log(update_projectMember);
-		console.log(update_projectMember2);
-	}
-
     //----------------projectOwner----------------------//
     
 	let projectOwner = [];  // 儲存 Member 的 ID
@@ -542,7 +490,77 @@ myModal.addEventListener('shown.bs.modal', function () {
 	    });
 	}
   
-  //表單驗證(Bootstrap)
+  	//----------------update projectMember----------------------//
+	var update_project = '';
+	var update_projectMember = [];  // 儲存 Member 的 ID
+	var update_projectMember2 = []; // 儲存 Member 的 Name
+	
+	function openModalMember(projectId) {
+		update_project = projectId;
+		
+		// 找到指定 ID 的元素，並透過val()獲取其值用逗號隔開
+    	update_projectMember = $('#update_projectMember_'+update_project).val().split(',');
+    	update_projectMember2 = $('#update_projectMember2_'+update_project).val().split(',');
+
+    	// 加入員工至右邊欄位
+    	$('#left4 .listItem').each(function() {
+    		
+    		// 獲取選中的按鈕"data-employee-id" 屬性的值
+    		let employeeId = $(this).eq(0).attr("data-employee-id");
+    		
+    		// 將當前元素移動到 id 為 "right4" 的元素的內部，並放置在已有內容的末尾
+    		if(update_projectMember.includes(employeeId)) {
+    	        $('#right4').append($(this)[0]);
+    		}
+	    });
+    	
+        // 移除員工至左邊欄位
+    	$('#right4 .listItem').each(function() {
+    		let employeeId = $(this).eq(0).attr("data-employee-id");
+    		
+    		// 如果 update_projectMember 陣列中不包含 employeeId，移回left4。
+    		if(!update_projectMember.includes(employeeId)) {
+    			$('#left4').append($(this)[0]);
+    		}
+	    });
+        
+    	var myModal = new bootstrap.Modal(document.getElementById('update_exampleMember'));
+    	myModal.show();
+  	}
+    
+	
+	// 將選中的元素從左邊的欄位移動到右邊的欄位，同時更新相關的資料結構
+	$('#toRight4').on('click',function() {
+	    $('#left4 .active').each(function() {
+	        $('#right4').append($(this)[0]);
+	        
+	        // 添加屬性至右邊欄位
+	        update_projectMember.push($(this).eq(0).attr("data-employee-id"));
+	        update_projectMember2.push($(this)[0].innerText);
+	    });
+	});
+	
+	// 將選中的元素從左邊的欄位移動到左邊的欄位，同時更新相關的資料結構
+	$('#toLeft4').on('click',function() {
+	    $('#right4 .active').each(function() {
+	        $('#left4').append($(this)[0]);
+	        
+	        //還原屬性至左邊欄位
+	        let memberstr = $(this).eq(0).attr("data-employee-id");
+	        let memberstr2 = $(this)[0].innerText;
+	        update_projectMember = update_projectMember.filter(memeber => memeber !== memberstr);
+	        update_projectMember2 = update_projectMember2.filter(memeber => memeber !== memberstr2);
+	    });
+	});
+
+	function updateProjectMember() {
+		$('#update_projectMember_'+update_project).val(update_projectMember);
+		$('#update_projectMember2_'+update_project).val(update_projectMember2);
+		console.log(update_projectMember);
+		console.log(update_projectMember2);
+	}
+  
+  	//表單驗證(Bootstrap)
 	// Example starter JavaScript for disabling form submissions if there are invalid fields
 	(function () {
 	  'use strict'
