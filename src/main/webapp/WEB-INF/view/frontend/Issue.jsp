@@ -22,14 +22,14 @@
 				</select>
 			</div>
 			<div class="mb-1 mt-2">
-				<label for="issueName" class="form-label">議題名稱</label> <input
+				<label for="issueName" class="form-label">IssueName </label> <input
 					class="form-control" list="datalistOptions" id="issueName"
 					name="issueName" required>
 				<div class="invalid-feedback w-75">請輸入議題名稱!</div>
 
 			</div>
 			<div class="mb-1">
-				<label for="issueClass" class="form-label mt-2">議題類別</label> 
+				<label for="issueClass" class="form-label mt-2">IssueClass </label> 
 				<select class="form-select" aria-label="Default select example" onchange="selectIssueClass(event)" 
 				  		id="issueClassId" name="issueClassId" required>
 					<option selected disabled value="">Please choose issue class...</option>
@@ -40,11 +40,11 @@
 				<div class="invalid-feedback ">請選擇議題!</div>
 			</div>
 			<div class="mt-3 mb-3">
-				<label for="issueFile" class="form-label">備註檔案上傳</label> 
+				<label for="issueFile" class="form-label">IssueFilePath</label> 
 				<input class="form-control" type="file" id="issueFilePath" name="issueFilePath" multiple="multiple">
 			</div>
 			<div class="mb-1">
-				<label for="issuecontent" class="form-label">議題內容(請敘述原因:)</label>
+				<label for="issuecontent" class="form-label">IssueContent</label>
 				<textarea class="form-control" id="issueContent" name="issueContent" required></textarea>
 				<div class="invalid-feedback ">請敘述原因!</div>
 			</div>
@@ -65,7 +65,7 @@
 					<th scope="col">IssueName:</th>
 					<th scope="col">IssueClass:</th>
 					<th scope="col">IssueContent:</th>
-					<th scope="col">IssuePath:</th>
+					<th scope="col">IssueFilePath:</th>
 					<th scope="col">IssueDatetime:</th>
 					<th scope="col">IssueStatus:</th>
 					<th scope="col">-> Change</th>

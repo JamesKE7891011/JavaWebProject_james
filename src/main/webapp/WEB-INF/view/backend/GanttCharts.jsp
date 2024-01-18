@@ -36,14 +36,14 @@
 		    <label for="validationServer01" class="form-label">Dependencies</label>
 		    <input type="text" class="form-control is-valid" id="validationServer01" value="Mark" required>
 		  </div>
-		  <div class="col-2 mb-0">
-		    <button class="btn btn-primary" type="submit">Add Rows</button>
+		  <div class="col-2 d-flex align-items-end">
+		  	<label></label>
+		    <button class="btn btn-primary ms-2"  type="submit">Add Rows</button>
 		  </div>
 		</form>
 	</div>	
 	<!-- 任務顯示表格 -->
-	<div class="mx-3">
-		<div class=" table-responsive mt-2 mb-0">
+		<div class=" table-responsive ms-3 me-3 mt-4 mb-0 ">
 	  		<table class="table table-bordered">
 	    		<thead>
 	    			<tr>
@@ -55,7 +55,6 @@
 	      				<th scope="col">Duration</th>
 	      				<th scope="col">Percent Complete</th>
 	      				<th scope="col">Dependencies</th>
-	      				<th scope="col">Revise</th>
 	      				<th scope="col">Delete</th>
 	      				
 	    			</tr>
@@ -63,22 +62,20 @@
 	  			<tbody>
 	    			<tr>
 	      				<th scope="row">2023-12-01</th>
-	      				<td>1</td>
+	      				<td>Project</td>
 	      				<td>採購</td>
 	      				<td>2024-03-01</td>
 	      				<td>2024-03-02</td>
 	      				<td>2024-05-01</td>
 	      				<td>2024-05-02</td>
 	      				<td>2024-06-01</td>
-	      				<td><button class=" ms-2 btn btn-outline-success btn-md  fw-bold">Revise</button></td>
-	      				<td><button class=" ms-2 btn btn-outline-danger btn-  fw-bold">delete</button></td>
+	      				<td><button class=" ms-3 btn btn-outline-danger btn-sm  fw-bold">delete</button></td>
 	   				</tr>
 	  			</tbody>
 	  		</table>
-		</div>
-	</div>			
+		</div>		
 		
-	<div class="mx-3" id="chart_div"></div>
+	<div class="ms-3 me-4 mb-0" id="chart_div"></div>
 </div>
 
 <%@ include file="/WEB-INF/view/backendfooter.jsp"%>

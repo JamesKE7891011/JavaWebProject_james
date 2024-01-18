@@ -32,8 +32,8 @@
         </li>
       </ul>
     </div>
-    <i class="bi bi-person-circle fs-3 me-4 text-light d-none d-lg-block">${sessionScope.username}</i>
-    <i class="bi bi-box-arrow-right text-light ml-3" role="button" onclick="window.location.href='${ pageContext.request.contextPath }/logout'">Logout</i>
+    <i class="bi bi-person-circle fs-4 me-4 text-light d-none d-lg-block">${sessionScope.username}</i>
+    <i class="bi bi-box-arrow-right fs-5 text-light ml-3" role="button" onclick="window.location.href='${ pageContext.request.contextPath }/logout'">Logout</i>
   </div>
 </nav>
 </body>

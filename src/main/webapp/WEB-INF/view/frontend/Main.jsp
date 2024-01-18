@@ -87,19 +87,18 @@
    					<th scope="col">IssueStatus</th>
  				</tr>
 			</thead>
-			<tbody >
-				
- 					<tr>
-   						<td id="formIssueId"></td>
-   						<td id="formIssueName"></td>
-   						<td id="formIssueClass"></td>
-   						<td id="formIssueContent"></td>
-   						<td id="formIssueFiles"></td>
-   						<td id="formIssueDateTime"></td>   						
-   						<td id="formIssueStatus">   						
-   						</td>    										
- 					</tr>    			
-				
+			<tbody>
+			    <c:forEach items="${issues}" var="issue">
+			        <tr>
+			            <td id="formIssueId"></td>
+			            <td id="formIssueName"></td>
+			            <td id="formIssueClass"></td>
+			            <td id="formIssueContent"></td>
+			            <td id="formIssueFiles"></td>
+			            <td id="formIssueDateTime"></td>
+			            <td id="formIssueStatus"></td>
+			        </tr>
+			    </c:forEach>
 			</tbody>
 		</table>
 	</div>
@@ -147,44 +146,51 @@
 	    })
 	    .catch(error => console.error('Error fetching project:', error));
 	    
-	    fetch('/JavaWebProject_james/mvc/main/findissue/' + projectId, {method: "GET",headers: {"Content-Type": "application/json",}})
-	    .then(response => response.json())
-	    .then(data => {
-	        $.each(data, function(index, issue) {
-	            // 在這裡可以進一步處理 issue 的資料，例如顯示在控制台上
-	            console.log('Issue Object:', issue);
-
-	            // 使用解構賦值檢查屬性是否存在
-	            let {
-	                issueId,
-	                issueName,
-	                issueClassId,
-	                issueContent,
-	                issueFiles,
-	                issueDateTime,
-	                issueStatus
-	            } = issue;
-	            
-
-	            // 進一步處理 issueFile
-	            if (Array.isArray(issueFiles)) {
-	                let issueFileButton = issueFiles.map(function(file) {
-	                    return '<button class="btn btn-primary ms-2 mt-2 text-start" onclick="downloadFile(' + file.issueFileId + ')">' + file.issueFilePath + '</button>';
-	                });
-	                console.log('Issue File Buttons:', issueFileButton);
-	            }
-	            
-	            document.getElementById("formIssueId").innerText = issueId;
-	            document.getElementById("formIssueName").innerText = issueName;
-	            document.getElementById("formIssueClass").innerText = issueClassId;
-	            document.getElementById("formIssueContent").innerText = issueContent;
-	            document.getElementById("formIssueFiles").innerText = issueFileButtons.join('');
-	            document.getElementById("formIssueDateTime").innerText = issueDateTime;
-	            document.getElementById("formIssueStatus").innerText = issueStatus;
-	            
-	        });
+	    fetch('/JavaWebProject_james/mvc/main/findissue/' + projectId, {
+	        method: "GET",
+	        headers: {
+	            "Content-Type": "application/json",
+	        },
 	    })
-	    .catch(error => console.error('Error fetching issues:', error));
+	        .then(response => response.json())
+	        .then(data => {
+	            // 在這裡可以進一步處理 issue 的資料，例如顯示在控制台上
+	            console.log('Issue Object:', data);
+
+	            // 進行迴圈處理每個 issue
+	            data.forEach(issue => {
+	                // 使用解構賦值檢查屬性是否存在
+	                let {
+	                    issueId,
+	                    issueName,
+	                    issueClassId,
+	                    issueContent,
+	                    issueFiles,
+	                    issueDateTime,
+	                    issueStatus
+	                } = issue;
+
+	                // 初始化用來存放按鈕的陣列
+	                let issueFileButtons = [];
+
+	                // 進一步處理 issueFiles
+	                if (Array.isArray(issueFiles)) {
+	                    issueFileButtons = issueFiles.map(function (file) {
+	                        return '<button class="btn btn-primary ms-2 mt-2 text-start" onclick="downloadFile(' + file.issueFileId + ')">' + file.issueFilePath + '</button>';
+	                    });
+	                }
+
+	                // 使用 ID 取得表格中的元素，並將值設定為對應的 issue 資料
+	                document.getElementById("formIssueId").innerText = issueId;
+	                document.getElementById("formIssueName").innerText = issueName;
+	                document.getElementById("formIssueClass").innerText = issueClassId;
+	                document.getElementById("formIssueContent").innerText = issueContent;
+	                document.getElementById("formIssueFiles").innerHTML = issueFileButtons.join('');
+	                document.getElementById("formIssueDateTime").innerText = issueDateTime;
+	                document.getElementById("formIssueStatus").innerText = issueStatus === 1 ? 'Open' : 'Close';
+	            });
+	        })
+	        .catch(error => console.error('Error fetching issues:', error));
 
 	}
 	
