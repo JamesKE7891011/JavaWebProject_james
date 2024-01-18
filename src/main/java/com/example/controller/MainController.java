@@ -66,6 +66,10 @@ public class MainController {
 		List<Employee> employees = employeedao.findAllEmployees();
 		model.addAttribute("employees", employees);
 		
+		// 3. issues
+		List<Issue> issues = issueDao.findAllIssues();
+		model.addAttribute("issues", issues);
+		
 		return "/frontend/Main";
 	}
 	

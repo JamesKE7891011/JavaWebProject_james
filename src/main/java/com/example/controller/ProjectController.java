@@ -88,10 +88,11 @@ public class ProjectController {
 			
 			// 取得的員工物件設定為專案物件的擁有者
 			project.setProjectOwner(employeedao.findEmployeeById(projectOwner).get());
+			
 			project.setProjectStartDate(projectStartDate);
 			project.setProjectEndDate(projectEndDate);
 			
-			// // 將 projectMember 轉換成 List<Integer>，才能塞進 addProjectMember()
+			// 將 projectMember 轉換成 List<Integer>，才能塞進 addProjectMember()
 			List<Integer> members = Arrays.asList(projectMember.split(","))
 					.stream()
 					.mapToInt(Integer::parseInt)
@@ -126,9 +127,9 @@ public class ProjectController {
 	public String cancelProject(@PathVariable("projectId") String projectId,Model model) {
 	    try {
 	        int rowcount1 = projectMemberDao.removeProjectMember(projectId); // 刪除專案成員
-	        int rowcount2 = issueDao.removeIssueByProjectId(projectId);
+	        int rowcount2 = issueDao.removeIssueByProjectId(projectId);		 // 再刪除專案內議題
 	        if (rowcount1 > 0 && rowcount2 > 0) {
-	            projectDao.removeProjectById(projectId); // 刪除專案
+	            projectDao.removeProjectById(projectId); // 才可以刪除專案
 	            return "redirect:/mvc/project";
 	        } else {
 	        	model.addAttribute("errorMessage","刪除失敗，請通知管理員");
@@ -151,7 +152,9 @@ public class ProjectController {
 	                            @RequestParam(name = "projectStartDate") Date newprojectStartDate,
 	                            @RequestParam(name = "projectEndDate") Date newprojectEndDate,
 	                            HttpSession session, Model model) throws ParseException {
-	    try {
+	    
+		// 創建一個 Project 對象用於更新專案訊息
+		try {
 	        Project projectUpdate = new Project();
 	        projectUpdate.setProjectId(projectId);
 	        projectUpdate.setProjectName(newprojectName);
@@ -160,24 +163,26 @@ public class ProjectController {
 	        projectUpdate.setProjectStartDate(newprojectStartDate);
 	        projectUpdate.setProjectEndDate(newprojectEndDate);
 
-	        // projectMember: 將 1,2,3 轉成 List<Integer>
+	        // 將 newprojectMember 字串轉換成 List<Integer>
 	        List<Integer> newMembers = Arrays.asList(newprojectMember.split(","))
 	                .stream()
 	                .mapToInt(Integer::parseInt)
 	                .boxed()
 	                .collect(Collectors.toList());
 
-	        // 更新專案訊息
+	        // 更新專案訊息，並獲取更新的行數
 	        int updateResult = projectDao.updateProject(projectUpdate);
-
+	        
+	        // 檢查更新結果
 	        if (updateResult == 0) {
 	            return "專案修改失敗";
 	        }
 
-	        // 更新專案成員
+	        // 刪除原有專案成員，並新增新的專案成員
 	        projectMemberDao.removeProjectMember(projectId);
 	        projectMemberDao.addProjectMember(projectId, newMembers); 
-
+	        
+	        // 更新成功，重定向到專案列表頁面
 	        return "redirect:/mvc/project";
 	    } catch (Exception e) {
 	        e.printStackTrace();

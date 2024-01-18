@@ -87,7 +87,7 @@
    					<th scope="col">IssueStatus</th>
  				</tr>
 			</thead>
-			<tbody>
+			<tbody >
 				
  					<tr>
    						<td id="formIssueId"></td>
@@ -95,8 +95,9 @@
    						<td id="formIssueClass"></td>
    						<td id="formIssueContent"></td>
    						<td id="formIssueFiles"></td>
-   						<td id="formIssueDateTime"></td>
-   						<td id="formIssueStatus"></td> 					
+   						<td id="formIssueDateTime"></td>   						
+   						<td id="formIssueStatus">   						
+   						</td>    										
  					</tr>    			
 				
 			</tbody>

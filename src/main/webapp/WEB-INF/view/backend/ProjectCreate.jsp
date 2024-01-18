@@ -14,23 +14,28 @@
 </style>
 
 <div class="vh-100">
-	<div class="row ">
-		${ errorMessage }
+	<div class="row ">		
 		<!-- 專案下拉選單 -->
 		<div class="col-5 m-3">
-			<h4 class="fs-4 fw-bolld">Project Name</h4>
+			<h4 class="fs-4 fw-bolld">Project Name </h4>
 			<div class="d-flex justify-content-start">
 				<select class=" form-select  w-75"
 					aria-label="Default select example" onchange="selectProject(event)">
+					
+					<!-- 從後端取得專案列表集合， var代表遍歷集合中取出單一值的名稱(能透$字符取SQL中的值是因為透過Controller內的getPage方法，用model將值放到items) -->
 					<c:forEach items="${ projects }" var="project">
+						
+						<!-- value 代表屬性表示選項的值 -->
 						<option value="${ project.projectId }">${ project.projectId }   ${ project.projectName }</option>
 					</c:forEach>
 				</select>
 			</div>
 
 			<!-- 專案顯示資訊 -->
+			
+			<!-- c:forEach 標籤就會在每次迭代時創建一個名為 "loop" 的變數，如果loop.index被第一次尋訪就顯示 -->
 			<table class="table mt-2">
-				<c:forEach var="project" items="${ projects }" varStatus="loop">
+				<c:forEach var="project" items="${ projects }" varStatus="loop"> 
 					<tbody class="${loop.index >0 ? 'd-none': 'd-block'}" id="${ project.projectId }">
 						<tr>
 							<th scope="row">projectId:</th>
@@ -51,6 +56,7 @@
 						<tr>
 							<th scope="row">projectOwner:</th>
 							<td class="w-100"> 
+								
 								<!-- Project Owner Update -->
 								<div class="d-flex justift-content-start">
 									<select class="form-select" value="${project.projectOwner.employeeId}" id="upadte_projectOwner">
@@ -157,7 +163,7 @@
 		<!-- 新增專案表格 -->
 		<form class="ms-4 my-0 row g-3  col-6" method="post"
 			action="/JavaWebProject_james/mvc/project/addproject">
-			<label class="fs-4 fw-bolld">Project Create</label>
+			<label class="fs-4 fw-bolld">Project Create   ${ errorMessage }</label>
 
 			<!-- Project ID -->
 			<div class="col-md-6">
