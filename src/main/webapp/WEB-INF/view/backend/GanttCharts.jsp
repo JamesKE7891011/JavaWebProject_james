@@ -4,13 +4,12 @@
 <%@ include file="/WEB-INF/view/backendheader.jsp"%>
 <div>
 	<div class="m-3">
-
-	<!-- 專案下拉選單 -->
-	<h4 class="fs-4 fw-bold">Project Name</h4>
-	<select class=" form-select" aria-label="Default select example">
-  		<option selected>Choose project</option>
-  		<option value="One">AC23020</option>
-	</select>
+		<!-- 專案下拉選單 -->
+		<h4 class="fs-4 fw-bold">Project Name</h4>
+		<select class=" form-select" aria-label="Default select example">
+  			<option selected>Choose project</option>
+  			<option value="One">AC23020</option>
+		</select>
  	</div>	
 	<!-- 新增進度條 -->
 	<div class="mx-3">
@@ -43,6 +42,7 @@
 		</form>
 	</div>	
 	<!-- 任務顯示表格 -->
+	<div>
 		<div class=" table-responsive ms-3 me-3 mt-4 mb-0 ">
 	  		<table class="table table-bordered">
 	    		<thead>
@@ -73,9 +73,11 @@
 	   				</tr>
 	  			</tbody>
 	  		</table>
+	  		
 		</div>		
 		
-	<div class="ms-3 me-4 mb-0" id="chart_div"></div>
+		<div class="ms-3 me-4 mb-0" id="chart_div"></div>
+	</div>
 </div>
 
 
@@ -116,5 +118,3 @@
 		chart.draw(otherData, options);
 		}
 </script>
-
-<%@ include file="/WEB-INF/view/backendfooter.jsp"%>
