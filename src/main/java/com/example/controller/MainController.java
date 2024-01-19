@@ -60,15 +60,12 @@ public class MainController {
 		List<Project> projects = projectDao.findAllProjects();
 		model.addAttribute("projects", projects);
 
-		System.out.println(projects);
-				
 		// 2. members
 		List<Employee> employees = employeedao.findAllEmployees();
 		model.addAttribute("employees", employees);
 		
-		// 3. issues
-		List<Issue> issues = issueDao.findAllIssues();
-		model.addAttribute("issues", issues);
+		// 4. 預設第一筆ProjectId
+		model.addAttribute("defaultProjectId", projects.get(0).getProjectId());
 		
 		return "/frontend/Main";
 	}
@@ -77,6 +74,12 @@ public class MainController {
 	@ResponseBody
 	public Project findProjectByProjectId(@PathVariable("projectId") String projectId){
 		return projectDao.findProjectById(projectId).get();
+	}
+	
+	@GetMapping(value = "findissue/{projectId}/{issueStatus}",produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@ResponseBody
+	public List<Issue> findIssueById(@PathVariable("projectId") String projectId,@PathVariable("issueStatus") Integer issueStatus) {
+		return issueDao.findIssuesByProjectIdAndIssueStatus(projectId, issueStatus);
 	}
 	
 	@GetMapping(value = "findissue/{projectId}")

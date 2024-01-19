@@ -119,5 +119,12 @@ public class IssueDaoImplMySQL implements IssueDao {
 		String sql ="update issue set issueStatus = 1 where issueId = ?";
 		return jdbcTemplate.update(sql, issueId)== 1;
 	}
+
+	
+	@Override
+	public List<Issue> findIssuesByProjectIdAndIssueStatus(String projectId, Integer issueStatus) {
+		String sql = "select issueId,projectId,issueName,issueClassId,issueContent,issueStatus,issueDateTime from issue where projectId = ? and issueStatus=?";
+		return jdbcTemplate.query(sql, issueMapper,projectId,issueStatus);
+	}
 		
 }

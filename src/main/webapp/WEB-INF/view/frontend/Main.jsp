@@ -12,10 +12,10 @@
 			<h4 class="fs-3 fw-bold">Project Name</h4>
 			<div class="d-flex justify-content-start">
 				<select class="mt-2 form-select w-75" id="projectId" name="projectId" aria-label="Default select example" 
-						onchange="selectProject(event)" required>
+						onchange="selectProject(event.target.value)" required>
 					<option selected disabled value="">Please choose project...</option>
 					<c:forEach items="${ projects }" var="project">
-						<option value="${ project.projectId }">${ project.projectId } ${ project.projectName }</option>
+						<option value="${ project.projectId }" ${project.projectId == defaultProjectId ? 'selected':''} >${ project.projectId } ${ project.projectName }</option>
 					</c:forEach>
 				</select>
 			</div>		
@@ -75,7 +75,7 @@
 	<!-- Issue顯示狀態列 -->
 	<div class="ms-3">
 		<label class="fs-4 fw-bold">Issue</label>
-		<table class="table table-hover text-center" style="width: 80%">
+		<table class="table table-hover text-center" style="width: 80%" id="issue_table">
 			<thead>
  				<tr>
    					<th scope="col">IssueID</th>
@@ -87,19 +87,7 @@
    					<th scope="col">IssueStatus</th>
  				</tr>
 			</thead>
-			<tbody>
-			    <c:forEach items="${issues}" var="issue">
-			        <tr>
-			            <td id="formIssueId"></td>
-			            <td id="formIssueName"></td>
-			            <td id="formIssueClass"></td>
-			            <td id="formIssueContent"></td>
-			            <td id="formIssueFiles"></td>
-			            <td id="formIssueDateTime"></td>
-			            <td id="formIssueStatus"></td>
-			        </tr>
-			    </c:forEach>
-			</tbody>
+			<tbody></tbody>
 		</table>
 	</div>
 </div>
@@ -109,11 +97,14 @@
 
 <script>
 	
+    selectProject('${defaultProjectId}');
 
 	//----------------selectProject----------------------//
-	function selectProject(event) {
-	    var projectId = event.target.value;
+	function selectProject(projectId) {
+		
 	    console.log('projectId:', projectId);
+	    
+	    $('#issue_table tbody tr').remove();
 	
 	    fetch('/JavaWebProject_james/mvc/main/findproject/' + projectId, {method: "GET",headers: {"Content-Type": "application/json",}})
 	    .then(response => response.json())
@@ -146,7 +137,7 @@
 	    })
 	    .catch(error => console.error('Error fetching project:', error));
 	    
-	    fetch('/JavaWebProject_james/mvc/main/findissue/' + projectId, {
+	    fetch('/JavaWebProject_james/mvc/main/findissue/' +projectId+ '/1', {
 	        method: "GET",
 	        headers: {
 	            "Content-Type": "application/json",
@@ -155,20 +146,23 @@
 	        .then(response => response.json())
 	        .then(data => {
 	            // 在這裡可以進一步處理 issue 的資料，例如顯示在控制台上
-	            console.log('Issue Object:', data);
-
+	            console.log('Issue Object:', data);   
+	            
+	            if(data.length == 0) {
+	            	$('#issue_table tbody').append(
+		                	`
+		                	<tr>
+		                		<td colspan='7' class='fw-bold'>查無資料</td>
+		                	</tr>
+		                	`
+		                );
+	            }
+	            
+	            
 	            // 進行迴圈處理每個 issue
 	            data.forEach(issue => {
 	                // 使用解構賦值檢查屬性是否存在
-	                let {
-	                    issueId,
-	                    issueName,
-	                    issueClassId,
-	                    issueContent,
-	                    issueFiles,
-	                    issueDateTime,
-	                    issueStatus
-	                } = issue;
+	                let {issueId,issueName,issueClassId,issueContent,issueFiles,issueDateTime,issueStatus} = issue;
 
 	                // 初始化用來存放按鈕的陣列
 	                let issueFileButtons = [];
@@ -179,15 +173,21 @@
 	                        return '<button class="btn btn-primary ms-2 mt-2 text-start" onclick="downloadFile(' + file.issueFileId + ')">' + file.issueFilePath + '</button>';
 	                    });
 	                }
+	                
+	                $('#issue_table tbody').append(
+		                	`
+		                	<tr>
+		                		<td>\${issueId}</td>
+		                		<td>\${issueName}</td>
+		                		<td>\${issueClassId}</td>
+		                		<td>\${issueContent}</td>
+		                		<td>\${issueFileButtons.join('')}</td>
+		                		<td>\${issueDateTime}</td>
+		                		<td>\${issueStatus === 1 ? 'Open' : 'Close'}</td>
+		                	</tr>
+		                	`
+		             );
 
-	                // 使用 ID 取得表格中的元素，並將值設定為對應的 issue 資料
-	                document.getElementById("formIssueId").innerText = issueId;
-	                document.getElementById("formIssueName").innerText = issueName;
-	                document.getElementById("formIssueClass").innerText = issueClassId;
-	                document.getElementById("formIssueContent").innerText = issueContent;
-	                document.getElementById("formIssueFiles").innerHTML = issueFileButtons.join('');
-	                document.getElementById("formIssueDateTime").innerText = issueDateTime;
-	                document.getElementById("formIssueStatus").innerText = issueStatus === 1 ? 'Open' : 'Close';
 	            });
 	        })
 	        .catch(error => console.error('Error fetching issues:', error));
