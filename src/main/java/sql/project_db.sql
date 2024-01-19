@@ -188,15 +188,7 @@ DROP TABLE IF EXISTS `schedule`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `schedule` (
-  `scheduleId` varchar(45) NOT NULL,
-  `purchaseStartDate` date NOT NULL,
-  `purchaseEndDate` date NOT NULL,
-  `executionStartDate` date NOT NULL,
-  `executionEndDate` date NOT NULL,
-  `checkandacceptStartDate` date NOT NULL,
-  `checkandacceptEndDate` date NOT NULL,
-  `paymentStartDate` date NOT NULL,
-  `paymentEndDate` date NOT NULL,
+  `scheduleId` int NOT NULL,
   `projectId` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`scheduleId`),
   KEY `fk_schedule_project_id_idx` (`projectId`),
@@ -210,8 +202,39 @@ CREATE TABLE `schedule` (
 
 LOCK TABLES `schedule` WRITE;
 /*!40000 ALTER TABLE `schedule` DISABLE KEYS */;
-INSERT INTO `schedule` VALUES ('1','2023-12-01','2024-01-01','2024-01-02','2024-03-01','2024-03-02','2024-05-01','2024-05-02','2024-06-01','AC23020');
+INSERT INTO `schedule` VALUES (1,'AC23020');
 /*!40000 ALTER TABLE `schedule` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `task`
+--
+
+DROP TABLE IF EXISTS `task`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `task` (
+  `taskId` int NOT NULL AUTO_INCREMENT,
+  `scheduleId` int NOT NULL,
+  `taskName` varchar(255) NOT NULL,
+  `taskResource` varchar(255) NOT NULL,
+  `taskStartDate` date NOT NULL,
+  `taskEndDate` date NOT NULL,
+  `taskDependency` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`taskId`),
+  KEY `fk_schedule_taskId_idx` (`scheduleId`),
+  CONSTRAINT `fk_schedule_taskId` FOREIGN KEY (`scheduleId`) REFERENCES `schedule` (`scheduleId`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `task`
+--
+
+LOCK TABLES `task` WRITE;
+/*!40000 ALTER TABLE `task` DISABLE KEYS */;
+INSERT INTO `task` VALUES (1,1,'專案','專案部','2023-12-01','2024-06-01',NULL),(2,1,'採購','採購部','2023-12-01','2024-01-01',NULL),(3,1,'執行','工程部','2024-01-02','2024-03-01','2'),(4,1,'驗收','專案部','2024-03-02','2024-05-01','3'),(5,1,'請款','採購部','2024-05-02','2024-06-01','4');
+/*!40000 ALTER TABLE `task` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -223,4 +246,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-09  0:57:53
+-- Dump completed on 2024-01-19 15:10:27

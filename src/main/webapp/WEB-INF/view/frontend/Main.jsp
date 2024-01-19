@@ -148,11 +148,12 @@
 	            // 在這裡可以進一步處理 issue 的資料，例如顯示在控制台上
 	            console.log('Issue Object:', data);   
 	            
+	            // 若是目前沒有
 	            if(data.length == 0) {
 	            	$('#issue_table tbody').append(
 		                	`
 		                	<tr>
-		                		<td colspan='7' class='fw-bold'>查無資料</td>
+		                		<td colspan='7' class='fw-bold'>目前沒有待處理Issue !</td>
 		                	</tr>
 		                	`
 		                );
@@ -180,7 +181,7 @@
 		                		<td>\${issueName}</td>
 		                		<td>\${issueClassId}</td>
 		                		<td>\${issueContent}</td>
-		                		<td>\${issueFileButtons.join('')}</td>
+		                		<td class = "text-start">\${issueFileButtons.join('')}</td>
 		                		<td>\${issueDateTime}</td>
 		                		<td>\${issueStatus === 1 ? 'Open' : 'Close'}</td>
 		                	</tr>

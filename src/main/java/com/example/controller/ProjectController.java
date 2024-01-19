@@ -169,6 +169,10 @@ public class ProjectController {
 	                .mapToInt(Integer::parseInt)
 	                .boxed()
 	                .collect(Collectors.toList());
+	        
+	        // 刪除原有專案成員，並新增新的專案成員
+	        projectMemberDao.removeProjectMember(projectId);
+	        projectMemberDao.addProjectMember(projectId, newMembers); 
 
 	        // 更新專案訊息，並獲取更新的行數
 	        int updateResult = projectDao.updateProject(projectUpdate);
@@ -177,10 +181,6 @@ public class ProjectController {
 	        if (updateResult == 0) {
 	            return "專案修改失敗";
 	        }
-
-	        // 刪除原有專案成員，並新增新的專案成員
-	        projectMemberDao.removeProjectMember(projectId);
-	        projectMemberDao.addProjectMember(projectId, newMembers); 
 	        
 	        // 更新成功，重定向到專案列表頁面
 	        return "redirect:/mvc/project";

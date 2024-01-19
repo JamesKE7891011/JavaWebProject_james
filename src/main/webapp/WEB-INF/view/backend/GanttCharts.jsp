@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <%@ include file="/WEB-INF/view/backendheader.jsp"%>
-
+<div>
 	<div class="m-3">
 
 	<!-- 專案下拉選單 -->
@@ -78,7 +78,7 @@
 	<div class="ms-3 me-4 mb-0" id="chart_div"></div>
 </div>
 
-<%@ include file="/WEB-INF/view/backendfooter.jsp"%>
+
 
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
@@ -102,10 +102,10 @@
 
 		otherData.addRows([
 	        [ "1", "Project", "blue", new Date(2023, 11, 1), new Date(2024, 5, 1), null, 100, null ],
-	        [ "taskPurchase", "Purchase", "red", new Date(2023, 11, 1), new Date(2024, 0, 1), null, 100, null ],
-	        [ "taskExecution", "Execution", "orange", new Date(2024, 0, 2), new Date(2024, 2, 1), null, 100, "taskPurchase" ],
-	        [ "taskCheckAndAccept", "CheckAndAccept", "green", new Date(2024, 2, 2), new Date(2024, 4, 1), null, 75, "taskExecution" ],
-	        [ "task4", "Payment", "purple", new Date(2024, 4, 2), new Date(2024, 5, 1), null, 0, "taskCheckAndAccept" ],
+	        [ "2", "Purchase", "red", new Date(2023, 11, 1), new Date(2024, 0, 1), null, 100, null ],
+	        [ "3", "Execution", "orange", new Date(2024, 0, 2), new Date(2024, 2, 1), null, 100, "2" ],
+	        [ "4", "CheckAndAccept", "green", new Date(2024, 2, 2), new Date(2024, 4, 1), null, 75, "3" ],
+	        [ "5", "Payment", "purple", new Date(2024, 4, 2), new Date(2024, 5, 1), null, 0, "4" ],
 	   	]);
 
 		var options = {
@@ -116,3 +116,5 @@
 		chart.draw(otherData, options);
 		}
 </script>
+
+<%@ include file="/WEB-INF/view/backendfooter.jsp"%>
