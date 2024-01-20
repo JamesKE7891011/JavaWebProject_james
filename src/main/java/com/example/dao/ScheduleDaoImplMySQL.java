@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,12 +17,17 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.bean.Schedule;
+import com.example.bean.Task;
 
 @Repository("scheduledaomysql")
 public class ScheduleDaoImplMySQL implements ScheduleDao {
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	@Qualifier("taskdaomysql")
+	private TaskDao taskDao;
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -61,12 +67,13 @@ public class ScheduleDaoImplMySQL implements ScheduleDao {
 	RowMapper<Schedule> scheduleMapper = (ResultSet rs, int rowNum) -> {
 		Schedule schedule = new Schedule();
 		schedule.setScheduleId(rs.getInt("scheduleId"));
-		schedule.setProjectId(rs.getString("projectId"));
+		schedule.setProjectId(rs.getString("projectId"));		
 		
 		//set List<Task>
+		List<Task> tasks = taskDao.findTasksByScheduleId(rs.getInt("scheduleId"));
+		schedule.setTasks(tasks);
 		
-		return schedule;
-		
+		return schedule;		
 	};
 
 	@Override
