@@ -25,7 +25,7 @@
           <a class="nav-link active text-light" aria-current="page" href="${ pageContext.request.contextPath }/mvc/project">ProjectCreate</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-light" href="${ pageContext.request.contextPath }/mvc/ganttcharts">GanttCharts</a>
+          <a class="nav-link text-light" href="${ pageContext.request.contextPath }/mvc/schedule">Schedule</a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-light" href="${ pageContext.request.contextPath }/mvc/main">Front-end</a>

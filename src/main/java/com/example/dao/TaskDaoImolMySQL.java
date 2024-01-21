@@ -42,7 +42,7 @@ public class TaskDaoImolMySQL implements TaskDao {
 			PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			ps.setInt(1,task.getScheduleId());
 			ps.setString(2, task.getTaskName());
-			ps.setString(3,task.getTaskResourse());
+			ps.setString(3,task.getTaskResource());
 			ps.setDate(4, (Date) task.getTaskStartDate());
 			ps.setDate(5, (Date) task.getTaskEndDate());
 			ps.setInt(6, task.getTaskDependency());			
@@ -64,19 +64,19 @@ public class TaskDaoImolMySQL implements TaskDao {
 	
 	@Override
 	public List<Task> findAllTasks() {
-		String sql = "select taskId,scheduleId,taskName,taskRsource,taskStartDate,taskEndDate,taskDependency from task";
+		String sql = "select taskId,scheduleId,taskName,taskResource,taskStartDate,taskEndDate,taskDependency from task";
 		return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Task.class));
 	}
 
 	@Override
 	public List<Task> findTasksByScheduleId(int scheduleId) {
-		String sql = "select taskId,scheduleId,taskName,taskRsource,taskStartDate,taskEndDate,taskDependency from task where scheduleId = ?";
+		String sql = "select taskId,scheduleId,taskName,taskResource,taskStartDate,taskEndDate,taskDependency from task where scheduleId = ?";
 		return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Task.class),scheduleId);
 		}
 
 	@Override
 	public Optional<Task> findTaskByTaskId(Integer taskId) {
-		String sql = "select taskId,scheduleId,taskName,taskRsource,taskStartDate,taskEndDate,taskDependency from task where taskId = ?";
+		String sql = "select taskId,scheduleId,taskName,taskResource,taskStartDate,taskEndDate,taskDependency from task where taskId = ?";
 		try {
 			Task task = jdbcTemplate.queryForObject(sql,new BeanPropertyRowMapper<>(Task.class), taskId);
 			return Optional.ofNullable(task);

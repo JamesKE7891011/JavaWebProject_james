@@ -1,14 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ include file="/WEB-INF/view/backendheader.jsp"%>
 <div>
 	<div class="m-3">
 		<!-- 專案下拉選單 -->
 		<h4 class="fs-4 fw-bold">Project Name</h4>
-		<select class=" form-select" aria-label="Default select example">
-  			<option selected>Choose project</option>
-  			<option value="One">AC23020</option>
+		<select class="mt-2 form-select w-75" id="projectId" name="projectId" aria-label="Default select example" 
+						onchange="selectProject(event.target.value)" required>
+			<option selected disabled value="">Please choose project...</option>
+			<c:forEach items="${ projects }" var="project">
+				<option value="${ project.projectId }">${ project.projectId } ${ project.projectName }</option>
+			</c:forEach>
 		</select>
  	</div>	
 	<!-- 新增進度條 -->
@@ -43,7 +47,7 @@
 	</div>	
 	<!-- 任務顯示表格 -->
 	<div>
-		<div class=" table-responsive ms-3 me-3 mt-4 mb-0 ">
+		<div class=" table-responsive ms-3 me-3 mt-4 mb-0 " id = "task_table">
 	  		<table class="table table-bordered">
 	    		<thead>
 	    			<tr>
@@ -59,19 +63,7 @@
 	      				
 	    			</tr>
 	  			</thead>
-	  			<tbody>
-	    			<tr>
-	      				<th scope="row">2023-12-01</th>
-	      				<td>Project</td>
-	      				<td>採購</td>
-	      				<td>2024-03-01</td>
-	      				<td>2024-03-02</td>
-	      				<td>2024-05-01</td>
-	      				<td>2024-05-02</td>
-	      				<td>2024-06-01</td>
-	      				<td><button class=" ms-3 btn btn-outline-danger btn-sm  fw-bold">delete</button></td>
-	   				</tr>
-	  			</tbody>
+	  			<tbody></tbody>
 	  		</table>
 	  		
 		</div>		
@@ -117,4 +109,51 @@
 		var chart = new google.visualization.Gantt(document.getElementById("chart_div"));
 		chart.draw(otherData, options);
 		}
+	
+	function selectProject(projectId) {
+		console.log('projectId:', projectId);
+		
+		
+		$('#task_table tr').remove();
+		
+		fetch('/JavaWebProject/mvc/schedule/findschedule/'+projectId, {method: "GET",headers: {"Coneent-Type": "application/json",}})
+		.then(response => response.json())
+		.then(data => {
+			$.each(schedule => {
+				console.log('scheduleId:', schedule.scheduleId);
+				
+				schedule.tasks.forEach(task => {
+					
+					let taskId = task.taskId;
+					let taskName = task.taskName;
+					let taskResource = task.taskResource;
+					let taskStartDate = task.taskStartDate;
+					let taskEndDate = task.taskEndDate;
+					let taskDuration = task.taskDuration;
+					let taskPercentComplete = task.taskPercentComplete;
+					let taskDependency = task.taskDependency;
+					
+				let tr = `
+					<tr>
+						<td=>\${taskId}</td>
+	      				<td>\${taskName}</td>
+	      				<td>\${taskResource}</td>
+	      				<td>\${taskStartDate}</td>
+	      				<td>\${taskEndDate}</td>
+	      				<td>\${taskDuration}</td>
+	      				<td>\${taskPercentComplete}</td>
+	      				<td>\${taskDependency}</td>
+	      				<td><button class=" ms-3 btn btn-outline-danger btn-sm  fw-bold">delete</button></td>
+					</tr>
+								
+				`;
+				console.log('task');
+				});
+			})
+		});
+		
+	}
+	
 </script>
+
+

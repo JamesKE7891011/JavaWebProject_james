@@ -19,7 +19,7 @@ public class Task {
 	
 	private String taskName;
 	
-	private String taskResourse;
+	private String taskResource;
 	
 	@Temporal(TemporalType.DATE)                            
 	@DateTimeFormat(pattern = "yyyy-MM-dd")                 
@@ -41,13 +41,13 @@ public class Task {
 		
 	}
 
-	public Task(Integer taskId, Integer scheduleId, String taskName, String taskResourse, Date taskStartDate,
+	public Task(Integer taskId, Integer scheduleId, String taskName, String taskResource, Date taskStartDate,
 			Date taskEndDate, int taskDuration, Double taskPercentComplete, Integer taskDependency) {
 		super();
 		this.taskId = taskId;
 		this.scheduleId = scheduleId;
 		this.taskName = taskName;
-		this.taskResourse = taskResourse;
+		this.taskResource = taskResource;
 		this.taskStartDate = taskStartDate;
 		this.taskEndDate = taskEndDate;
 		this.taskDuration = taskDuration;
@@ -67,8 +67,8 @@ public class Task {
 		return taskName;
 	}
 
-	public String getTaskResourse() {
-		return taskResourse;
+	public String getTaskResource() {
+		return taskResource;
 	}
 
 	public Date getTaskStartDate() {
@@ -103,8 +103,8 @@ public class Task {
 		this.taskName = taskName;
 	}
 
-	public void setTaskResourse(String taskResourse) {
-		this.taskResourse = taskResourse;
+	public void setTaskResource(String taskResource) {
+		this.taskResource = taskResource;
 	}
 
 	public void setTaskStartDate(Date taskStartDate) {
@@ -162,8 +162,8 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Task [taskId=" + taskId + ", scheduleId=" + scheduleId + ", taskName=" + taskName + ", taskResourse="
-				+ taskResourse + ", taskStartDate=" + taskStartDate + ", taskEndDate=" + taskEndDate + ", taskDuration="
+		return "Task [taskId=" + taskId + ", scheduleId=" + scheduleId + ", taskName=" + taskName + ", taskResource="
+				+ taskResource + ", taskStartDate=" + taskStartDate + ", taskEndDate=" + taskEndDate + ", taskDuration="
 				+ taskDuration + ", taskPercentComplete=" + taskPercentComplete + ", taskDependency=" + taskDependency
 				+ "]";
 	}

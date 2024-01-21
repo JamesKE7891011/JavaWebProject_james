@@ -4,15 +4,19 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.example.bean.Issue;
+import com.example.bean.Schedule;
 import com.example.dao.IssueClassDao;
 import com.example.dao.IssueDao;
 import com.example.dao.ProjectDao;
 import com.example.dao.ProjectDaoImplMySQL;
+import com.example.dao.ScheduleDao;
 import com.google.gson.Gson;
 
 //public class Test {
@@ -37,7 +41,8 @@ public class Test {
 	
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
-		IssueDao issueDao = ctx.getBean("issuedaomysql", IssueDao.class);
+//		IssueDao issueDao = ctx.getBean("issuedaomysql", IssueDao.class);
+		ScheduleDao scheduleDao = ctx.getBean("scheduledaomysql", ScheduleDao.class);
 		
 //		Issue i = new Issue();
 //		i.setProjectId("AC23020");
@@ -47,11 +52,9 @@ public class Test {
 //		i.setIssueContent("Test Content");
 //		issueDao.addIssue(i);
 		
-		List<Issue> issues = issueDao.findIssuesByProjectId("AC23020");
-		for(Issue issue: issues) {
-			System.out.println(issue);
+		Optional<Schedule> schedules = scheduleDao.findSchedulueByProjectId("AC23020");
+			System.out.println(schedules);
 		}
 
 	}
 
-}
