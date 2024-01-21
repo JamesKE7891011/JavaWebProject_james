@@ -1,12 +1,8 @@
 package com.example.controller;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -110,6 +106,43 @@ public class ScheduleController {
 
 	}
 	
+	//刪除Schedule
+	@GetMapping("/deleteschedule/{sceduleId}")
+	@ResponseBody
+	public String deleteSchedule(@PathVariable("scheduleId") Integer scheduleId,Model model) {
+		try {
+			int rowcount = scheduleDao.removeScheduleByScheduleId(scheduleId);
+			if(rowcount > 0) {
+				return "redirect:/mvc/schedule";
+			}else {
+				model.addAttribute("errorMessage","進度表刪除失敗請通知管理員");
+				return "backend/Schedule";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage","進度表刪除時發生異常請通知管理員");
+			return "backend/Schedule";
+		}
+	}
+	
+	//刪除Task
+	@GetMapping("/deletetask/{taskId}")
+	@ResponseBody
+	public String deleteTask(@PathVariable("taskId") Integer taskId,Model model) {
+		try {
+			int rowcount = taskDao.removeTask(taskId);
+			if(rowcount > 0) {
+				return "redirect:/mvc/schedule";
+			}else {
+				model.addAttribute("errorMessage","任務刪除失敗請通知管理員");
+				return "backend/Schedule";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage","任務刪除時發生異常請通知管理員");
+			return "backend/Schedule";
+		}
+	}
 }
 
 
