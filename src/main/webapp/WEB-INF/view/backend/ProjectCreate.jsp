@@ -43,13 +43,13 @@
 						<tr>
 							<th scope="row">projectName:</th>
 							<td class="w-100">
-								<input type="text" value="${ project.projectName }" class="w-75" id="upadte_projectName">
+								<input type="text" value="${ project.projectName }" class="w-75" id="upadte_projectName_${ project.projectId }">
 							</td>
 						</tr>
 						<tr>
 							<th scope="row">projectContent:</th>
 							<td class="w-100">
-								<input type="text" value="${ project.projectContent }" class="w-75" id="upadte_projectContent">
+								<input type="text" value="${ project.projectContent }" class="w-75" id="upadte_projectContent_${ project.projectId }">
 							</td>
 						</tr>
 						<tr>
@@ -58,7 +58,7 @@
 								
 								<!-- Project Owner Update -->
 								<div class="d-flex justift-content-start">
-									<select class="form-select" value="${project.projectOwner.employeeId}" id="upadte_projectOwner">
+									<select class="form-select" value="${project.projectOwner.employeeId}" id="upadte_projectOwner_${ project.projectId }">
 									  <c:forEach items="${ employees }" var="employee">
 									     <option value="${ employee.employeeId }" 
 									        <c:if test="${ employee.employeeId == project.projectOwner.employeeId }">selected</c:if>
@@ -101,13 +101,13 @@
 						<tr>
 							<th scope="row">projectStartDate:</th>
 							<td class="w-100">
-								<input type="date" value="<fmt:formatDate value="${ project.projectStartDate }" pattern="yyyy-MM-dd" />" class="w-75" id="upadte_projectStartDate">
+								<input type="date" value="<fmt:formatDate value="${ project.projectStartDate }" pattern="yyyy-MM-dd" />" class="w-75" id="upadte_projectStartDate_${ project.projectId }">
 							</td>
 						</tr>
 						<tr>
 							<th scope="row">projectEndDate:</th>
 							<td class="w-100">
-								<input type="date" value="<fmt:formatDate value="${ project.projectEndDate }" pattern="yyyy-MM-dd" />" class="w-75" id="upadte_projectEndDate">
+								<input type="date" value="<fmt:formatDate value="${ project.projectEndDate }" pattern="yyyy-MM-dd" />" class="w-75" id="upadte_projectEndDate_${ project.projectId }">
 							</td>
 						</tr>
 						<tr>
@@ -463,12 +463,12 @@ myModal.addEventListener('shown.bs.modal', function () {
 	  
 	  	let field = {
 	  		"projectId": projectId,
-	  		"projectName": $('#upadte_projectName').val(),
-	  		"projectContent": $('#upadte_projectContent').val(),
-	  		"projectOwner": $('#upadte_projectOwner').val(),
+	  		"projectName": $('#upadte_projectName_' + projectId).val(),
+	  		"projectContent": $('#upadte_projectContent_' + projectId).val(),
+	  		"projectOwner": $('#upadte_projectOwner_' + projectId).val(),
 	  		"projectMember": $('#update_projectMember_' + projectId).val(),
-	  		"projectStartDate": $('#upadte_projectStartDate').val(),
-	  		"projectEndDate": $('#upadte_projectEndDate').val(),
+	  		"projectStartDate": $('#upadte_projectStartDate_' + projectId).val(),
+	  		"projectEndDate": $('#upadte_projectEndDate_' + projectId).val(),
 	  	};
 	  	
 	  	console.log(projectId);

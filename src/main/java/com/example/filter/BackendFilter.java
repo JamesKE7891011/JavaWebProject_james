@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-//@WebFilter(value = "/backend")
+@WebFilter(value = "/mvc/project")
 public class BackendFilter extends HttpFilter{
 
 	@Override
@@ -26,7 +26,7 @@ public class BackendFilter extends HttpFilter{
 			return;
 		}
 		
-		res.sendRedirect("./frontend/fwbackendpage.jsp");
+		res.sendRedirect("/JavaWebProject_james/fwbackendpage.jsp");
 	}
 
 	

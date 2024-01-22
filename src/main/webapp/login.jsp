@@ -20,7 +20,7 @@
 <style>
       body {
              font-family: Arial, sans-serif;
-             background-image: url('./image/weblogin.jpg');
+             background-image: url('/JavaWebProject_james/image/weblogin.jpg');
              background-size: cover;
   			 background-repeat: no-repeat;
              background-color: #f4f4f4;

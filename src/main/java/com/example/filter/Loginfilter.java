@@ -20,7 +20,7 @@ public class Loginfilter extends HttpFilter{
 		
 		//放行條件
 		if(urlString.endsWith("login.jsp") || urlString.endsWith("login") 
-				|| urlString.indexOf("/images")>=0 
+				|| urlString.indexOf("/image")>=0 
 				|| urlString.endsWith(".css")
 				|| urlString.endsWith(".js") 
 				|| urlString.indexOf("/upload")>=0 ) {
