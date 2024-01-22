@@ -34,7 +34,7 @@ public class TaskDaoImolMySQL implements TaskDao {
 	public int addTask(Task task) {
 		int taskId = -1;
 		
-		String sql = "insert into task(scheduleId,taskName,taskResource,taskStartDate,taskEndDate,taskDependency )values(?,?,?,?,?,?))";
+		String sql = "insert into task(scheduleId,taskName,taskResource,taskStartDate,taskEndDate,taskDependency )values(?,?,?,?,?,?)";
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		
@@ -43,16 +43,17 @@ public class TaskDaoImolMySQL implements TaskDao {
 			ps.setInt(1,task.getScheduleId());
 			ps.setString(2, task.getTaskName());
 			ps.setString(3,task.getTaskResource());
-			ps.setDate(4, (Date) task.getTaskStartDate());
-			ps.setDate(5, (Date) task.getTaskEndDate());
+			ps.setDate(4, new java.sql.Date(task.getTaskStartDate().getTime()));
+			ps.setDate(5, new java.sql.Date(task.getTaskEndDate().getTime()));
 			ps.setInt(6, task.getTaskDependency());			
 			return ps;
 		},keyHolder);
 		
 		if(keyHolder.getKey()!= null) {
 			taskId = keyHolder.getKey().intValue();
+			task.setTaskId(taskId);
 		}
-		return taskId;
+		return affectedRows;
 	}
 
 	@Override

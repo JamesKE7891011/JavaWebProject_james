@@ -17,31 +17,33 @@
  	</div>	
 	<!-- 新增進度條 -->
 	<div class="mx-3">
-	<label class="fs-4 fw-bold mt-3">Schedule </label>
-		<form class="row g-3">
+	<label class="fs-4 fw-bold mt-3">Schedule <button class=" ms-3 btn btn-outline-danger btn-sm  fw-bold">deleteSchedule</button></label>
+		<form class="row g-3 mt-2" action="/JavaWebProject_james/mvc/schedule/addTask" id="addTaskForm" method="post">
+		  ${ message }
+		  <input type="hidden" value="" id="scheduleId" name="scheduleId">
 		  <div class="col-md-2">
 		    <label for="validationServer01" class="form-label">Task Name</label>
-		    <input type="text" class="form-control is-valid" id="validationServer01" value="Mark" required>
+		    <input type="text" class="form-control is-valid" id="taskName"  name="taskName" value="執行" required>
 		  </div>
 		  <div class="col-md-2">
 		    <label for="validationServer01" class="form-label">Resourse</label>
-		    <input type="text" class="form-control is-valid" id="validationServer01" value="Mark" required>
+		    <input type="text" class="form-control is-valid" id="taskResource" name="taskResource" value="採購部" required>
 		  </div>
 		  <div class="col-md-2">
 		    <label for="validationServer01" class="form-label">Task Start Date</label>
-		    <input type="date" class="form-control is-valid" id="validationServer01" value="Mark" required>
+		    <input type="date" class="form-control is-valid" id="taskStartDate" name="taskStartDate" required>
 		  </div>
 		  <div class="col-md-2">
 		    <label for="validationServer01" class="form-label">Task End Date</label>
-		    <input type="date" class="form-control is-valid" id="validationServer01" value="Mark" required>
+		    <input type="date" class="form-control is-valid" id="taskEndDate" name="taskEndDate" required>
 		  </div>
 		  <div class="col-md-2">
 		    <label for="validationServer01" class="form-label">Dependencies</label>
-		    <input type="text" class="form-control is-valid" id="validationServer01" value="Mark" required>
+		    <input type="text" class="form-control is-valid" id="taskDependency" name="taskDependency" value="1" required>
 		  </div>
 		  <div class="col-2 d-flex align-items-end">
 		  	<label></label>
-		    <button class="btn btn-primary ms-2"  type="submit">Add Rows</button>
+		    <button class="btn btn-primary ms-2"  type="button" onclick="addTask()">Add Rows</button>
 		  </div>
 		</form>
 	</div>	
@@ -75,6 +77,10 @@
 
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
+
+	document.getElementById("taskStartDate").valueAsDate = new Date();
+	document.getElementById("taskEndDate").valueAsDate = new Date();
+
 	google.charts.load("current", {packages : [ "gantt" ]});
 	google.charts.setOnLoadCallback(drawChart);
 
@@ -122,6 +128,8 @@
 			
 			let { projectId, scheduleId, tasks } = data;
 			
+			$('#scheduleId').val(scheduleId);
+			
 			console.log('projectId:', projectId);
 			console.log('scheduleId:', scheduleId);
 			console.log('tasks:', tasks);
@@ -165,7 +173,7 @@
 						new Date(taskEndDate),
 						taskDuration,
 						taskPercentComplete,
-						taskDependency ==null ? '':taskDependency.toString()
+						taskDependency == null ? '':taskDependency.toString()
 					]		
 				);
 				
@@ -174,9 +182,40 @@
 		}).catch(err => {
 			drawChart([]);
         });
-		
 	}
 	
+	function addTask(){
+		
+		let formData = {
+			"projectId" : $('#projectId').val(),
+			"scheduleId" : $('#scheduleId').val(),
+			"taskName" : $('#taskName').val(),
+			"taskResource" : $('#taskResource').val(),
+			"taskStartDate" : $('#taskStartDate').val(),
+			"taskEndDate" : $('#taskEndDate').val(),
+			"taskDependency" : $('#taskDependency').val()
+		};
+		let action = $('#addTaskForm').attr('action');
+
+		console.log(action,formData);
+		
+		fetch(
+			action, 
+			{   method: 'POST', 
+				body: JSON.stringify(formData), 
+				headers: new Headers({
+			        'Content-Type': 'application/json'
+			    }),
+			}
+		)
+		.then(response => response.json())
+		.then(data => {
+			selectProject($('#projectId').val());
+		}).catch(err => {
+
+        });
+	}
+
 </script>
 
 

@@ -45,8 +45,9 @@ public class ScheduleDaoImplMySQL implements ScheduleDao {
 		
 		if (keyHolder.getKey() != null) {
 			scheduleId = keyHolder.getKey().intValue();
+			schedule.setScheduleId(scheduleId);
 		}		
-		return scheduleId;
+		return affectedRows;
 	}
 
 	@Transactional
