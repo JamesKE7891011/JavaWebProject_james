@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.ParseException;
@@ -8,6 +9,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +56,18 @@ public class ProjectController {
 	@Qualifier("issuedaomysql")
 	private IssueDao issueDao;
 	
+	private void addBasicModel(Model model) {
+		// 查詢所有專案
+		List<Project> projects = projectDao.findAllProjects();
+				
+		// 將查詢到的專案列表添加到Model，以便在視圖中使用。
+		model.addAttribute("projects", projects);
+				
+		// 查詢所有員工
+		List<Employee> employees = employeedao.findAllEmployees();
+		model.addAttribute("employees", employees);
+	}
+	
 	//查詢專案
 	@GetMapping
 	public String getProjectPage(Model model) {
@@ -64,8 +81,21 @@ public class ProjectController {
 		// 查詢所有員工
 		List<Employee> employees = employeedao.findAllEmployees();
 		model.addAttribute("employees", employees);
-		
+			
 		return "/backend/ProjectCreate";
+	}
+	
+	@GetMapping("/123")
+	public String doFilter(HttpSession session,Model model){
+		
+		String role = (String)session.getAttribute("role");
+		
+		if(role != null && "admin".equalsIgnoreCase(role)) {
+				addBasicModel(model);
+			return "/backend/ProjectCreate";
+		}
+		
+		return "redirect:/mvc/fwbackendpage.jsp";
 	}
 	
 	//新增專案
