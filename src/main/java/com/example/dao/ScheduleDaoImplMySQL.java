@@ -71,6 +71,10 @@ public class ScheduleDaoImplMySQL implements ScheduleDao {
 		
 		//set List<Task>
 		List<Task> tasks = taskDao.findTasksByScheduleId(rs.getInt("scheduleId"));
+		tasks.forEach(task -> {
+			task.calculateTaskDuration();
+			task.calculateTaskPercentComplete();
+		});
 		schedule.setTasks(tasks);
 		
 		return schedule;		

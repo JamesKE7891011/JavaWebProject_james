@@ -65,7 +65,6 @@
 	  			</thead>
 	  			<tbody></tbody>
 	  		</table>
-	  		
 		</div>		
 		
 		<div class="ms-3 me-4 mb-0" id="chart_div"></div>
@@ -83,74 +82,98 @@
 		return minutes * 60 * 1000;
 	}
 
-	function drawChart() {
-		var otherData = new google.visualization.DataTable();
-		otherData.addColumn("string", "Task ID");
-		otherData.addColumn("string", "Task Name");
-		otherData.addColumn("string", "Resource");
-		otherData.addColumn("date", "Start");
-		otherData.addColumn("date", "End");
-		otherData.addColumn("number", "Duration");
-		otherData.addColumn("number", "Percent Complete");
-		otherData.addColumn("string", "Dependencies");
-
-		otherData.addRows([
-	        [ "1", "Project", "blue", new Date(2023, 11, 1), new Date(2024, 5, 1), null, 100, null ],
-	        [ "2", "Purchase", "red", new Date(2023, 11, 1), new Date(2024, 0, 1), null, 100, null ],
-	        [ "3", "Execution", "orange", new Date(2024, 0, 2), new Date(2024, 2, 1), null, 100, "2" ],
-	        [ "4", "CheckAndAccept", "green", new Date(2024, 2, 2), new Date(2024, 4, 1), null, 75, "3" ],
-	        [ "5", "Payment", "purple", new Date(2024, 4, 2), new Date(2024, 5, 1), null, 0, "4" ],
-	   	]);
-
-		var options = {
-			height : 275,
-		};
-
-		var chart = new google.visualization.Gantt(document.getElementById("chart_div"));
-		chart.draw(otherData, options);
-		}
+	function drawChart(rows) {
+		
+		/*
+		rows = [
+	        [ "1", "專案", "專案部", new Date(2023, 12, 01), new Date(2024, 06, 01), 183, 28.42, '' ],
+	        [ "2", "採購", "採購部", new Date(2023, 12, 01), new Date(2024, 01, 01), 31, 100, '' ],
+	        [ "3", "執行", "工程部", new Date(2024, 01, 02), new Date(2024, 03, 01), 59, 33.9, '2' ],
+	   	];*/
+	   	
+	   	var chart = new google.visualization.Gantt(document.getElementById("chart_div"));
+	   	if(rows.length > 0) {
+	   		$('#chart_div').show();
+		   	var otherData = new google.visualization.DataTable();
+			otherData.addColumn("string", "Task ID");
+			otherData.addColumn("string", "Task Name");
+			otherData.addColumn("string", "Resource");
+			otherData.addColumn("date", "Start");
+			otherData.addColumn("date", "End");
+			otherData.addColumn("number", "Duration");
+			otherData.addColumn("number", "Percent Complete");
+			otherData.addColumn("string", "Dependencies");
+	   		otherData.addRows(rows);
+	   		var options = {height : 275,};	
+	   		chart.draw(otherData, options);
+	   	} else {
+	   		$('#chart_div').hide();
+	   	}
+	}
 	
 	function selectProject(projectId) {
-		console.log('projectId:', projectId);
+		//console.log('projectId:', projectId);
 		
+		$('#task_table tbody tr').remove();
 		
-		$('#task_table tr').remove();
-		
-		fetch('/JavaWebProject/mvc/schedule/findschedule/'+projectId, {method: "GET",headers: {"Coneent-Type": "application/json",}})
+		fetch('/JavaWebProject_james/mvc/schedule/findschedule/'+projectId, {method: "GET",headers: {"Coneent-Type": "application/json",}})
 		.then(response => response.json())
 		.then(data => {
-			$.each(schedule => {
-				console.log('scheduleId:', schedule.scheduleId);
+			
+			let { projectId, scheduleId, tasks } = data;
+			
+			console.log('projectId:', projectId);
+			console.log('scheduleId:', scheduleId);
+			console.log('tasks:', tasks);
+			
+			rows = [];
+			
+			tasks.forEach(task => {
 				
-				schedule.tasks.forEach(task => {
-					
-					let taskId = task.taskId;
-					let taskName = task.taskName;
-					let taskResource = task.taskResource;
-					let taskStartDate = task.taskStartDate;
-					let taskEndDate = task.taskEndDate;
-					let taskDuration = task.taskDuration;
-					let taskPercentComplete = task.taskPercentComplete;
-					let taskDependency = task.taskDependency;
-					
+				let taskId = task.taskId;
+				let taskName = task.taskName;
+				let taskResource = task.taskResource;
+				let taskStartDate = task.taskStartDate;
+				let taskEndDate = task.taskEndDate;
+				let taskDuration = task.taskDuration;
+				let taskPercentComplete = task.taskPercentComplete;
+				let taskDependency = task.taskDependency;
+				
 				let tr = `
 					<tr>
-						<td=>\${taskId}</td>
+						<td>\${taskId}</td>
 	      				<td>\${taskName}</td>
 	      				<td>\${taskResource}</td>
 	      				<td>\${taskStartDate}</td>
 	      				<td>\${taskEndDate}</td>
 	      				<td>\${taskDuration}</td>
 	      				<td>\${taskPercentComplete}</td>
-	      				<td>\${taskDependency}</td>
+	      				<td>\${taskDependency == null ? "-": taskDependency}</td>
 	      				<td><button class=" ms-3 btn btn-outline-danger btn-sm  fw-bold">delete</button></td>
 					</tr>
 								
 				`;
-				console.log('task');
-				});
-			})
-		});
+				
+				$('#task_table tbody').append(tr);
+				
+				rows.push(
+					[
+						taskId.toString(),
+						taskName,
+						taskResource,
+						new Date(taskStartDate),
+						new Date(taskEndDate),
+						taskDuration,
+						taskPercentComplete,
+						taskDependency ==null ? '':taskDependency.toString()
+					]		
+				);
+				
+			});
+			drawChart(rows);
+		}).catch(err => {
+			drawChart([]);
+        });
 		
 	}
 	

@@ -3,8 +3,11 @@ package com.example.controller;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,10 +62,10 @@ public class ScheduleController {
 		return "/backend/Schedule";
 	}
 	
-	@GetMapping(value = "findschedule/{projectId}")
+	@GetMapping(value = "/findschedule/{projectId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public Schedule findScheduleByScheduleId(@PathVariable("projectId") String projectId){
-		return scheduleDao.findSchedulueByProjectId(projectId).get();
+		return scheduleDao.findSchedulueByProjectId(projectId).orElse(null);
 	}
 	
 	// 新增Schedule
