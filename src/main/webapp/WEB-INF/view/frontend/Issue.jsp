@@ -49,9 +49,9 @@
 				<div class="invalid-feedback ">請敘述原因!</div>
 			</div>
 			<div class="col-12 d-flex justify-content-center my-3">
-				<button class="btn btn-secondary col-12" type="button"
-					onclick="submitForm()">Submit Form</button>
+				<button class="btn btn-secondary col-12" type="button"onclick="submitForm()">Submit Form2</button>
 			</div>
+			<button class="btn btn-secondary col-12 invisible " type="submit" id="submitBtn" ></button>
 		</form>
 	</div>
 
@@ -212,6 +212,8 @@
 
 	    // 檢查其他表單元素是否為空
 	    if (projectId.value.trim() === '' || issueName.value.trim() === '' || issueClassId.value.trim() === '' || issueContent.value.trim() === '') {
+	        //$('#issueForm').submit();
+	    	$('#submitBtn').click();
 	        return;
 	    }
 
@@ -295,7 +297,7 @@
 	    .forEach(function (form) {
 	      form.addEventListener('submit', function (event) {
 	        if (!form.checkValidity()) {
-	          event.preventDefault()
+ 	          event.preventDefault()
 	          event.stopPropagation()
 	        }
 	
