@@ -28,7 +28,7 @@
           <a class="nav-link text-light" href="${ pageContext.request.contextPath }/mvc/issue">Issue</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-light" href="${ pageContext.request.contextPath }/mvc/project/123">Back-end</a>
+          <a class="nav-link text-light" href="${ pageContext.request.contextPath }/mvc/project/backendfilter">Back-end</a>
         </li>
       </ul>
     </div>
