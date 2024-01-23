@@ -39,7 +39,7 @@
 		  </div>
 		  <div class="col-md-2">
 		    <label for="validationServer01" class="form-label">Dependencies</label>
-		    <input type="text" class="form-control is-valid" id="taskDependency" name="taskDependency" value="1" required>
+		    <input type="text" class="form-control is-valid" id="taskDependency" name="taskDependency" value="1" >
 		  </div>
 		  <div class="col-2 d-flex align-items-end">
 		  	<label></label>

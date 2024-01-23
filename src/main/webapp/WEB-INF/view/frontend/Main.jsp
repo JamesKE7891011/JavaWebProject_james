@@ -105,6 +105,8 @@
 	    console.log('projectId:', projectId);
 	    
 	    $('#issue_table tbody tr').remove();
+	    
+	    $('#task_table tbody tr').remove();
 	
 	    fetch('/JavaWebProject_james/mvc/main/findproject/' + projectId, {method: "GET",headers: {"Content-Type": "application/json",}})
 	    .then(response => response.json())
@@ -137,6 +139,7 @@
 	    })
 	    .catch(error => console.error('Error fetching project:', error));
 	    
+	  //----------------selectIssue----------------------//
 	    fetch('/JavaWebProject_james/mvc/main/findissue/' +projectId+ '/1', {
 	        method: "GET",
 	        headers: {
@@ -191,7 +194,76 @@
 	            });
 	        })
 	        .catch(error => console.error('Error fetching issues:', error));
-
+		
+	  //----------------selectSchedule----------------------//
+	    fetch('/JavaWebProject_james/mvc/schedule/findschedule/'+projectId, {method: "GET",headers: {"Coneent-Type": "application/json",}})
+		.then(response => response.json())
+		.then(data => {
+			
+			if(data.length == 0) {
+            	$('#task_table tbody').append(
+	                	`
+	                	<tr>
+	                		<td colspan='8' class='fw-bold'>請通知專人建立進度表 !</td>
+	                	</tr>
+	                	`
+	                );
+            }
+			
+			let { projectId, scheduleId, tasks } = data;
+			
+			$('#scheduleId').val(scheduleId);
+			
+			console.log('projectId:', projectId);
+			console.log('scheduleId:', scheduleId);
+			console.log('tasks:', tasks);
+			
+			rows = [];
+			
+			tasks.forEach(task => {
+				
+				let taskId = task.taskId;
+				let taskName = task.taskName;
+				let taskResource = task.taskResource;
+				let taskStartDate = task.taskStartDate;
+				let taskEndDate = task.taskEndDate;
+				let taskDuration = task.taskDuration;
+				let taskPercentComplete = task.taskPercentComplete;
+				let taskDependency = task.taskDependency;
+				
+				$('#task_table tbody').append(
+					`
+					<tr>
+						<td>\${taskId}</td>
+	      				<td>\${taskName}</td>
+	      				<td>\${taskResource}</td>
+	      				<td>\${taskStartDate}</td>
+	      				<td>\${taskEndDate}</td>
+	      				<td>\${taskDuration}</td>
+	      				<td>\${taskPercentComplete}</td>
+	      				<td>\${taskDependency == null ? "-": taskDependency}</td>
+					</tr>
+					`	
+				);
+				
+				rows.push(
+					[
+						taskId.toString(),
+						taskName,
+						taskResource,
+						new Date(taskStartDate),
+						new Date(taskEndDate),
+						taskDuration,
+						taskPercentComplete,
+						taskDependency == null ? '':taskDependency.toString()
+					]		
+				);
+				
+			});
+			drawChart(rows);
+		}).catch(err => {
+			drawChart([]);
+        });
 	}
 	
 	//下載issue檔案
@@ -213,32 +285,8 @@
         // 从文档中移除<a>元素
         document.body.removeChild(link);
     }
-
+		
 </script>
-
-<!-- 甘特圖修改 -->
-<script>
-	//Example starter JavaScript for disabling form submissions if there are invalid fields
-	(function() {
-		'use strict'
-
-		// Fetch all the forms we want to apply custom Bootstrap validation styles to
-		var forms = document.querySelectorAll('.needs-validation')
-
-		// Loop over them and prevent submission
-		Array.prototype.slice.call(forms).forEach(function(form) {
-			form.addEventListener('submit', function(event) {
-				if (!form.checkValidity()) {
-					event.preventDefault()
-					event.stopPropagation()
-				}
-
-				form.classList.add('was-validated')
-			}, false)
-		})
-	})
-</script>
-
 
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
@@ -250,32 +298,23 @@
 	}
 
 	function drawChart() {
-		var otherData = new google.visualization.DataTable();
-		otherData.addColumn("string", "Task ID");
-		otherData.addColumn("string", "Task Name");
-		otherData.addColumn("string", "Resource");
-		otherData.addColumn("date", "Start");
-		otherData.addColumn("date", "End");
-		otherData.addColumn("number", "Duration");
-		otherData.addColumn("number", "Percent Complete");
-		otherData.addColumn("string", "Dependencies");
-
-		otherData.addRows([
-     				[ "taskmain", "Project", "blue", new Date(2023, 11, 1), new Date(2024, 5, 1), null, 100, null ],
-     				[ "taskPurchase", "Purchase", "red", new Date(2023, 11, 1), new Date(2024, 0, 1), null, 100, null ],
-     				[ "taskExecution", "Execution", "orange", new Date(2024, 0, 2), new Date(2024, 2, 1), null, 100, "taskPurchase" ],
-     				[ "taskCheckAndAccept", "CheckAndAccept", "green", new Date(2024, 2, 2), new Date(2024, 4, 1), null, 75, "taskExecution" ],
-     				[ "task4", "Payment", "purple", new Date(2024, 4, 2), new Date(2024, 5, 1), null, 0, "taskCheckAndAccept" ],
-					]); 
-
-		var options = {
-			height : 275,
-			gantt : {
-				defaultStartDate : new Date(2023, 11, 1),
-			},
-		};
-
 		var chart = new google.visualization.Gantt(document.getElementById("chart_div"));
-			chart.draw(otherData, options);
-		}
+		if(rows.length > 0) {
+	   		$('#chart_div').show();
+		   	var otherData = new google.visualization.DataTable();
+			otherData.addColumn("string", "Task ID");
+			otherData.addColumn("string", "Task Name");
+			otherData.addColumn("string", "Resource");
+			otherData.addColumn("date", "Start");
+			otherData.addColumn("date", "End");
+			otherData.addColumn("number", "Duration");
+			otherData.addColumn("number", "Percent Complete");
+			otherData.addColumn("string", "Dependencies");
+	   		otherData.addRows(rows);
+	   		var options = {height : 275,};	
+	   		chart.draw(otherData, options);
+	   	} else {
+	   		$('#chart_div').hide();
+	   	}
+	}
 </script>
