@@ -17,12 +17,15 @@ import com.example.bean.Employee;
 import com.example.bean.Issue;
 import com.example.bean.Project;
 import com.example.bean.ProjectMember;
+import com.example.bean.Schedule;
 import com.example.dao.EmployeeDaoimplMySQL;
 import com.example.dao.IssueClassDao;
 import com.example.dao.IssueDao;
 import com.example.dao.IssueFileDao;
 import com.example.dao.ProjectDao;
 import com.example.dao.ProjectMemberDao;
+import com.example.dao.ScheduleDao;
+import com.example.dao.TaskDao;
 
 @Controller
 @RequestMapping("/main")
@@ -52,6 +55,14 @@ public class MainController {
 	@Autowired
 	@Qualifier("issuefiledaomysql")
 	private IssueFileDao issueFileDao;
+	
+	@Autowired
+	@Qualifier("scheduledaomysql")
+	private ScheduleDao scheduleDao;
+	
+	@Autowired
+	@Qualifier("taskdaomysql")
+	private TaskDao taskDao;
 	
 	@GetMapping
 	public String getMainPage(Model model) {
@@ -88,7 +99,12 @@ public class MainController {
 		return issueDao.findIssuesByProjectId(projectId);
 	}
 	
+	@GetMapping(value = "/findschedule/{projectId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public Schedule findScheduleByScheduleId(@PathVariable("projectId") String projectId){
 		
+		return scheduleDao.findSchedulueByProjectId(projectId).orElse(null);
+	}	
 }
 
 

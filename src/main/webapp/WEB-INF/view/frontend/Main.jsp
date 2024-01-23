@@ -242,9 +242,7 @@
 
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
-	google.charts.load("current", {
-		packages : [ "gantt" ]
-	});
+	google.charts.load("current", { packages : [ "gantt" ] });
 	google.charts.setOnLoadCallback(drawChart);
 
 	function toMilliseconds(minutes) {
@@ -268,7 +266,7 @@
      				[ "taskExecution", "Execution", "orange", new Date(2024, 0, 2), new Date(2024, 2, 1), null, 100, "taskPurchase" ],
      				[ "taskCheckAndAccept", "CheckAndAccept", "green", new Date(2024, 2, 2), new Date(2024, 4, 1), null, 75, "taskExecution" ],
      				[ "task4", "Payment", "purple", new Date(2024, 4, 2), new Date(2024, 5, 1), null, 0, "taskCheckAndAccept" ],
-					]);
+					]); 
 
 		var options = {
 			height : 275,
