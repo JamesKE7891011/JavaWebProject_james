@@ -2,6 +2,8 @@ package com.example.bean;
 
 import java.util.List;
 
+import com.google.gson.Gson;
+
 public class Schedule {
 	
 	private Integer scheduleId;
@@ -47,7 +49,7 @@ public class Schedule {
 
 	@Override
 	public String toString() {
-		return "Schedule [scheduleId=" + scheduleId + ", projectId=" + projectId + ", tasks=" + tasks + "]";
+		return new Gson().toJson(this);
 	}
 	
 	

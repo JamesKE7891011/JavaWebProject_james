@@ -10,6 +10,7 @@ import javax.persistence.TemporalType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.gson.Gson;
 
 public class Task {
 	
@@ -163,10 +164,7 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Task [taskId=" + taskId + ", scheduleId=" + scheduleId + ", taskName=" + taskName + ", taskResource="
-				+ taskResource + ", taskStartDate=" + taskStartDate + ", taskEndDate=" + taskEndDate + ", taskDuration="
-				+ taskDuration + ", taskPercentComplete=" + taskPercentComplete + ", taskDependency=" + taskDependency
-				+ "]";
+		return new Gson().toJson(this);
 	}
 
 }

@@ -62,6 +62,7 @@ public class ScheduleController {
 	@GetMapping(value = "/findschedule/{projectId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public Schedule findScheduleByScheduleId(@PathVariable("projectId") String projectId){
+		
 		return scheduleDao.findSchedulueByProjectId(projectId).orElse(null);
 	}
 	
@@ -121,8 +122,8 @@ public class ScheduleController {
 	}
 	
 	//刪除Task
-	@GetMapping("/deletetask/{taskId}")
-	public String deleteTask(@PathVariable("taskId") Integer taskId,Model model) {
+	@GetMapping(value = "/deletetask/{taskId}")
+	public String deleteTask(@PathVariable("taskId") Integer taskId, Model model) {
 		try {
 			int rowcount = taskDao.removeTask(taskId);
 			if(rowcount > 0) {
