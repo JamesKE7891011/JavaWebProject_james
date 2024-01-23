@@ -157,7 +157,7 @@
 	      				<td>\${taskDuration}</td>
 	      				<td>\${taskPercentComplete}</td>
 	      				<td>\${taskDependency == null ? "-": taskDependency}</td>
-	      				<td><button class=" ms-3 btn btn-outline-danger btn-sm  fw-bold">delete</button></td>
+	      				<td><button class="ms-3 btn btn-outline-danger btn-sm fw-bold" onclick="deleteTask(\${ task.taskId })">delete</button></td>
 					</tr>
 								
 				`;
@@ -215,7 +215,50 @@
 
         });
 	}
-
+	
+	/*
+	function deleteTask(taskId) {
+		fetch('/JavaWebProject_james/mvc/schedule/deletetask/' + taskId, {method: "GET",headers: { "Content-Type": "application/json" }})
+	    .then(response => {
+	        if (response.ok) {
+	            return response.json(); // 返回 JSON 解析的 Promise
+	        } else {
+	            throw new Error('Failed to delete task'); // 拋出錯誤
+	        }
+	    })
+	    .then(data => {
+	        // 在這裡處理成功的回調，例如重新載入數據等
+	        selectProject($('#projectId').val());
+	        
+	    })
+	    .catch(error => {
+	        // 在這裡處理錯誤，例如顯示錯誤信息等
+	        console.error('Delete task failed:', error);
+	    });
+	}
+	*/
+	
+	function deleteTask(taskId) {
+		const url = '${pageContext.request.contextPath}/mvc/schedule/deletetask/' + taskId;
+		if(confirm('是否要刪除 ?')) {
+			fetch(url, {method: 'GET'})
+			.then(response => {
+				console.log(response);
+				//console.log(response.redirected);
+				if(response.ok || response.redirected) {
+					console.log(response);
+					// 刪除成功, 更新網頁
+					//location.href = '${pageContext.request.contextPath}/mvc/user/';
+					location.href = response.url;
+				} else {			
+					console.log('delete fail');
+				}
+			})
+			.catch(error => {
+				console.log('delete error: ', error);
+			});
+		}
+	}
 </script>
 
 
