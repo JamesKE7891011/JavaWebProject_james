@@ -1,18 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ include file="/WEB-INF/view/backendheader.jsp"%>
 <div>
 	<div class="m-3">
 		<!-- 專案下拉選單 -->
 		<h4 class="fs-4 fw-bold">Project Name</h4>
-		<select class="mt-2 form-select w-75" id="projectId" name="projectId" aria-label="Default select example" 
-						onchange="selectProject(event.target.value)" required>
-			<option selected disabled value="">Please choose project...</option>
-			<c:forEach items="${ projects }" var="project">
-				<option value="${ project.projectId }">${ project.projectId } ${ project.projectName }</option>
-			</c:forEach>
+		<select class=" form-select" aria-label="Default select example">
+  			<option selected>Choose project</option>
+  			<option value="One">AC23020</option>
 		</select>
  	</div>	
 	<!-- 新增進度條 -->
@@ -39,7 +35,7 @@
 		  </div>
 		  <div class="col-md-2">
 		    <label for="validationServer01" class="form-label">Dependencies</label>
-		    <input type="text" class="form-control is-valid" id="taskDependency" name="taskDependency" value="1" required>
+		    <input type="text" class="form-control is-valid" id="taskDependency" name="taskDependencred>
 		  </div>
 		  <div class="col-2 d-flex align-items-end">
 		  	<label></label>
@@ -55,7 +51,19 @@
 	    			<tr>
 	      				<th scope="col">Task ID</th>
 	      				<th scope="col">Task Name</th>
-	      				<th scope="col">Resource</th>
+	      				<th scope="col">Resource</t
+	    			<tr>
+	      				<th scope="row">2023-12-01</th>
+	      				<td>Project</td>
+	      				<td>採購</td>
+	      				<td>2024-03-01</td>
+	      				<td>2024-03-02</td>
+	      				<td>2024-05-01</td>
+	      				<td>2024-05-02</td>
+	      				<td>2024-06-01</td>
+	      				<td><button class=" ms-3 btn btn-outline-danger btn-sm  fw-bold">delete</button></td>
+	   				</tr>
+	  			h>
 	      				<th scope="col">Start</th>
 	      				<th scope="col">End</th>
 	      				<th scope="col">Duration</th>
@@ -104,48 +112,7 @@
 			otherData.addColumn("string", "Task ID");
 			otherData.addColumn("string", "Task Name");
 			otherData.addColumn("string", "Resource");
-			otherData.addColumn("date", "Start");
-			otherData.addColumn("date", "End");
-			otherData.addColumn("number", "Duration");
-			otherData.addColumn("number", "Percent Complete");
-			otherData.addColumn("string", "Dependencies");
-	   		otherData.addRows(rows);
-	   		var options = {height : 275,};	
-	   		chart.draw(otherData, options);
-	   	} else {
-	   		$('#chart_div').hide();
-	   	}
-	}
-	
-	function selectProject(projectId) {
-		//console.log('projectId:', projectId);
-		
-		$('#task_table tbody tr').remove();
-		
-		fetch('/JavaWebProject_james/mvc/schedule/findschedule/'+projectId, {method: "GET",headers: {"Coneent-Type": "application/json",}})
-		.then(response => response.json())
-		.then(data => {
-			
-			let { projectId, scheduleId, tasks } = data;
-			
-			$('#scheduleId').val(scheduleId);
-			
-			console.log('projectId:', projectId);
-			console.log('scheduleId:', scheduleId);
-			console.log('tasks:', tasks);
-			
-			rows = [];
-			
-			tasks.forEach(task => {
-				
-				let taskId = task.taskId;
-				let taskName = task.taskName;
-				let taskResource = task.taskResource;
-				let taskStartDate = task.taskStartDate;
-				let taskEndDate = task.taskEndDate;
-				let taskDuration = task.taskDuration;
-				let taskPercentComplete = task.taskPercentComplete;
-				let taskDependency = task.taskDependency;
+			otherDa = task.taskDdency;
 				
 				let tr = `
 					<tr>
