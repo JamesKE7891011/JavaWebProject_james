@@ -5,11 +5,11 @@
 
 <%@ include file="/WEB-INF/view/header.jsp" %> 
 
-<div class="vh-100">
+<div class="vh-100" style="min-height: 100vh">
 	<div class="d-flex">		
 		<div class="m-3" style="width: 40%">
 			<!-- 專案下拉選單 -->
-			<h4 class="fs-3 fw-bold">Project Name</h4>
+			<h4 class="fs-3 fw-bold">請選趣專案</h4>
 			<div class="d-flex justify-content-start">
 				<select class="mt-2 form-select w-75" id="projectId" name="projectId" aria-label="Default select example" 
 						onchange="selectProject(event.target.value)" required>
@@ -21,30 +21,30 @@
 			</div>		
 			<!-- 專案顯示資訊 -->
 			<div class="mt-3">
-				<label class="fs-4 fw-bold ">Project Information</label>
+				<label class="fs-4 fw-bold ">趣專案_基本資訊</label>
 				<!-- 專案顯示資訊 -->
-				<table class="table mt-2">
+				<table class="table mt-2 w-100">
 					<c:forEach var="project" items="${ projects }" varStatus="loop">
 						<tbody class="${loop.index >0 ? 'd-none': 'd-block'}" id="${ project.projectId }">
 							<tr>
-								<th scope="row">projectId:</th>
-								<td class="w-100" id="formProjectId">${ project.projectId }</td>
+								<th scope="row">專案_ID:</th>
+								<td class="" id="formProjectId">${ project.projectId }</td>
 							</tr>
 							<tr>
-								<th scope="row">projectName:</th>
-								<td class="w-100" id="formProjectName">${ project.projectName }</td>
+								<th scope="row">專案_名稱:</th>
+								<td class="" id="formProjectName">${ project.projectName }</td>
 							</tr>
 							<tr>
-								<th scope="row">projectContent:</th>
-								<td class="w-100" id="formProjectContent">${ project.projectContent }</td>
+								<th scope="row">專案_內容:</th>
+								<td class="" id="formProjectContent">${ project.projectContent }</td>
 							</tr>
 							<tr>
-								<th scope="row">projectOwner:</th>
-								<td class="w-100 d-flex justift-content-start" id="formProjectOwner">${project.projectOwner.employeeName}</td>
+								<th scope="row">專案_PM:</th>
+								<td class=" d-flex justift-content-start" id="formProjectOwner">${project.projectOwner.employeeName}</td>
 							</tr>
 							<tr>
-								<th scope="row">projectMember:</th>								
-							    <td class="w-100" id="formProjectMember">
+								<th scope="row">專案_成員:</th>								
+							    <td class="" id="formProjectMember">
 							        <c:if test="${not empty project.projectMembers}">
 							            <c:forEach items="${project.projectMembers}" var="member" varStatus="loop">
 							                <c:if test="${not loop.first}">,</c:if> <!-- 在非第一個成員之前顯示逗號 -->
@@ -54,12 +54,12 @@
 								</td>
 							</tr>
 							<tr>
-								<th scope="row">projectStartDate:</th>
-								<td class="w-100" id="formProjectStartDate">${ project.projectStartDate }</td>
+								<th scope="row">專案_開始日期:</th>
+								<td class="" id="formProjectStartDate">${ project.projectStartDate }</td>
 							</tr>
 							<tr>
-								<th scope="row">projectEndDate:</th>
-								<td class="w-100" id="formProjectEndDate">${ project.projectEndDate }</td>
+								<th scope="row">專案_結束日期:</th>
+								<td class="" id="formProjectEndDate">${ project.projectEndDate }</td>
 							</tr>
 						</tbody>
 					</c:forEach>
@@ -68,23 +68,23 @@
 		</div>
 		<!-- 甘特圖 -->
 		<div class="mx-3 w-50"  style="margin-top: 90px">
-			<label class="fs-4 fw-bold mt-3">Schedule</label>
+			<label class="fs-4 fw-bold mt-2">專案進度表</label>
 			<div id="chart_div"></div>
 		</div>
 	</div>
 	<!-- Issue顯示狀態列 -->
 	<div class="ms-3">
-		<label class="fs-4 fw-bold">Issue</label>
-		<table class="table table-hover text-center" style="width: 80%" id="issue_table">
+		<label class="fs-4 fw-bold">趣議題狀態列</label>
+		<table class="table table-hover text-center table-responsive" style="width: 90%" id="issue_table">
 			<thead>
  				<tr>
-   					<th scope="col">IssueID</th>
-   					<th scope="col">IssueName</th>
-   					<th scope="col">IssueClass</th>
-   					<th scope="col">IssueContent</th>
-   					<th scope="col">IssuePath</th>
-   					<th scope="col">IssueDatetime</th>
-   					<th scope="col">IssueStatus</th>
+   					<th scope="col">ID</th>
+   					<th scope="col">名稱</th>
+   					<th scope="col">類</th>
+   					<th scope="col">內容</th>
+   					<th scope="col">相關檔案</th>
+   					<th scope="col">上傳時間</th>
+   					<th scope="col">狀態</th>
  				</tr>
 			</thead>
 			<tbody></tbody>
@@ -93,7 +93,6 @@
 </div>
 
 
-<%@ include file="/WEB-INF/view/footer.jsp" %>
 
 <script>
 	

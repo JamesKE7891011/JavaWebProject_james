@@ -3,13 +3,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ include file="/WEB-INF/view/backendheader.jsp"%>
-<div>
+<div style="min-height: 100vh">
 	<div class="m-3">
 		<!-- 專案下拉選單 -->
-		<h4 class="fs-4 fw-bold">Project Name</h4>
+		<h4 class="fs-4 fw-bold">請選趣專案</h4>
 		<select class="mt-2 form-select w-75" id="projectId" name="projectId" aria-label="Default select example" 
 						onchange="selectProject(event.target.value)" required>
-			<option selected disabled value="">Please choose project...</option>
+			<option selected disabled value="">請選擇專案...</option>
 			<c:forEach items="${ projects }" var="project">
 				<option value="${ project.projectId }">${ project.projectId } ${ project.projectName }</option>
 			</c:forEach>
@@ -17,33 +17,33 @@
  	</div>	
 	<!-- 新增進度條 -->
 	<div class="mx-3">
-	<label class="fs-4 fw-bold mt-3">Schedule <button class=" ms-3 btn btn-outline-danger btn-sm  fw-bold">deleteSchedule</button></label>
+	<label class="fs-4 fw-bold mt-3">進度表 <button class=" ms-3 btn btn-outline-danger btn-sm  fw-bold">刪除進度表</button></label>
 		<form class="row g-3 mt-2" action="/JavaWebProject_james/mvc/schedule/addTask" id="addTaskForm" method="post">
 		  ${ message }
 		  <input type="hidden" value="" id="scheduleId" name="scheduleId">
 		  <div class="col-md-2">
-		    <label for="validationServer01" class="form-label">Task Name</label>
+		    <label for="validationServer01" class="form-label">任務名稱:</label>
 		    <input type="text" class="form-control is-valid" id="taskName"  name="taskName" value="執行" required>
 		  </div>
 		  <div class="col-md-2">
-		    <label for="validationServer01" class="form-label">Resourse</label>
+		    <label for="validationServer01" class="form-label">執行單位:</label>
 		    <input type="text" class="form-control is-valid" id="taskResource" name="taskResource" value="採購部" required>
 		  </div>
 		  <div class="col-md-2">
-		    <label for="validationServer01" class="form-label">Task Start Date</label>
+		    <label for="validationServer01" class="form-label">任務開始:</label>
 		    <input type="date" class="form-control is-valid" id="taskStartDate" name="taskStartDate" required>
 		  </div>
 		  <div class="col-md-2">
-		    <label for="validationServer01" class="form-label">Task End Date</label>
+		    <label for="validationServer01" class="form-label">任務結束:</label>
 		    <input type="date" class="form-control is-valid" id="taskEndDate" name="taskEndDate" required>
 		  </div>
 		  <div class="col-md-2">
-		    <label for="validationServer01" class="form-label">Dependencies</label>
+		    <label for="validationServer01" class="form-label">關聯任務ID:</label>
 		    <input type="text" class="form-control is-valid" id="taskDependency" name="taskDependency" value="1" >
 		  </div>
 		  <div class="col-2 d-flex align-items-end">
 		  	<label></label>
-		    <button class="btn btn-primary ms-2"  type="button" onclick="addTask()">Add Rows</button>
+		    <button class="btn btn-primary ms-2"  type="button" onclick="addTask()">新增</button>
 		  </div>
 		</form>
 	</div>	
@@ -53,15 +53,15 @@
 	  		<table class="table table-bordered">
 	    		<thead>
 	    			<tr>
-	      				<th scope="col">Task ID</th>
-	      				<th scope="col">Task Name</th>
-	      				<th scope="col">Resource</th>
-	      				<th scope="col">Start</th>
-	      				<th scope="col">End</th>
-	      				<th scope="col">Duration</th>
-	      				<th scope="col">Percent Complete</th>
-	      				<th scope="col">Dependencies</th>
-	      				<th scope="col">Delete</th>
+	      				<th scope="col">任務 ID</th>
+	      				<th scope="col">任務名稱</th>
+	      				<th scope="col">執行單位e</th>
+	      				<th scope="col">任務開始</th>
+	      				<th scope="col">任務結束</th>
+	      				<th scope="col">天數</th>
+	      				<th scope="col">進度%</th>
+	      				<th scope="col">關聯任務ID:</th>
+	      				<th scope="col">刪除</th>
 	      				
 	    			</tr>
 	  			</thead>
@@ -157,7 +157,7 @@
 	      				<td>\${taskDuration}</td>
 	      				<td>\${taskPercentComplete}</td>
 	      				<td>\${taskDependency == null ? "-": taskDependency}</td>
-	      				<td><button class="ms-3 btn btn-outline-danger btn-sm fw-bold" onclick="deleteTask(\${ task.taskId })">delete</button></td>
+	      				<td><button class="ms-3 btn btn-outline-danger btn-sm fw-bold" onclick="deleteTask(\${ task.taskId })">刪除</button></td>
 					</tr>
 								
 				`;

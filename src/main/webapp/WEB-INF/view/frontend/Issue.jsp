@@ -9,10 +9,10 @@
 <div class="mx-5 mt-4 row " style="min-height: 100vh">
 	<!-- 議題新增 -->
 	<div class=" ms-3 w-75">
-		<h4 class="fw-bold fs-2 text-center ">ISSUE</h4>
+		<h4 class="fw-bold fs-2 text-center ">趣議題</h4>
 		<form class="w-80 needs-validation" id="issueForm" name="issueForm" enctype="multipart/form-data" novalidate>
 			<div class="mb-1">
-				<h5 class="mb-2 form-label fs-4 fw-bolld">Project Select</h5> 
+				<h5 class="mb-2 form-label fs-4 fw-bolld">請選趣專案</h5> 
 				<select class="mt-2 form-select w-75" id="projectId" name="projectId" aria-label="Default select example" 
 						onchange="selectProject(event.target.value)" required>
 					<option selected disabled value="">Please choose project...</option>
@@ -22,14 +22,14 @@
 				</select>
 			</div>
 			<div class="mb-1 mt-2">
-				<label for="issueName" class="form-label">IssueName </label> <input
+				<label for="issueName" class="form-label">議題名稱 </label> <input
 					class="form-control" list="datalistOptions" id="issueName"
 					name="issueName" required>
 				<div class="invalid-feedback w-75">請輸入議題名稱!</div>
 
 			</div>
 			<div class="mb-1">
-				<label for="issueClass" class="form-label mt-2">IssueClass </label> 
+				<label for="issueClass" class="form-label mt-2">議題類 </label> 
 				<select class="form-select" aria-label="Default select example" onchange="selectIssueClass(event)" 
 				  		id="issueClassId" name="issueClassId" required>
 					<option selected disabled value="">Please choose issue class...</option>
@@ -40,16 +40,16 @@
 				<div class="invalid-feedback ">請選擇議題!</div>
 			</div>
 			<div class="mt-3 mb-3">
-				<label for="issueFile" class="form-label">IssueFilePath</label> 
+				<label for="issueFile" class="form-label">檔案上傳</label> 
 				<input class="form-control" type="file" id="issueFilePath" name="issueFilePath" multiple="multiple">
 			</div>
 			<div class="mb-1">
-				<label for="issuecontent" class="form-label">IssueContent</label>
+				<label for="issuecontent" class="form-label">議題內容</label>
 				<textarea class="form-control" id="issueContent" name="issueContent" required></textarea>
 				<div class="invalid-feedback ">請敘述原因!</div>
 			</div>
-			<div class="col-12 d-flex justify-content-center my-3">
-				<button class="btn btn-secondary col-12" type="button"onclick="submitForm()">Submit Form2</button>
+			<div class="col-12 d-flex justify-content-center mt-3 mb-1">
+				<button class="btn btn-secondary col-12" type="button"onclick="submitForm()">提交</button>
 			</div>
 			<button class="btn btn-secondary col-12 invisible " type="submit" id="submitBtn" ></button>
 		</form>
@@ -57,19 +57,19 @@
 
 	<!-- Issue顯示狀態列 -->
 	<div class="mx-2">
-		<h5 class="mt-2 form-label fs-4 fw-bolld">Issue Details</h5> 
+		<h5 class="form-label fs-4 fw-bolld">議題狀態列</h5> 
 		<table class="table table-hover text-center">
 			<thead>
 				<tr>
-					<th scope="col">IssueID:</th>
-					<th scope="col">IssueName:</th>
-					<th scope="col">IssueClass:</th>
-					<th scope="col">IssueContent:</th>
-					<th scope="col">IssueFilePath:</th>
-					<th scope="col">IssueDatetime:</th>
-					<th scope="col">IssueStatus:</th>
-					<th scope="col">-> Change</th>
-					<th scope="col">Delete:</th>
+					<th scope="col">ID:</th>
+					<th scope="col">名稱:</th>
+					<th scope="col">類:</th>
+					<th scope="col">內容:</th>
+					<th scope="col">相關檔案:</th>
+					<th scope="col">上傳時間:</th>
+					<th scope="col">狀態:</th>
+					<th scope="col">修改:</th>
+					<th scope="col">刪除:</th>
 				</tr>
 			</thead>
 			<tbody id="issue_table">
@@ -81,7 +81,7 @@
 </div>
 
 
-<%@ include file="/WEB-INF/view/footer.jsp"%>
+
 
 <script>
 	

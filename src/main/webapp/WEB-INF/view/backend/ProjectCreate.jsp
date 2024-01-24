@@ -13,13 +13,13 @@
 }
 </style>
 
-<div class="vh-100">
+<div class="vh-100" style="min-height: 100vh">
 	<div class="row ">		
 		<!-- 專案下拉選單 -->
-		<div class="col-5 m-3">
-			<h4 class="fs-4 fw-bolld">Project Name </h4>
+		<div class="col-5 m-3 ">
+			<h4 class="ms-5 fs-4 fw-bolld">請選趣專案 </h4>
 			<div class="d-flex justify-content-start">
-				<select class=" form-select  w-75"
+				<select class=" form-select ms-5 w-75"
 					aria-label="Default select example" onchange="selectProject(event)">
 					
 					<!-- 從後端取得專案列表集合， var代表遍歷集合中取出單一值的名稱(能透$字符取SQL中的值是因為透過Controller內的getPage方法，用model將值放到items) -->
@@ -33,28 +33,28 @@
 
 			<!-- 專案資訊更新及顯示 -->			
 			<!-- c:forEach 標籤就會在每次迭代時創建一個名為 "loop" 的變數，如果loop.index被第一次尋訪就顯示 -->
-			<table class="table mt-2">
+			<table class="table mt-3 ms-5">
 				<c:forEach var="project" items="${ projects }" varStatus="loop"> 
-					<tbody class="${loop.index >0 ? 'd-none': 'd-block'}" id="${ project.projectId }">
-						<tr>
-							<th scope="row">projectId:</th>
-							<td class="w-100">${ project.projectId }</td>
+					<tbody class="${loop.index >0 ? 'd-none': 'd-block'} w-100" id="${ project.projectId }">
+						<tr >
+							<th scope="row">ID:</th>
+							<td >${ project.projectId }</td>
 						</tr>
 						<tr>
-							<th scope="row">projectName:</th>
-							<td class="w-100">
-								<input type="text" value="${ project.projectName }" class="w-75" id="upadte_projectName_${ project.projectId }">
+							<th scope="row">名稱:</th>
+							<td class="">
+								<input type="text" value="${ project.projectName }" class="w-100" id="upadte_projectName_${ project.projectId }">
 							</td>
 						</tr>
 						<tr>
-							<th scope="row">projectContent:</th>
-							<td class="w-100">
-								<input type="text" value="${ project.projectContent }" class="w-75" id="upadte_projectContent_${ project.projectId }">
+							<th scope="row">內容:</th>
+							<td class="">
+								<input type="text" value="${ project.projectContent }" class="w-100" id="upadte_projectContent_${ project.projectId }">
 							</td>
 						</tr>
 						<tr>
-							<th scope="row">projectOwner:</th>
-							<td class="w-100"> 
+							<th  scope="row" style="width: 20%">PM:</th>
+							<td > 
 								
 								<!-- Project Owner Update -->
 								<div class="d-flex justift-content-start">
@@ -71,8 +71,8 @@
 							</td>
 						</tr>
 						<tr>
-							<th scope="row">projectMember:</th>
-							<td class="w-100">
+							<th scope="row">成員:</th>
+							<td class="">
 								<c:set var="membersString" value="" />
 								<c:set var="membersIdString" value="" />
 								<c:forEach items="${ project.projectMembers }" var="member"  varStatus="loop">
@@ -99,15 +99,15 @@
 							</td>
 						</tr>
 						<tr>
-							<th scope="row">projectStartDate:</th>
-							<td class="w-100">
-								<input type="date" value="<fmt:formatDate value="${ project.projectStartDate }" pattern="yyyy-MM-dd" />" class="w-75" id="upadte_projectStartDate_${ project.projectId }">
+							<th scope="row">開始日期:</th>
+							<td class="">
+								<input type="date" value="<fmt:formatDate value="${ project.projectStartDate }" pattern="yyyy-MM-dd" />" class="w-100" id="upadte_projectStartDate_${ project.projectId }">
 							</td>
 						</tr>
 						<tr>
-							<th scope="row">projectEndDate:</th>
-							<td class="w-100">
-								<input type="date" value="<fmt:formatDate value="${ project.projectEndDate }" pattern="yyyy-MM-dd" />" class="w-75" id="upadte_projectEndDate_${ project.projectId }">
+							<th scope="row">結束日期:</th>
+							<td class="">
+								<input type="date" value="<fmt:formatDate value="${ project.projectEndDate }" pattern="yyyy-MM-dd" />" class="w-100" id="upadte_projectEndDate_${ project.projectId }">
 							</td>
 						</tr>
 						<tr>
@@ -115,11 +115,10 @@
 								<td class="row justify-content-end">
 								
 								<!-- 刪除專案按鈕 -->
-								<a class="mx-4 col-3 btn btn-danger" href="javascript:void(0);" onclick="deleteProject('${project.projectId}')" role="button">Delete</a>
+								<a class="mx-4 col-3 btn btn-danger" href="javascript:void(0);" onclick="deleteProject('${project.projectId}')" role="button">刪除</a>
 								
 								<!-- 更新專案按鈕 -->
-								<a class="col-3 btn btn-secondary" href="javascript:void(0);" onclick="updateProject('${project.projectId}')" role="button">Update</a>
-							
+								<a class="col-3 btn btn-secondary" href="javascript:void(0);" onclick="updateProject('${project.projectId}')" role="button">更新</a>
 							</td>
 						</tr>
 					</tbody>
@@ -132,14 +131,14 @@
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabelMember">Project Member</h5>
+						<h5 class="modal-title" id="exampleModalLabelMember">專案成員</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<div class=" d-flex justify-content-center mt-2">
 							<div style="height: 500px; width: 500px;"
 								class="shadow overflow-auto" id="left4">
-								<h3 class="text-center">Employee</h3>
+								<h3 class="text-center">員工</h3>
 								<ul class="list-group overflow-auto">
 									<c:forEach items="${ employees }" var="employee">
 										<button type="button" class="listItem list-group-item list-group-item-action mb-1" data-employee-id="${ employee.employeeId }">${ employee.employeeName}</button>
@@ -152,48 +151,48 @@
 								<button id="toLeft4" class="btn btn-outline-primary toLeft"><<</button>
 							</div>
 							<div style="height: 500px; width: 500px;" class="shadow" id="right4">
-								<h3 class="text-center">Projrct Member</h3>
+								<h3 class="text-center">專案成員</h3>
 								<ul class="list-group"></ul>
 							</div>
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"	data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="updateProjectMember()">Savechanges</button>
+						<button type="button" class="btn btn-secondary"	data-bs-dismiss="modal">關閉</button>
+						<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="updateProjectMember()">儲存</button>
 					</div>
 				</div>
 			</div>
 		</div>
 		
 		<!-- 新增專案表格 -->
-		<form class="ms-4 my-0 row g-3  col-6" method="post"
+		<form class="ms-1 my-0 row g-3  col-6" method="post"
 			action="/JavaWebProject_james/mvc/project/addproject">
-			<label class="fs-4 fw-bolld">Project Create  </label>
+			<label class="fs-4 fw-bolld">趣建立專案</label>
 			<div> ${ errorMessage } </div>
 			<!-- Project ID -->
 			<div class="col-md-6">
-				<label for="validationDefault01" class="form-label">projectId</label>
+				<label for="validationDefault01" class="form-label">專案 Id</label>
 				<input type="text" class="form-control" id="projectId"
 					name="projectId" required>
 			</div>
 
 			<!-- Project Name -->
 			<div class="col-md-6">
-				<label for="validationDefault01" class="form-label">projectName</label>
+				<label for="validationDefault01" class="form-label">名稱</label>
 				<input type="text" class="form-control" id="projectName"
 					name="projectName" required>
 			</div>
 
 			<!-- Project Content -->
 			<div class="mb-3">
-				<label for="exampleFormControlTextarea1" class="form-label">projectContent</label>
+				<label for="exampleFormControlTextarea1" class="form-label">內容</label>
 				<textarea class="form-control" id="projectContent"
 					name="projectContent" rows="3" required></textarea>
 			</div>
 
 			<!-- Project Owner -->
 			<div class="col-md-6 justify-content-start">
-				<label for="validationDefault01" class="form-label">projectOwner</label>
+				<label for="validationDefault01" class="form-label">專案PM</label>
 				<div class="d-flex justift-content-start">
 					<input type="text" class="form-control disable" id="projectOwner"
 						name="projectOwner" hidden> <input type="text"
@@ -208,8 +207,7 @@
 					<div class="modal-dialog modal-lg">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="exampleOwnerLabel">Project
-									Owner</h5>
+								<h5 class="modal-title" id="exampleOwnerLabel">專案PM</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal"
 									aria-label="Close"></button>
 							</div>
@@ -217,7 +215,7 @@
 								<div class=" d-flex justify-content-center mt-2">
 									<div style="height: 500px; width: 500px;"
 										class="shadow overflow-auto" id="left">
-										<h3 class="text-center">Employee</h3>
+										<h3 class="text-center">員工</h3>
 										<ul class="list-group overflow-auto">
 											<c:forEach items="${ employees }" var="employee">
 												<button type="button"
@@ -236,17 +234,16 @@
 									</div>
 									<div style="height: 500px; width: 500px;" class="shadow"
 										id="right">
-										<h3 class="text-center">Project Owner</h3>
+										<h3 class="text-center">專案PM</h3>
 										<ul class="list-group"></ul>
 									</div>
 								</div>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
-									data-bs-dismiss="modal">Close</button>
+									data-bs-dismiss="modal">關閉</button>
 								<button type="button" class="btn btn-primary"
-									data-bs-dismiss="modal" onclick="saveProjectOwner()">Save
-									changes</button>
+									data-bs-dismiss="modal" onclick="saveProjectOwner()">儲存</button>
 							</div>
 						</div>
 					</div>
@@ -255,7 +252,7 @@
 			
 			<!-- Project Member -->
 			<div class="col-md-6">
-				<label for="validationDefault01" class="form-label">projectMember</label>
+				<label for="validationDefault01" class="form-label">專案成員</label>
 				<div class="d-flex justift-content-start">
 					<input type="text" class="form-control disable" id="projectMember"
 						name="projectMember" hidden> <input type="text"
@@ -270,8 +267,7 @@
 					<div class="modal-dialog modal-lg">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">Project
-									Member</h5>
+								<h5 class="modal-title" id="exampleModalLabel">專案成員</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal"
 									aria-label="Close"></button>
 							</div>
@@ -279,7 +275,7 @@
 								<div class=" d-flex justify-content-center mt-2">
 									<div style="height: 500px; width: 500px;"
 										class="shadow overflow-auto" id="left2">
-										<h3 class="text-center">Employee</h3>
+										<h3 class="text-center">員工</h3>
 										<ul class="list-group overflow-auto">
 											<c:forEach items="${ employees }" var="employee">
 												<button type="button"
@@ -298,17 +294,16 @@
 									</div>
 									<div style="height: 500px; width: 500px;" class="shadow"
 										id="right2">
-										<h3 class="text-center">Projrct Member</h3>
+										<h3 class="text-center">專案成員</h3>
 										<ul class="list-group"></ul>
 									</div>
 								</div>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
-									data-bs-dismiss="modal">Close</button>
+									data-bs-dismiss="modal">關閉</button>
 								<button type="button" class="btn btn-primary"
-									data-bs-dismiss="modal" onclick="saveProjectMember()">Save
-									changes</button>
+									data-bs-dismiss="modal" onclick="saveProjectMember()">儲存</button>
 							</div>
 						</div>
 					</div>
@@ -317,19 +312,19 @@
 
 			<!-- Project Start -->
 			<div class="col-md-6">
-				<label for="validationDefault01" class="form-label">projectStartDate</label>
+				<label for="validationDefault01" class="form-label">專案開始日期</label>
 				<input type="date" class="form-control" id="projectStartDate"
 					name="projectStartDate" required>
 			</div>
 
 			<!-- Project End -->
 			<div class="col-md-6 mb-2">
-				<label for="validationDefault01" class="form-label">projectEndDate</label>
+				<label for="validationDefault01" class="form-label">專案結束日期</label>
 				<input type="date" class="form-control" id="projectEndDate"
 					name="projectEndDate" required>
 			</div>
 			<div class="col-12 d-flex justify-content-center ">
-				<button class="btn btn-secondary col-12" type="button" onclick="addproject()" id="submitBtn">Submit Form</button>
+				<button class="btn btn-secondary col-12" type="button" onclick="addproject()" id="submitBtn">提交表單</button>
 			</div>
 		</form>
 	</div>

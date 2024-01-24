@@ -15,25 +15,25 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #a9c5b8!important;">
   <div class="container-fluid">
-    <a class="navbar-brand text-light" href="#">XXX Company</a>
+    <a class="navbar-brand text-light fs-4" href="#">趣~追蹤專案系統</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active text-light" aria-current="page" href="${ pageContext.request.contextPath }/mvc/main">Main</a>
+          <a class="nav-link active text-light fs-5" aria-current="page" href="${ pageContext.request.contextPath }/mvc/main">趣首頁</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-light" href="${ pageContext.request.contextPath }/mvc/issue">Issue</a>
+          <a class="nav-link text-light fs-5" href="${ pageContext.request.contextPath }/mvc/issue">趣管理議題</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-light" href="${ pageContext.request.contextPath }/mvc/project/backendfilter">Back-end</a>
+          <a class="nav-link text-light fs-5" href="${ pageContext.request.contextPath }/mvc/project/backendfilter">趣後臺</a>
         </li>
       </ul>
     </div>
     <i class="bi bi-person-circle fs-4 me-4 text-light d-none d-lg-block">${sessionScope.username}</i>
-    <i class="bi bi-box-arrow-right fs-5 text-light ml-3" role="button" onclick="window.location.href='${ pageContext.request.contextPath }/logout'">Logout</i>
+    <i class="bi bi-box-arrow-right fs-5 text-light ml-3" role="button" onclick="window.location.href='${ pageContext.request.contextPath }/logout'">登出</i>
   </div>
 </nav>
 </body>
