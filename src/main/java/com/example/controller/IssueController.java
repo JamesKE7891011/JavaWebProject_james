@@ -188,16 +188,16 @@ public class IssueController {
 	    try {
 	        int rowcount = issueDao.removeIssueById(issueId);
 	        if (rowcount > 0) {
-	            // 删除成功，直接重定向到 issue 页面
+	            // 删除成功，重導致issue介面
 	            return "redirect:/mvc/issue";
 	        } else {
-	            // 删除失败，显示错误消息
+	            // 删除失敗，顯示錯誤訊息
 	            model.addAttribute("errorMessage", "刪除失敗，請通知管理員");
 	            return "frontend/Issue";
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        // 删除过程中出现异常，显示异常消息
+	        // 刪除出現異常
 	        model.addAttribute("errorMessage", "刪除時發生異常，請通知管理員");
 	        return "frontend/Issue";
 	    }
