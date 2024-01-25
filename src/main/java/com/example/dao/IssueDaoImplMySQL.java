@@ -55,8 +55,19 @@ public class IssueDaoImplMySQL implements IssueDao {
 		
 	@Override
 	public int removeIssueByProjectId(String projectId) {
-		String sql = "delete from issue where projectId = ?";
-		return jdbcTemplate.update(sql,projectId);
+		try {
+			
+	        // 刪除相應的子表記錄
+	        String deleteIssueFileSql = "delete from issuefile where issueId in (select issueId from issue where projectId = ?)";
+	        jdbcTemplate.update(deleteIssueFileSql, projectId);
+
+	        // 現在可以刪除父表記錄
+	        String deleteIssueSql = "delete from issue where projectId = ?";
+	        return jdbcTemplate.update(deleteIssueSql, projectId);
+	    } catch (Exception e) {
+	        // 如果發生異常，可以在這裡處理，也可以選擇拋出異常以觸發事務回滾
+	        throw new RuntimeException("刪除議題時發生異常", e);
+	    }
 	}
 
 	@Transactional

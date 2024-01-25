@@ -35,6 +35,7 @@ import com.example.dao.EmployeeDaoimplMySQL;
 import com.example.dao.IssueDao;
 import com.example.dao.ProjectDao;
 import com.example.dao.ProjectMemberDao;
+import com.example.dao.ScheduleDao;
 
 @Controller      // 標記這個類別為控制器。控制器負責處理HTTP請求，並返回相應的視圖或數據。
 @RequestMapping("/project")  
@@ -55,6 +56,10 @@ public class ProjectController {
 	@Autowired
 	@Qualifier("issuedaomysql")
 	private IssueDao issueDao;
+	
+	@Autowired
+	@Qualifier("scheduledaomysql")
+	private ScheduleDao scheduleDao;
 	
 	private void addBasicModel(Model model) {
 		// 查詢所有專案
@@ -91,7 +96,7 @@ public class ProjectController {
 		String role = (String)session.getAttribute("role");
 		
 		if(role != null && "admin".equalsIgnoreCase(role)) {
-				addBasicModel(model);
+			addBasicModel(model);
 			return "/backend/ProjectCreate";
 		}
 		
@@ -154,15 +159,19 @@ public class ProjectController {
 	
 	// 取消專案
 	@GetMapping("/cancelproject/{projectId}" )
-	public String cancelProject(@PathVariable("projectId") String projectId,Model model) {
+	public String cancelProject(@PathVariable("projectId") String projectId,
+	                            Model model) {
 	    try {
-	        int rowcount1 = projectMemberDao.removeProjectMember(projectId); // 刪除專案成員
-	        int rowcount2 = issueDao.removeIssueByProjectId(projectId);		 // 再刪除專案內議題
-	        if (rowcount1 > 0 && rowcount2 > 0) {
-	            projectDao.removeProjectById(projectId); // 才可以刪除專案
+	        projectMemberDao.removeProjectMember(projectId); // 刪除專案成員
+	        issueDao.removeIssueByProjectId(projectId); // 再刪除專案內議題
+	        scheduleDao.removeScheduleByProjectId(projectId);
+	        int rowcount = projectDao.removeProjectById(projectId); // 才可以刪除專案
+	        
+	        if (rowcount > 0) {
+	           
 	            return "redirect:/mvc/project";
 	        } else {
-	        	model.addAttribute("errorMessage","刪除失敗，請通知管理員");
+	            model.addAttribute("errorMessage", "刪除失敗，請通知管理員");
 	            return "backend/ProjectCreate";
 	        }
 	    } catch (Exception e) {

@@ -65,6 +65,24 @@ public class ScheduleDaoImplMySQL implements ScheduleDao {
 	    }
 	}
 	
+	
+	
+	@Override
+	public int removeScheduleByProjectId(String projectId) {
+		try {
+	        String deleteTaskSql = "delete from task where scheduleId in (select scheduleId from schedule where projectId = ?)";
+	        jdbcTemplate.update(deleteTaskSql,projectId);
+
+	        String deleteScheduleSql = "delete from schedule where projectId = ?";
+	        return jdbcTemplate.update(deleteScheduleSql, projectId);
+	    } catch (Exception e) {
+	        // 如果發生異常，可以在這裡處理，也可以選擇拋出異常以觸發事務回滾
+	        throw new RuntimeException("刪除進度表時發生異常", e);
+	    }
+	}
+
+
+
 	RowMapper<Schedule> scheduleMapper = (ResultSet rs, int rowNum) -> {
 		Schedule schedule = new Schedule();
 		schedule.setScheduleId(rs.getInt("scheduleId"));

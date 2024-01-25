@@ -11,6 +11,8 @@ public interface ScheduleDao {
 	
 	int removeScheduleByScheduleId(Integer scheduleId);
 	
+	int removeScheduleByProjectId(String projectId);
+	
 	List<Schedule> findAllSchedules();
 	
 	Optional<Schedule> findScheduleByScheduleId(Integer scheduleId);
