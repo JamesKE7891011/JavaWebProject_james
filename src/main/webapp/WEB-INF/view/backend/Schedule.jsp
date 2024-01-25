@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ include file="/WEB-INF/view/backendheader.jsp"%>
-<div style="min-height: 100vh">
+<div>
 	<div class="m-3">
 		<!-- 專案下拉選單 -->
 		<h4 class="fs-4 fw-bold">請選趣專案</h4>
@@ -17,7 +17,7 @@
  	</div>	
 	<!-- 新增進度條 -->
 	<div class="mx-3">
-	<label class="fs-4 fw-bold mt-3">進度表 <button class=" ms-3 btn btn-outline-danger btn-sm  fw-bold">刪除進度表</button></label>
+	<label class="fs-4 fw-bold mt-3">進度表 <button class=" ms-3 btn btn-outline-danger btn-sm fw-bold" onclick="deleteSchedule(\${ schedule.scheduleId })">刪除進度表</button></label>
 		<form class="row g-3 mt-2" action="/JavaWebProject_james/mvc/schedule/addTask" id="addTaskForm" method="post">
 		  ${ message }
 		  <input type="hidden" value="" id="scheduleId" name="scheduleId">
@@ -62,18 +62,24 @@
 	      				<th scope="col">進度%</th>
 	      				<th scope="col">關聯任務ID:</th>
 	      				<th scope="col">刪除</th>
-	      				
 	    			</tr>
 	  			</thead>
 	  			<tbody></tbody>
 	  		</table>
 		</div>		
-		
-		<div class="ms-3 me-4 mb-0" id="chart_div"></div>
+		<div class="ms-3 me-4 pb-3" id="chart_div"></div>
 	</div>
 </div>
 
+<style>
 
+#chart_div> div {
+
+/*height: 1000px !important;*/
+
+}
+
+</style>
 
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
@@ -90,15 +96,15 @@
 
 	function drawChart(rows) {
 		
-		/*
+		/* 正確
 		rows = [
 	        [ "1", "專案", "專案部", new Date(2023, 12, 01), new Date(2024, 06, 01), 183, 28.42, '' ],
 	        [ "2", "採購", "採購部", new Date(2023, 12, 01), new Date(2024, 01, 01), 31, 100, '' ],
 	        [ "3", "執行", "工程部", new Date(2024, 01, 02), new Date(2024, 03, 01), 59, 33.9, '2' ],
 	   	];*/
-	   	
+
 	   	var chart = new google.visualization.Gantt(document.getElementById("chart_div"));
-	   	if(rows.length > 0) {
+	   	if(rows!=undefined && rows.length > 0) {
 	   		$('#chart_div').show();
 		   	var otherData = new google.visualization.DataTable();
 			otherData.addColumn("string", "Task ID");
@@ -110,22 +116,22 @@
 			otherData.addColumn("number", "Percent Complete");
 			otherData.addColumn("string", "Dependencies");
 	   		otherData.addRows(rows);
-	   		var options = {height : 275,};	
-	   		chart.draw(otherData, options);
+	   		var height = rows.length * 41 + 30; // 動態計算高度
+	   		var options = {height : height,};	
+	   		chart.draw(otherData,options);
 	   	} else {
 	   		$('#chart_div').hide();
 	   	}
 	}
 	
 	function selectProject(projectId) {
-		//console.log('projectId:', projectId);
 		
 		$('#task_table tbody tr').remove();
 		
 		fetch('/JavaWebProject_james/mvc/schedule/findschedule/'+projectId, {method: "GET",headers: {"Coneent-Type": "application/json",}})
 		.then(response => response.json())
 		.then(data => {
-			
+			console.log('data:', data);
 			let { projectId, scheduleId, tasks } = data;
 			
 			$('#scheduleId').val(scheduleId);
@@ -211,6 +217,7 @@
 		.then(response => response.json())
 		.then(data => {
 			selectProject($('#projectId').val());
+			alert(data['message']);
 		}).catch(err => {
 
         });
@@ -238,5 +245,28 @@
 			});
 		}
 	}
+	
+	function deleteSchedule(scheduleId) {
+		const url = '${pageContext.request.contextPath}/mvc/schedule/deleteschedule/' + scheduleId;
+		if(confirm('是否要刪除 ?')) {
+			fetch(url, {method: 'GET'})
+			.then(response => {
+				console.log(response);
+				//console.log(response.redirected);
+				if(response.ok || response.redirected) {
+					console.log(response);
+					// 刪除成功, 更新網頁
+					//location.href = '${pageContext.request.contextPath}/mvc/user/';
+					location.href = response.url;
+				} else {			
+					console.log('delete fail');
+				}
+			})
+			.catch(error => {
+				console.log('delete error: ', error);
+			});
+		}
+	}
+	
 </script>
 

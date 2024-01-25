@@ -12,14 +12,14 @@ public class AddTask {
 	private String  taskResource;
 	private Date taskStartDate;
 	private Date taskEndDate;
-	private Integer taskDependency;
+	private String taskDependency;
 	
 	public AddTask() {
 		
 	}
 	
 	public AddTask(String projectId, Integer scheduleId, String taskName, String taskResource, Date taskStartDate,
-			Date taskEndDate, Integer taskDependency) {
+			Date taskEndDate, String taskDependency) {
 		this.projectId = projectId;
 		this.scheduleId = scheduleId;
 		this.taskName = taskName;
@@ -53,7 +53,7 @@ public class AddTask {
 		return taskEndDate;
 	}
 
-	public Integer getTaskDependency() {
+	public String getTaskDependency() {
 		return taskDependency;
 	}
 
@@ -81,7 +81,7 @@ public class AddTask {
 		this.taskEndDate = taskEndDate;
 	}
 
-	public void setTaskDependency(Integer taskDependency) {
+	public void setTaskDependency(String taskDependency) {
 		this.taskDependency = taskDependency;
 	}
 	

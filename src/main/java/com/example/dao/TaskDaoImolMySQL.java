@@ -45,7 +45,7 @@ public class TaskDaoImolMySQL implements TaskDao {
 			ps.setString(3,task.getTaskResource());
 			ps.setDate(4, new java.sql.Date(task.getTaskStartDate().getTime()));
 			ps.setDate(5, new java.sql.Date(task.getTaskEndDate().getTime()));
-			ps.setInt(6, task.getTaskDependency());			
+			ps.setString(6, task.getTaskDependency());
 			return ps;
 		},keyHolder);
 		

@@ -36,14 +36,14 @@ public class Task {
 	
 	private Double taskPercentComplete;
 	
-	private Integer taskDependency;
+	private String taskDependency;
 	
 	public Task() {
 		
 	}
 
 	public Task(Integer taskId, Integer scheduleId, String taskName, String taskResource, Date taskStartDate,
-			Date taskEndDate, int taskDuration, Double taskPercentComplete, Integer taskDependency) {
+			Date taskEndDate, int taskDuration, Double taskPercentComplete, String taskDependency) {
 		this.taskId = taskId;
 		this.scheduleId = scheduleId;
 		this.taskName = taskName;
@@ -87,7 +87,7 @@ public class Task {
 		return taskPercentComplete;
 	}
 
-	public Integer getTaskDependency() {
+	public String getTaskDependency() {
 		return taskDependency;
 	}
 
@@ -158,7 +158,7 @@ public class Task {
         taskPercentComplete = Math.round(taskPercentComplete * 100.0) / 100.0;
     }
 
-	public void setTaskDependency(Integer taskDependency) {
+	public void setTaskDependency(String taskDependency) {
 		this.taskDependency = taskDependency;
 	}
 
