@@ -230,15 +230,15 @@ public class IssueController {
 	        // 檢查更新結果
 	        if (success) {
 	            result.put("status", "success");
-	            result.put("message", "專案修改成功");
+	            result.put("message", "狀態更新成功");
 	        } else {
 	            result.put("status", "failure");
-	            result.put("message", "專案修改失敗");
+	            result.put("message", "狀態更新失敗");
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        result.put("status", "error");
-	        result.put("message", "專案修改失敗: " + e.getMessage());
+	        result.put("message", "狀態更新失敗: " + e.getMessage());
 	    }
 	    return result;
 	}
