@@ -17,7 +17,8 @@
  	</div>	
 	<!-- 新增進度條 -->
 	<div class="mx-3">
-	<label class="fs-4 fw-bold mt-3">進度表 <button class=" ms-3 btn btn-outline-danger btn-sm fw-bold" onclick="deleteSchedule(\${ schedule.scheduleId })">刪除進度表</button></label>
+	<label class="fs-4 fw-bold mt-3">進度表 
+	    <button class=" ms-3 btn btn-outline-danger btn-sm fw-bold" onclick="deleteSchedule()">刪除進度表</button></label>
 		<form class="row g-3 mt-2" action="/JavaWebProject_james/mvc/schedule/addTask" id="addTaskForm" method="post">
 		  ${ message }
 		  <input type="hidden" value="" id="scheduleId" name="scheduleId">
@@ -235,7 +236,8 @@
 					console.log(response);
 					// 刪除成功, 更新網頁
 					//location.href = '${pageContext.request.contextPath}/mvc/user/';
-					location.href = response.url;
+					//location.href = response.url;
+					selectProject($('#projectId').val());
 				} else {			
 					console.log('delete fail');
 				}
@@ -246,7 +248,10 @@
 		}
 	}
 	
-	function deleteSchedule(scheduleId) {
+	function deleteSchedule() {
+		
+		let scheduleId = $('#scheduleId').val();
+		
 		const url = '${pageContext.request.contextPath}/mvc/schedule/deleteschedule/' + scheduleId;
 		if(confirm('是否要刪除 ?')) {
 			fetch(url, {method: 'GET'})

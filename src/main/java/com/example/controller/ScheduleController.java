@@ -83,7 +83,7 @@ public class ScheduleController {
 		}
 		
 		// 新增的任務的關係檢查
-		List<Task> tasks = taskDao.findTasksByScheduleId(scheduleOpt.get().getScheduleId());
+		List<Task> tasks = taskDao.findTasksByScheduleId(addTask.getScheduleId());
 		boolean isValidDependency = false;
 		if(tasks.size()==0) {
 			isValidDependency = StringUtils.isEmpty(addTask.getTaskDependency());
@@ -122,7 +122,6 @@ public class ScheduleController {
 	
 	//刪除Schedule
 	@GetMapping("/deleteschedule/{scheduleId}")
-	@ResponseBody
 	public String deleteSchedule(@PathVariable("scheduleId") Integer scheduleId,Model model) {
 		try {
 			int rowcount = scheduleDao.removeScheduleByScheduleId(scheduleId);
