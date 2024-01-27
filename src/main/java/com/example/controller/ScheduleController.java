@@ -84,21 +84,21 @@ public class ScheduleController {
 		
 		// 新增的任務的關係檢查
 		List<Task> tasks = taskDao.findTasksByScheduleId(addTask.getScheduleId());
-		boolean isValidDependency = false;
-		if(tasks.size()==0) {
-			isValidDependency = StringUtils.isEmpty(addTask.getTaskDependency());
-		} else {
-			isValidDependency = tasks.stream()
-                    .map(Task::getTaskId)
-                    .map(String::valueOf)
-                    .anyMatch(taskId -> taskId.equals(addTask.getTaskDependency()));
-		}
+//		boolean isValidDependency = false;
+//		if(tasks.size()==0) {
+//			isValidDependency = StringUtils.isEmpty(addTask.getTaskDependency());
+//		} else {
+//			isValidDependency = tasks.stream()
+//                    .map(Task::getTaskId)
+//                    .map(String::valueOf)
+//                    .anyMatch(taskId -> taskId.equals(addTask.getTaskDependency()));
+//		}
 		Map<String, String> results = new LinkedHashMap<>();
-		
-		if( !isValidDependency) {
-			results.put("message", "新增失敗:依賴關係錯誤");
-			return results;
-		}
+//		
+//		if( !isValidDependency) {
+//			results.put("message", "新增失敗:依賴關係錯誤");
+//			return results;
+//		}
 		
 		// 創建一個新的 Task 物件
 	    Task task = new Task();
