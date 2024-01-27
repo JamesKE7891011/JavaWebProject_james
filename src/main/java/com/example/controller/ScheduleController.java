@@ -113,7 +113,7 @@ public class ScheduleController {
 	    int affectedRows = taskDao.addTask(task);
 
 	    if (affectedRows >0 ) {
-	    	results.put("message", "success");
+	    	results.put("message", "任務新增成功");
 	    } else {
 	    	results.put("message", "新增失敗");
 	    }
