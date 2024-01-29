@@ -61,7 +61,7 @@ CREATE TABLE `issue` (
   KEY `fk_issue_issue_class_idx` (`issueClassId`),
   CONSTRAINT `fk_issue_issue_class_id` FOREIGN KEY (`issueClassId`) REFERENCES `issueclass` (`issueClassId`),
   CONSTRAINT `fk_issue_project_id` FOREIGN KEY (`projectId`) REFERENCES `project` (`projectId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,7 @@ CREATE TABLE `issue` (
 
 LOCK TABLES `issue` WRITE;
 /*!40000 ALTER TABLE `issue` DISABLE KEYS */;
-INSERT INTO `issue` VALUES (1,'AC23020','馬桶壞掉','D','因投入不當物品，造成堵塞',1,'2023-12-07 00:00:00'),(2,'AC23021','電風扇壞掉','B','2張照片',0,'2024-01-22 22:49:17'),(3,'AC23020','別的地方壞掉','B','需要修理',1,'2024-01-23 22:14:47'),(4,'AC23020','23020-50','C','123',1,'2024-01-23 22:16:24');
+INSERT INTO `issue` VALUES (7,'AC23020','$$來了','D','請大家一起完成此專案，謝謝!',1,'2024-01-29 10:20:22');
 /*!40000 ALTER TABLE `issue` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,7 +94,7 @@ CREATE TABLE `issueclass` (
 
 LOCK TABLES `issueclass` WRITE;
 /*!40000 ALTER TABLE `issueclass` DISABLE KEYS */;
-INSERT INTO `issueclass` VALUES ('A','設計類'),('B','公務類'),('C','環安衛類'),('D','其他');
+INSERT INTO `issueclass` VALUES ('A','設計類'),('B','工務類'),('C','環安衛類'),('D','其他');
 /*!40000 ALTER TABLE `issueclass` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,7 +112,7 @@ CREATE TABLE `issuefile` (
   PRIMARY KEY (`issueFileId`),
   KEY `fk_issue_issue_id_idx` (`issueId`),
   CONSTRAINT `fk_issue_issue_id` FOREIGN KEY (`issueId`) REFERENCES `issue` (`issueId`)
-) ENGINE=InnoDB AUTO_INCREMENT=507 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=511 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -121,7 +121,7 @@ CREATE TABLE `issuefile` (
 
 LOCK TABLES `issuefile` WRITE;
 /*!40000 ALTER TABLE `issuefile` DISABLE KEYS */;
-INSERT INTO `issuefile` VALUES (501,1,'馬桶.jpg'),(502,2,'C:/uploads/(正本)01_柯宗翰_履歷表.docx'),(503,2,'C:/uploads/A20201216 37 柯宗翰 健保.jpg'),(504,3,'C:/uploads/(正本)01_柯宗翰_履歷表.docx'),(505,4,'C:/uploads/(正本)01_柯宗翰_履歷表.docx'),(506,4,'C:/uploads/A20201216 37 柯宗翰 健保.jpg');
+INSERT INTO `issuefile` VALUES (510,7,'C:/uploads/01_柯宗翰_成發簡報 柯宗翰.pptx');
 /*!40000 ALTER TABLE `issuefile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,7 +149,7 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES ('AC23020','SleepingBeauty','TO+ Boiler system','2023-12-01','2024-06-01','103'),('AC23021','SleepingBeauty','TO+ Boiler system','2023-12-01','2024-06-01','103'),('AC23024','FatFish1','dadadadadadad','2023-12-11','2024-03-08','103'),('AC23028','28','28282','2024-01-22','2024-02-10','102');
+INSERT INTO `project` VALUES ('AC23020','SleepingBeauty','TO+ Boiler system','2023-12-01','2024-06-01','201'),('AC23021','台塑碼槽','TO及相關設備','2024-01-26','2024-06-26','202');
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -176,7 +176,7 @@ CREATE TABLE `projectmember` (
 
 LOCK TABLES `projectmember` WRITE;
 /*!40000 ALTER TABLE `projectmember` DISABLE KEYS */;
-INSERT INTO `projectmember` VALUES ('AC23020',1),('AC23028',102),('AC23024',103),('AC23020',201),('AC23021',201),('AC23028',201),('AC23020',202),('AC23021',202),('AC23021',203),('AC23028',203),('AC23020',301),('AC23021',301),('AC23024',301),('AC23020',302),('AC23024',302),('AC23028',302),('AC23020',303),('AC23024',303);
+INSERT INTO `projectmember` VALUES ('AC23020',1),('AC23020',201),('AC23020',202),('AC23021',202),('AC23020',301),('AC23021',301),('AC23020',302),('AC23021',302),('AC23020',303),('AC23021',303);
 /*!40000 ALTER TABLE `projectmember` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -193,7 +193,7 @@ CREATE TABLE `schedule` (
   PRIMARY KEY (`scheduleId`),
   KEY `fk_schedule_project_id_idx` (`projectId`),
   CONSTRAINT `fk_schedule_project_id` FOREIGN KEY (`projectId`) REFERENCES `project` (`projectId`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -202,7 +202,7 @@ CREATE TABLE `schedule` (
 
 LOCK TABLES `schedule` WRITE;
 /*!40000 ALTER TABLE `schedule` DISABLE KEYS */;
-INSERT INTO `schedule` VALUES (3,NULL),(4,NULL),(1,'AC23020'),(9,'AC23021');
+INSERT INTO `schedule` VALUES (3,NULL),(4,NULL),(1,'AC23020'),(10,'AC23021');
 /*!40000 ALTER TABLE `schedule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -224,7 +224,7 @@ CREATE TABLE `task` (
   PRIMARY KEY (`taskId`),
   KEY `fk_task_scheduleId_idx` (`scheduleId`),
   CONSTRAINT `fk_task_scheduleId` FOREIGN KEY (`scheduleId`) REFERENCES `schedule` (`scheduleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -233,7 +233,7 @@ CREATE TABLE `task` (
 
 LOCK TABLES `task` WRITE;
 /*!40000 ALTER TABLE `task` DISABLE KEYS */;
-INSERT INTO `task` VALUES (1,1,'專案','專案部','2023-12-01','2024-06-01',NULL),(2,1,'採購','採購部','2023-12-01','2024-01-01',NULL),(3,1,'執行','工程部','2024-01-02','2024-03-01','2'),(4,1,'驗收','專案部','2024-03-02','2024-05-01','3'),(5,1,'請款','採購部','2024-05-02','2024-06-01','4'),(26,1,'執行','採購部','2024-01-25','2024-01-25',''),(28,3,'執行','採購部','2024-01-25','2024-01-25',''),(32,4,'執行','採購部','2024-01-01','2024-01-25','1'),(46,1,'執行','採購部','2024-01-25','2024-01-25','1'),(48,9,'執行','採購部','2024-01-25','2024-01-25','');
+INSERT INTO `task` VALUES (1,1,'專案','專案部','2023-12-01','2024-06-01',NULL),(2,1,'採購','採購部','2023-12-01','2024-01-01',NULL),(3,1,'執行','工程部','2024-01-02','2024-03-01','2'),(4,1,'驗收','專案部','2024-03-02','2024-05-01','3'),(5,1,'請款','採購部','2024-05-02','2024-06-01','4'),(28,3,'執行','採購部','2024-01-25','2024-01-25',''),(32,4,'執行','採購部','2024-01-01','2024-01-25','1'),(51,10,'專案','專案部','2024-01-26','2024-06-26',''),(52,10,'採購','採購部','2024-01-26','2024-02-26',''),(55,10,'執行','工程部','2024-02-27','2024-04-26','52'),(56,10,'驗收','採購部','2024-04-27','2024-05-26','55'),(57,10,'請款','會計部','2024-05-27','2024-06-26','56');
 /*!40000 ALTER TABLE `task` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -246,4 +246,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-25 17:39:02
+-- Dump completed on 2024-01-29 16:25:04
